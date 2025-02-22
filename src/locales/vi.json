@@ -1,0 +1,47 @@
+{
+    "welcome": "Chào mừng đến với Hệ thống ERP",
+    "dashboard": "Bảng điều khiển",
+    "profile": "Hồ sơ",
+    "languages": {
+      "en": "Tiếng Anh",
+      "vi": "Tiếng Việt"
+    },
+    "login_page": {
+      "sologan": "ERP - Kết nối mọi quy trình, tối ưu mọi hoạt động.",
+      "back_to_dashboard": "Quay lại bảng điều khiển",
+      "login": "Đăng nhập",
+      "login_prompt": "Nhập email và mật khẩu của bạn để đăng nhập!",
+      "login_with_google": "Đăng nhập bằng Google",
+      "login_with_x": "Đăng nhập bằng X",
+      "or": "Hoặc",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "enter_password": "Nhập mật khẩu của bạn",
+      "keep_me_logged_in": "Ghi nhớ đăng nhập",
+      "forgot_password": "Quên mật khẩu?",
+      "sign_in": "Đăng nhập",
+      "no_account": "Chưa có tài khoản?",
+      "sign_up": "Đăng ký"
+    },
+    "signup_page": {
+      "sign_up": "Đăng ký",
+      "signup_prompt": "Nhập email và mật khẩu để đăng ký!",
+      "signup_with_google": "Đăng ký bằng Google",
+      "first_name": "Họ",
+      "enter_first_name": "Nhập họ của bạn",
+      "last_name": "Tên",
+      "enter_last_name": "Nhập tên của bạn",
+      "email": "Email",
+      "enter_email": "Nhập email của bạn",
+      "password": "Mật khẩu",
+      "enter_password": "Nhập mật khẩu của bạn",
+      "terms_conditions": "Bằng cách tạo tài khoản, bạn đồng ý với",
+      "terms": "Điều khoản và Điều kiện",
+      "and_our" : "và",
+      "privacy_policy": "Chính sách Bảo mật",
+      "already_have_account": "Đã có tài khoản?",
+      "sign_in": "Đăng nhập"
+    }
+    
+    
+}

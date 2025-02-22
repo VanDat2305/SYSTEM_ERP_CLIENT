@@ -1,0 +1,46 @@
+{
+    "welcome": "Welcome to the ERP System",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "languages": {
+        "en": "English",
+        "vi": "Vietnamese"
+    },
+    "login_page" : {
+        "sologan": "ERP - Connecting all processes, optimizing all operations.",
+        "back_to_dashboard": "Back to Dashboard",
+        "login": "Login",
+        "login_prompt": "Enter your email and password to log in!",
+        "login_with_google": "Login with Google",
+        "login_with_x": "Login with X",
+        "or": "Or",
+        "email": "Email",
+        "password": "Password",
+        "enter_password": "Enter your password",
+        "keep_me_logged_in": "Keep me logged in",
+        "forgot_password": "Forgot password?",
+        "sign_in": "Sign In",
+        "no_account": "Don't have an account?",
+        "sign_up": "Sign Up"
+    },
+    "signup_page": {
+        "sign_up": "Sign Up",
+        "signup_prompt": "Enter your email and password to sign up!",
+        "signup_with_google": "Sign up with Google",
+        "first_name": "First Name",
+        "enter_first_name": "Enter your first name",
+        "last_name": "Last Name",
+        "enter_last_name": "Enter your last name",
+        "email": "Email",
+        "enter_email": "Enter your email",
+        "password": "Password",
+        "enter_password": "Enter your password",
+        "terms_conditions": "By creating an account, you agree to the",
+        "terms": "Terms and Conditions",
+        "and_our": "and our",
+        "privacy_policy": "Privacy Policy",
+        "already_have_account": "Already have an account?",
+        "sign_in": "Sign In"
+    }
+      
+}
