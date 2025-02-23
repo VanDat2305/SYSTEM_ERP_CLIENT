@@ -162,17 +162,53 @@ import { ref } from 'vue'
 import CommonGridShape from '@/components/common/CommonGridShape.vue'
 import FullScreenLayout from '@/components/layout/FullScreenLayout.vue'
 import LanguageMenu from '@/components/layout/header/LanguageMenu.vue'
+import axios from 'axios';
+import config from '@/config/config'; 
+import { useRouter } from 'vue-router'; // Import useRouter
+import { inject } from 'vue';
+import { useToast } from "@/composables/useToast";
 
+const { showToast } = useToast();
 const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const keepLoggedIn = ref(false)
+const router = useRouter(); // Khởi tạo router
+const setLoading = inject('setLoading');
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
+  showToast({ type: "success", title: "Đăng nhập thành công!" });
+  if (typeof setLoading === 'function') {
+    setLoading(true);
+  }
+  try {
+
+    const response = await axios.post(`${config.api_be}/login`, { // Sử dụng URL từ config
+      email: email.value,
+      password: password.value,
+      keepLoggedIn: keepLoggedIn.value,
+    });
+
+    if (keepLoggedIn.value) {
+      localStorage.setItem('authToken', response.data.token);
+    } else {
+      sessionStorage.setItem('authToken', response.data.token);
+    }
+    showToast({ type: "success", title: "Đăng nhập thành công!" });
+    router.push('/')
+    // Redirect to dashboard or another page
+    console.log('Login successful, redirecting...');
+  } catch (error) {
+    console.error('Login failed:', error);
+  } finally {
+    if (typeof setLoading === 'function') {
+      setLoading(false);
+    }
+  }
   // Handle form submission
   console.log('Form submitted', {
     email: email.value,
