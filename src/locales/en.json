@@ -6,7 +6,10 @@
         "en": "English",
         "vi": "Vietnamese"
     },
-    "login_page" : {
+    "SearchBar": {
+        "placeholder": "Search or type command..."
+    },
+    "login_page": {
         "sologan": "ERP - Connecting all processes, optimizing all operations.",
         "back_to_dashboard": "Back to Dashboard",
         "login": "Login",
@@ -41,6 +44,27 @@
         "privacy_policy": "Privacy Policy",
         "already_have_account": "Already have an account?",
         "sign_in": "Sign In"
+    },
+    "menu": {
+        "dashboard": "Dashboard",
+        "sales": "Sales",
+        "customers": "Customers",
+        "quotes": "Quotes",
+        "orders": "Orders",
+        "contracts": "Contracts",
+        "system": "System",
+        "user_list": "User List",
+        "roles_permissions": "Roles & Permissions",
+        "security_settings": "Security Settings",
+        "access_settings": "Access Settings",
+        "system_logs": "System Logs",
+        "settings": "Settings",
+        "system_info": "System Information",
+        "company_info": "Company Information",
+        "language_timezone": "Language & Timezone",
+        "email_notifications": "Email & Notifications",
+        "api_integration": "API Integration",
+        "payment_gateway": "Payment Gateway",
+        "webhook_settings": "Webhook Settings"
     }
-      
 }

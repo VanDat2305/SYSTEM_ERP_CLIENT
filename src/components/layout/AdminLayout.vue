@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen xl:flex">
-    <app-sidebar />
+    <app-sidebar :key="locale"/>
     <Backdrop />
     <div
       class="flex-1 transition-all duration-300 ease-in-out"
@@ -19,5 +19,8 @@ import AppSidebar from './AppSidebar.vue'
 import AppHeader from './AppHeader.vue'
 import { useSidebar } from '@/composables/useSidebar'
 import Backdrop from './Backdrop.vue'
+import { useI18n } from "vue-i18n";
+
+const { locale } = useI18n();
 const { isExpanded, isHovered } = useSidebar()
 </script>
