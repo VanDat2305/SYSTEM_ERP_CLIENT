@@ -1,11 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import ecommerceRoutes from "./ecommerceRoutes";
 import authRoutes from "./authRoutes";
-
-// Hàm kiểm tra người dùng có đăng nhập hay chưa (ví dụ: từ localStorage hoặc Vuex/Pinia)
-function isAuthenticated() {
-  return !!localStorage.getItem("authToken"); // Giả sử token lưu trong localStorage
-}
+import { useAuthStore } from "@/stores/authStore";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -75,8 +71,9 @@ export default router;
 router.beforeEach((to, from, next) => {
   document.title = `ERP System | ${to.meta.title || "Dashboard"}`;
 
-  if (to.meta.requiresAuth && !isAuthenticated()) {
+  const authStore = useAuthStore(); // Lấy Pinia store
 
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     next({ path: "/signin", query: { redirect: to.fullPath } });
   } else {
     next();

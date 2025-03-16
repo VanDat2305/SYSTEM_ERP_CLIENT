@@ -67,5 +67,8 @@
     "api_integration": "Kết nối API bên thứ ba",
     "payment_gateway": "Cổng thanh toán",
     "webhook_settings": "Cấu hình Webhook"
+  },
+  "auth": {
+    "logout_success": "Đăng xuất thành công"
   }
 }

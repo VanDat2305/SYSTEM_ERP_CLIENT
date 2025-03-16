@@ -66,5 +66,8 @@
         "api_integration": "API Integration",
         "payment_gateway": "Payment Gateway",
         "webhook_settings": "Webhook Settings"
+    },
+    "auth": {
+        "logout_success": "Logout successful"
     }
 }

@@ -61,9 +61,11 @@
 import { UserCircleIcon, ChevronDownIcon, LogoutIcon, SettingsIcon, InfoCircleIcon } from '@/icons'
 import { RouterLink } from 'vue-router'
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useAuthStore } from "@/stores/authStore";
 
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
+const authStore = useAuthStore();
 
 const menuItems = [
   { href: '/profile', icon: UserCircleIcon, text: 'Edit profile' },
@@ -79,9 +81,10 @@ const closeDropdown = () => {
   dropdownOpen.value = false
 }
 
+
 const signOut = () => {
-  // Implement sign out logic here
-  console.log('Signing out...')
+  authStore.logout();
+  router.push("/login"); // Chuyển hướng về trang login sau khi đăng xuất
   closeDropdown()
 }
 
