@@ -65,6 +65,7 @@
                       </label>
                       <input v-model="email" type="email" id="email" name="email" placeholder="info@gmail.com"
                         class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
+                      <p v-if="validationErrors.email" class="text-red-600 text-sm mt-1">{{ validationErrors.email }}</p>
                     </div>
                     <!-- Password -->
                     <div>
@@ -90,6 +91,7 @@
                               fill="#98A2B3" />
                           </svg>
                         </span>
+                        <p v-if="validationErrors.password" class="text-red-600 text-sm">{{ validationErrors.password }}</p>
                       </div>
                     </div>
                     <!-- Checkbox -->
@@ -179,41 +181,67 @@ const setLoading = inject('setLoading');
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
+// Define validation errors
+const validationErrors = ref({
+  email: '',
+  password: '',
+});
 
 const handleSubmit = async () => {
-  showToast({ type: "success", title: "Đăng nhập thành công!" });
-  if (typeof setLoading === 'function') {
-    setLoading(true);
-  }
   try {
+    if (typeof setLoading === 'function') {
+      setLoading(true);
+    }
 
-    const response = await axios.post(`${config.api_be}/login`, { // Sử dụng URL từ config
+    const response = await axios.post(`${config.api_be}/login`, {
       email: email.value,
       password: password.value,
       keepLoggedIn: keepLoggedIn.value,
     });
+    console.log(response);
+    
+    // Kiểm tra response từ API
+    if (response.data.status && response.data.data?.token) {
+      const token = response.data.data.token;
 
-    if (keepLoggedIn.value) {
-      localStorage.setItem('authToken', response.data.token);
+      if (keepLoggedIn.value) {
+        localStorage.setItem("authToken", token);
+      } else {
+        sessionStorage.setItem("authToken", token);
+      }
+
+      showToast({ type: "success", title: response.data.message});
+
+      router.push("/"); // Điều hướng đến trang chủ
     } else {
-      sessionStorage.setItem('authToken', response.data.token);
+      throw new Error(response.data.message || "Có lỗi xảy ra");
     }
-    showToast({ type: "success", title: "Đăng nhập thành công!" });
-    router.push('/')
-    // Redirect to dashboard or another page
-    console.log('Login successful, redirecting...');
   } catch (error) {
-    console.error('Login failed:', error);
+    console.error("Login failed:", error);
+
+    validationErrors.value = { email: '', password: '' };
+    
+    if (error.response) {
+      if (error.response.status === 422) {
+        const errors = error.response.data.errors;
+        if (errors.email) {
+          validationErrors.value.email = errors.email.join(", ");
+        }
+        if (errors.password) {
+          validationErrors.value.password = errors.password.join(", ");
+        }
+      } else {
+        // Handle other errors from backend
+        const apiMessage = error.response.data.message || error.response.data.error;
+        showToast({ type: "error", title: apiMessage });
+      }
+    } else if (error.message) {
+      showToast({ type: "error", title: error.message });
+    }
   } finally {
-    if (typeof setLoading === 'function') {
+    if (typeof setLoading === "function") {
       setLoading(false);
     }
   }
-  // Handle form submission
-  console.log('Form submitted', {
-    email: email.value,
-    password: password.value,
-    keepLoggedIn: keepLoggedIn.value,
-  })
 }
 </script>

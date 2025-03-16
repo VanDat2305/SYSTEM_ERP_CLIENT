@@ -4,7 +4,7 @@ import authRoutes from "./authRoutes";
 
 // Hàm kiểm tra người dùng có đăng nhập hay chưa (ví dụ: từ localStorage hoặc Vuex/Pinia)
 function isAuthenticated() {
-  return !!localStorage.getItem("auth_token"); // Giả sử token lưu trong localStorage
+  return !!localStorage.getItem("authToken"); // Giả sử token lưu trong localStorage
 }
 
 const router = createRouter({
