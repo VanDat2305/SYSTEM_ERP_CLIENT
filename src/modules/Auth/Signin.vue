@@ -160,88 +160,61 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, inject } from "vue";
+import LanguageMenu from '@/components/layout/header/LanguageMenu.vue';
 import CommonGridShape from '@/components/common/CommonGridShape.vue'
 import FullScreenLayout from '@/components/layout/FullScreenLayout.vue'
-import LanguageMenu from '@/components/layout/header/LanguageMenu.vue'
-import axios from 'axios';
-import config from '@/config/config'; 
-import { useRouter } from 'vue-router'; // Import useRouter
-import { inject } from 'vue';
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "vue-router";
 import { useToast } from "@/composables/useToast";
 
+
+const authStore = useAuthStore();
 const { showToast } = useToast();
-const email = ref('')
-const password = ref('')
-const showPassword = ref(false)
-const keepLoggedIn = ref(false)
-const router = useRouter(); // Khởi tạo router
-const setLoading = inject('setLoading');
+const router = useRouter();
+const setLoading = inject("setLoading");
+
+const email = ref("");
+const password = ref("");
+const showPassword = ref(false);
+const keepLoggedIn = ref(false);
+
+const validationErrors = ref({
+  email: "",
+  password: "",
+});
 
 const togglePasswordVisibility = () => {
-  showPassword.value = !showPassword.value
-}
-// Define validation errors
-const validationErrors = ref({
-  email: '',
-  password: '',
-});
+  showPassword.value = !showPassword.value;
+};
 
 const handleSubmit = async () => {
   try {
-    if (typeof setLoading === 'function') {
+    if (typeof setLoading === "function") {
       setLoading(true);
     }
 
-    const response = await axios.post(`${config.api_be}/login`, {
-      email: email.value,
-      password: password.value,
-      keepLoggedIn: keepLoggedIn.value,
-    });
-    console.log(response);
-    
-    // Kiểm tra response từ API
-    if (response.data.status && response.data.data?.token) {
-      const token = response.data.data.token;
+    const response = await authStore.login(email.value, password.value, keepLoggedIn.value);
 
-      if (keepLoggedIn.value) {
-        localStorage.setItem("authToken", token);
-      } else {
-        sessionStorage.setItem("authToken", token);
-      }
-
-      showToast({ type: "success", title: response.data.message});
-
-      router.push("/"); // Điều hướng đến trang chủ
-    } else {
-      throw new Error(response.data.message || "Có lỗi xảy ra");
-    }
-  } catch (error) {
+    showToast({ type: "success", title: response.message });
+    router.push("/");
+  } catch (error: any) {
     console.error("Login failed:", error);
 
-    validationErrors.value = { email: '', password: '' };
-    
-    if (error.response) {
-      if (error.response.status === 422) {
-        const errors = error.response.data.errors;
-        if (errors.email) {
-          validationErrors.value.email = errors.email.join(", ");
-        }
-        if (errors.password) {
-          validationErrors.value.password = errors.password.join(", ");
-        }
-      } else {
-        // Handle other errors from backend
-        const apiMessage = error.response.data.message || error.response.data.error;
-        showToast({ type: "error", title: apiMessage });
-      }
-    } else if (error.message) {
-      showToast({ type: "error", title: error.message });
+    validationErrors.value = { email: "", password: "" };
+
+    if (error.response?.status === 422) {
+      const errors = error.response.data.errors;
+      validationErrors.value.email = errors.email?.join(", ") || "";
+      validationErrors.value.password = errors.password?.join(", ") || "";
+    } else {
+      showToast({ type: "error", title: error.message || "Lỗi hệ thống" });
     }
   } finally {
     if (typeof setLoading === "function") {
       setLoading(false);
     }
   }
-}
+};
 </script>
+

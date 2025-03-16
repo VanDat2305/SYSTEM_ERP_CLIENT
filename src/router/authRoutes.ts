@@ -4,7 +4,7 @@ const authRoutes: Array<RouteRecordRaw> = [
   {
     path: '/signin',
     name: 'Signin',
-    component: () => import('../views/Auth/Signin.vue'),
+    component: () => import('../modules/Auth/Signin.vue'),
     meta: {
       title: 'Signin',
     },
@@ -12,7 +12,7 @@ const authRoutes: Array<RouteRecordRaw> = [
   {
     path: '/signup',
     name: 'Signup',
-    component: () => import('../views/Auth/Signup.vue'),
+    component: () => import('../modules/Auth/Signup.vue'),
     meta: {
       title: 'Signup',
     },
