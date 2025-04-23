@@ -193,7 +193,15 @@ const handleSubmit = async () => {
     }
 
     const response = await authStore.login(email.value, password.value, keepLoggedIn.value);
-
+    if (response.success === false) {
+      if (response.errors?.email) {
+        validationErrors.value.email = response.errors.email.join(", ");
+      } else {
+        validationErrors.value.email = "";
+      }
+      notificationService.error(response.message, 4000)
+      return;
+    }
     notificationService.success(response.message)
     router.push("/");
   } catch (error: any) {

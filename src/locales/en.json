@@ -68,6 +68,7 @@
         "webhook_settings": "Webhook Settings"
     },
     "auth": {
-        "logout_success": "Logout successful"
+        "logout_success": "Logout successful",
+        "logout" : "Logout"
     }
 }

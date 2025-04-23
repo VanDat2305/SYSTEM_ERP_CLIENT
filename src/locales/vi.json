@@ -70,5 +70,6 @@
   },
   "auth": {
     "logout_success": "Đăng xuất thành công"
+    ,"logout" : "Đăng xuất"
   }
 }

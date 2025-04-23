@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import AuthService from "../services/authService";
-import { useI18n } from "vue-i18n";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -36,12 +35,25 @@ export const useAuthStore = defineStore("auth", {
 
         return { success: true, message: response.message };
       } catch (error: any) {
-        return { success: false, message: error.response?.data?.message || "Lỗi hệ thống" };
+        const response = error.response?.data;
+      
+        let message = "Error sytem: " + error.message;
+        let errors = null;
+      
+        if (response) {
+          message = response.message || message;
+          errors = response.errors || null;
+        }
+      
+        return {
+          success: false,
+          message,
+          errors
+        };
       }
     },
 
-    async logout() {
-      const { t } = useI18n();
+    async logout(t: Function) {
       await AuthService.logout(); // Gọi API nếu có
 
       this.token = null;

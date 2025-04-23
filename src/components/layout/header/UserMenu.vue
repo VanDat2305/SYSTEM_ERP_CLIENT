@@ -50,7 +50,7 @@
         <LogoutIcon
           class="text-gray-500 group-hover:text-gray-700 dark:group-hover:text-gray-300"
         />
-        Sign out
+        {{ $t('auth.logout') }}
       </router-link>
     </div>
     <!-- Dropdown End -->
@@ -62,6 +62,9 @@ import { UserCircleIcon, ChevronDownIcon, LogoutIcon, SettingsIcon, InfoCircleIc
 import { RouterLink } from 'vue-router'
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from "@/stores/authStore";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
@@ -83,7 +86,7 @@ const closeDropdown = () => {
 
 
 const signOut = () => {
-  authStore.logout();
+  authStore.logout(t);
   router.push("/login"); // Chuyển hướng về trang login sau khi đăng xuất
   closeDropdown()
 }

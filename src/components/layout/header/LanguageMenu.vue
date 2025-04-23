@@ -54,6 +54,7 @@ const toggleDropdown = () => {
 
 const changeLanguage = (lang) => {
     locale.value = lang.code;
+    localStorage.setItem('lang', lang.code);
     dropdownOpen.value = false;
 };
 
