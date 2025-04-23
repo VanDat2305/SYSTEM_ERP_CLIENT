@@ -1,53 +1,20 @@
 <template>
     <BaseModal :show="show" :close="close" :size="size" :closeOnClickOutside="closeOnClickOutside">
-        
-        <!-- Body Slot -->
         <template #body>
             <div class="flex flex-col items-center justify-center text-center p-6">
-                <!-- Icon -->
-                <div :class="iconWrapperClass">
 
-                    <!-- Danger SVG -->
-                    <div v-if="type === 'danger'"
-                        class="w-14 h-14 bg-error-400 flex items-center justify-center rounded-full">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </div>
-
-                    <!-- Success SVG -->
-                    <div v-if="type === 'success'"
-                        class="w-14 h-14 bg-success-400 flex items-center justify-center rounded-full">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
-
-                    <!-- Info SVG -->
-                    <div v-if="type === 'info'"
-                        class="w-14 h-14 bg-blue-light-400 flex items-center justify-center rounded-full">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    
-
-                    <!-- Warning SVG -->
-                    <div v-if="type === 'warning'"
-                        class="w-14 h-14 bg-orange-400 flex items-center justify-center rounded-full">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 9v3m0 3h.01M12 3a9 9 0 100 18 9 9 0 000-18z" />
-                        </svg>
-                    </div>
-
-
+                <div class="w-14 h-14 flex items-center justify-center rounded-full" :class="{
+                    'bg-error-100': type === 'danger',
+                    'bg-success-100': type === 'success',
+                    'bg-blue-light-100': type === 'info',
+                    'bg-orange-100': type === 'warning',
+                }">
+                    <component :is="{
+                        danger: ErrorIcon,
+                        warning: WarningIcon,
+                        info: InfoCircleIcon,
+                        success: SuccessIcon
+                    }[type]" class="notification-icon" :class="iconColorClass" />
                 </div>
                 <!-- Title -->
                 <h2 class="text-xl font-semibold mt-4" :class="titleClass">
@@ -65,13 +32,14 @@
                 </button>
             </div>
         </template>
-     
+
     </BaseModal>
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import BaseModal from './BaseModal.vue'
+import { SuccessIcon, ErrorIcon, WarningIcon, InfoCircleIcon } from '@/icons'
 
 const props = defineProps({
     show: Boolean,
@@ -100,15 +68,15 @@ const props = defineProps({
     },
 })
 
-// Dynamic classes based on alert type
-const iconWrapperClass = computed(() => {
-    return {
-        danger: 'text-error-600',
-        success: ' text-success-600',
-        info: 'text-blue-light-600',
-        warning: 'text-orange-600',
-    }[props.type]
+const iconColorClass = computed(() => {
+  return {
+    danger: 'text-error-700',
+    success: 'text-success-700',
+    info: 'text-blue-light-700',
+    warning: 'text-orange-700',
+  }[props.type]
 })
+
 
 const titleClass = computed(() => {
     return {
@@ -131,8 +99,12 @@ const buttonClass = computed(() => {
 
 <style scoped>
 /* Icon wrapper styling */
+.notification-icon {
+    width: 2rem;
+    height: 2rem;
+}
+
 .rounded-full {
     border-radius: 50%;
-    /* Tạo hình tròn */
 }
 </style>
