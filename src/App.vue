@@ -5,6 +5,7 @@
       <RouterView />
     </SidebarProvider>
   </ThemeProvider>
+  <Notification />
 </template>
 
 <script setup lang="ts">

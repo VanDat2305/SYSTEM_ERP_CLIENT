@@ -166,11 +166,9 @@ import CommonGridShape from '@/components/common/CommonGridShape.vue'
 import FullScreenLayout from '@/components/layout/FullScreenLayout.vue'
 import { useAuthStore } from "@/stores/authStore";
 import { useRouter } from "vue-router";
-import { useToast } from "@/composables/useToast";
-
+import { notificationService } from '@/services/notification'
 
 const authStore = useAuthStore();
-const { showToast } = useToast();
 const router = useRouter();
 const setLoading = inject("setLoading");
 
@@ -196,7 +194,7 @@ const handleSubmit = async () => {
 
     const response = await authStore.login(email.value, password.value, keepLoggedIn.value);
 
-    showToast({ type: "success", title: response.message });
+    notificationService.success(response.message)
     router.push("/");
   } catch (error: any) {
     console.error("Login failed:", error);
@@ -208,7 +206,7 @@ const handleSubmit = async () => {
       validationErrors.value.email = errors.email?.join(", ") || "";
       validationErrors.value.password = errors.password?.join(", ") || "";
     } else {
-      showToast({ type: "error", title: error.message || "Lỗi hệ thống" });
+      notificationService.error(error.message || "Lỗi hệ thống")
     }
   } finally {
     if (typeof setLoading === "function") {
