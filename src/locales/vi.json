@@ -68,10 +68,36 @@
     "payment_gateway": "Cổng thanh toán",
     "webhook_settings": "Cấu hình Webhook",
     "roles" : "Vai trò",
-    "permissions" : "Quyền"
+    "permissions" : "Quyền",
+    "home" : "Trang chủ",
+    "roles_management" : "Quản lý vai trò",
+    "permissions_management" : "Quản lý quyền"
   },
   "auth": {
     "logout_success": "Đăng xuất thành công"
     ,"logout" : "Đăng xuất"
-  }
+  },
+  "show": "Hiển thị",
+  "entries": "mục",
+  "search": "Tìm kiếm...",
+  "showing": "Hiển thị {start} đến {end} của {total} mục",
+  "previous": "Trước",
+  "next": "Sau",
+  "user": "Người dùng",
+  "position": "Vị trí",
+  "office": "Văn phòng",
+  "age": "Tuổi",
+  "startDate": "Ngày bắt đầu",
+  "salary": "Lương",
+  "action": "Hành động",
+  "columns" : "Cột",
+  "selected_count" : "Đã chọn {count} mục",
+  "bulk_actions": "Tác vụ",
+  "add": "Thêm",
+  "export": "Xuất",
+  "filter": "Lọc",
+  "no_data": "Không có dữ liệu",
+  "add_first_item": "Thêm mục đầu tiên của bạn",
+  "delete_selected": "Xóa đã chọn",
+  "export_selected": "Xuất đã chọn"
 }

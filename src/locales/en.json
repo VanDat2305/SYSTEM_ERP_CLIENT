@@ -67,10 +67,36 @@
         "payment_gateway": "Payment Gateway",
         "webhook_settings": "Webhook Settings",
         "roles" : "Roles",
-        "permissions" : "Permissions"
+        "permissions" : "Permissions",
+        "home" : "Home",
+        "roles_management" : "Roles Management",
+        "permissions_management" : "Permissions Management"
     },
     "auth": {
         "logout_success": "Logout successful",
         "logout" : "Logout"
-    }
+    },
+    "show": "Show",
+    "entries": "entries",
+    "search": "Search...",
+    "showing": "Showing {start} to {end} of {total} entries",
+    "previous": "Previous",
+    "next": "Next",
+    "user": "User",
+    "position": "Position",
+    "office": "Office",
+    "age": "Age",
+    "startDate": "Start Date",
+    "salary": "Salary",
+    "action": "Action",
+    "columns" : "Columns",
+    "selected_count" : "Selected {count} items",
+    "bulk_actions": "Actions",
+    "add": "Add",
+    "export": "Export",
+    "filter": "Filter",
+    "no_data": "No data available",
+    "add_first_item": "Add your first item",
+    "delete_selected": "Delete selected",
+    "export_selected": "Export selected"
 }
