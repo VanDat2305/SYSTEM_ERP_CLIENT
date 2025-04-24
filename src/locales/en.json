@@ -65,7 +65,9 @@
         "email_notifications": "Email & Notifications",
         "api_integration": "API Integration",
         "payment_gateway": "Payment Gateway",
-        "webhook_settings": "Webhook Settings"
+        "webhook_settings": "Webhook Settings",
+        "roles" : "Roles",
+        "permissions" : "Permissions"
     },
     "auth": {
         "logout_success": "Logout successful",

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import ecommerceRoutes from "./ecommerceRoutes";
 import authRoutes from "./authRoutes";
+import systemRoutes from "./systemRoutes";
 import { useAuthStore } from "@/stores/authStore";
 
 const router = createRouter({
@@ -11,7 +12,7 @@ const router = createRouter({
   routes: [
     ...ecommerceRoutes,
     ...authRoutes,
-
+    ...systemRoutes,
     {
       path: "/calendar",
       name: "Calendar",
