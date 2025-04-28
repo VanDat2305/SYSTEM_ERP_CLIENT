@@ -24,7 +24,16 @@
     "forgot_password": "Quên mật khẩu?",
     "sign_in": "Đăng nhập",
     "no_account": "Chưa có tài khoản?",
-    "sign_up": "Đăng ký"
+    "sign_up": "Đăng ký",
+    "email_valid": {
+      "invalid": "Địa chỉ email không hợp lệ",
+      "required": "Email không được để trống"
+    },
+    "password_valid": {
+        "required": "Mât khẩu không được để trống",
+        "min_length": "Mật khẩu phải có ít nhất 6 ký tự"
+    }
+
   },
   "signup_page": {
     "sign_up": "Đăng ký",
@@ -99,5 +108,8 @@
   "no_data": "Không có dữ liệu",
   "add_first_item": "Thêm mục đầu tiên của bạn",
   "delete_selected": "Xóa đã chọn",
-  "export_selected": "Xuất đã chọn"
+  "export_selected": "Xuất đã chọn",
+  "access" : {
+    "denied": "Bạn không có quyền truy cập vào trang này."
+  }
 }

@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router';
 const authRoutes: Array<RouteRecordRaw> = [
   {
     path: '/signin',
-    name: 'Signin',
+    name: 'signin',
     component: () => import('../modules/Auth/Signin.vue'),
     meta: {
       title: 'Signin',
@@ -11,7 +11,7 @@ const authRoutes: Array<RouteRecordRaw> = [
   },
   {
     path: '/signup',
-    name: 'Signup',
+    name: 'signup',
     component: () => import('../modules/Auth/Signup.vue'),
     meta: {
       title: 'Signup',

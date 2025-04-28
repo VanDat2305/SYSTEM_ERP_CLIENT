@@ -24,7 +24,16 @@
         "forgot_password": "Forgot password?",
         "sign_in": "Sign In",
         "no_account": "Don't have an account?",
-        "sign_up": "Sign Up"
+        "sign_up": "Sign Up",
+        "email_valid": {
+            "invalid": "Invalid email address",
+            "required": "Email is required"
+        },
+        "password_valid": {
+            "required": "Password is required",
+            "min_length": "Password must be at least 6 characters long"
+        }
+
     },
     "signup_page": {
         "sign_up": "Sign Up",
@@ -98,5 +107,8 @@
     "no_data": "No data available",
     "add_first_item": "Add your first item",
     "delete_selected": "Delete selected",
-    "export_selected": "Export selected"
+    "export_selected": "Export selected",
+    "access" : {
+        "denied": "Access Denied"
+      }
 }

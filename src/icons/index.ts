@@ -47,6 +47,9 @@ import BellIcon from "./BellIcon.vue";
 import BarChartIcon from "./BarChartIcon.vue";
 import DashboardIcon from "./DashboardIcon.vue";
 import SystemIcon from "./SystemIcon.vue";
+import EyeIcon from "./EyeIcon.vue";
+import PencilIcon from "./PencilIcon.vue";
+import DownloadIcon from "./DownloadIcon.vue";
 
 export {
   BellIcon,
@@ -98,4 +101,7 @@ export {
   DraftIcon,
   SystemIcon,
   DashboardIcon,
+  EyeIcon,
+  PencilIcon,
+  DownloadIcon
 };

@@ -8,6 +8,7 @@ const getLang = () => {
 
 const instance = axios.create({
   baseURL: config.api_be || "http://localhost:8000/api",
+  withCredentials: true,
 });
 
 

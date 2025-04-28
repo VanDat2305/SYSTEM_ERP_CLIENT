@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import ecommerceRoutes from "./ecommerceRoutes";
 import authRoutes from "./authRoutes";
 import systemRoutes from "./systemRoutes";
-import { useAuthStore } from "@/stores/authStore";
+
+
+import { authGuard, permissionGuard } from '@/router/gaurds';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -60,23 +62,26 @@ const router = createRouter({
     //   redirect: "/login", // Mặc định chuyển hướng đến trang đăng nhập
     // },
     {
+      path: '/forbidden',
+      name: 'forbidden',
+      component: import("../views/errors/ForbiddenView.vue"),
+      meta: {
+        title: '403 - Forbidden'
+      }
+    },
+    {
       path: "/:catchAll(.*)", // Bắt tất cả các route không hợp lệ
       redirect: "/error-404",
     },
   ],
 });
+router.beforeEach((to, from, next) => {
+  document.title = `ERP System | ${to.meta.title || "Dashboard"}`;
+  next();
+});
+router.beforeEach(authGuard);
+router.beforeEach(permissionGuard);
 
 export default router;
 
-// Middleware kiểm tra xác thực trước khi vào mỗi route
-router.beforeEach((to, from, next) => {
-  document.title = `ERP System | ${to.meta.title || "Dashboard"}`;
 
-  const authStore = useAuthStore(); // Lấy Pinia store
-
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next({ path: "/signin", query: { redirect: to.fullPath } });
-  } else {
-    next();
-  }
-});

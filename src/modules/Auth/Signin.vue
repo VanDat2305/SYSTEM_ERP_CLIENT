@@ -65,7 +65,7 @@
                       </label>
                       <input v-model="email" type="email" id="email" name="email" placeholder="info@gmail.com"
                         class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                      <p v-if="validationErrors.email" class="text-red-600 text-sm mt-1">{{ validationErrors.email }}</p>
+                      <p v-if="validationErrors.email" class="mt-1.5 text-theme-xs text-error-500 mt-1">{{ validationErrors.email }}</p>
                     </div>
                     <!-- Password -->
                     <div>
@@ -91,7 +91,7 @@
                               fill="#98A2B3" />
                           </svg>
                         </span>
-                        <p v-if="validationErrors.password" class="text-red-600 text-sm">{{ validationErrors.password }}</p>
+                        <p v-if="validationErrors.password" class="mt-1.5 text-theme-xs text-error-500">{{ validationErrors.password }}</p>
                       </div>
                     </div>
                     <!-- Checkbox -->
@@ -164,12 +164,10 @@ import { ref, inject } from "vue";
 import LanguageMenu from '@/components/layout/header/LanguageMenu.vue';
 import CommonGridShape from '@/components/common/CommonGridShape.vue'
 import FullScreenLayout from '@/components/layout/FullScreenLayout.vue'
-import { useAuthStore } from "@/stores/authStore";
-import { useRouter } from "vue-router";
 import { notificationService } from '@/services/notification'
+import { useI18n } from 'vue-i18n';
+import {useAuth} from "@/auth/useAuth";
 
-const authStore = useAuthStore();
-const router = useRouter();
 const setLoading = inject("setLoading");
 
 const email = ref("");
@@ -185,36 +183,44 @@ const validationErrors = ref({
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value;
 };
+const { t } = useI18n();
+const {login} = useAuth();
 
 const handleSubmit = async () => {
-  try {
+  if (email.value === "") {
+      validationErrors.value.email = t('login_page.email_valid.required');
+      return;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+      validationErrors.value.email = t('login_page.email_valid.invalid');
+      return;
+    } else {
+      validationErrors.value.email = "";
+    }
+    if (password.value === "") {
+      validationErrors.value.password = t('login_page.password_valid.required');
+      return;
+    } else {
+      validationErrors.value.password = "";
+    }
     if (typeof setLoading === "function") {
       setLoading(true);
     }
-
-    const response = await authStore.login(email.value, password.value, keepLoggedIn.value);
-    if (response.success === false) {
-      if (response.errors?.email) {
-        validationErrors.value.email = response.errors.email.join(", ");
-      } else {
-        validationErrors.value.email = "";
-      }
-      notificationService.error(response.message, 4000)
-      return;
-    }
-    notificationService.success(response.message)
-    router.push("/");
-  } catch (error: any) {
-    console.error("Login failed:", error);
-
+  try {
+    
+    await login({
+      email: email.value,
+      password: password.value,
+    });
+    
+    // Redirect sau khi login thành công (đã xử lý trong useAuth)
+  } catch (error) {
     validationErrors.value = { email: "", password: "" };
-
     if (error.response?.status === 422) {
       const errors = error.response.data.errors;
       validationErrors.value.email = errors.email?.join(", ") || "";
       validationErrors.value.password = errors.password?.join(", ") || "";
     } else {
-      notificationService.error(error.message || "Lỗi hệ thống")
+      notificationService.error(error.message || "ERROR_SYSTEM");
     }
   } finally {
     if (typeof setLoading === "function") {
