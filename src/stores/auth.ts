@@ -51,11 +51,11 @@ export const useAuthStore = defineStore('auth', () => {
   };
 
   // Theo dõi thay đổi state - chỉ lưu vào sessionStorage mặc định
-  watch(
-    [user, token, roles, permissions, menu],
-    () => persistAuthState(false),
-    { deep: true }
-  );
+  // watch(
+  //   [user, token, roles, permissions, menu],
+  //   () => persistAuthState(false),
+  //   { deep: true }
+  // );
 
   // Các hàm gốc giữ nguyên
   function setUser(newUser: any) {

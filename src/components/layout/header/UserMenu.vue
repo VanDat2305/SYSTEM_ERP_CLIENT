@@ -59,16 +59,17 @@
 
 <script setup>
 import { UserCircleIcon, ChevronDownIcon, LogoutIcon, SettingsIcon, InfoCircleIcon } from '@/icons'
-import { RouterLink } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useAuthStore } from "@/stores/authStore";
+import {useAuth} from "@/auth/useAuth";
 import { useI18n } from "vue-i18n";
 
+const router = useRouter();
 const { t } = useI18n();
 
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
-const authStore = useAuthStore();
+const {logout} = useAuth();
 
 const menuItems = [
   { href: '/profile', icon: UserCircleIcon, text: 'Edit profile' },
@@ -86,9 +87,14 @@ const closeDropdown = () => {
 
 
 const signOut = () => {
-  authStore.logout(t);
-  router.push("/login"); // Chuyển hướng về trang login sau khi đăng xuất
-  closeDropdown()
+  try
+  {
+    logout();    
+    router.push({name:"signin"});
+    closeDropdown()
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
 }
 
 const handleClickOutside = (event) => {

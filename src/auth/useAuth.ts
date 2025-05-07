@@ -9,7 +9,7 @@ export const useAuth = () => {
   const isLoading = ref(false);
   const error = ref(null);
 
-  const login = async (credentials: { email: string; password: string }) => {
+  const login = async (credentials: { email: string; password: string; }, rememberLogin: boolean) => {
     try {
       isLoading.value = true;
       error.value = null;
@@ -30,10 +30,15 @@ export const useAuth = () => {
       authStore.setRoles(data.roles);
       authStore.setPermissions(data.permissions);
       authStore.setMenu(data.menu);
-      authStore.setToken(data.token);
+      
+      authStore.setToken(data.token, rememberLogin);
       
       const defaultRoute = getDefaultRoute(data.menu);
-      await router.push(defaultRoute);
+      
+      const matchedRoute = router.getRoutes().find(r => r.name === defaultRoute.name);
+      const nextRoute = (matchedRoute || (matchedRoute != undefined)) ? defaultRoute : '/'
+      
+      await router.push(nextRoute);
     } catch (err) {
       //console.log('Login error:', err);
       throw err;
@@ -46,7 +51,7 @@ export const useAuth = () => {
     try {
       await api.post('/logout');
       authStore.clear();
-      await router.push({ name: 'login' });
+      await router.push({ name: 'signin' });
     } catch (err) {
       console.error('Logout error:', err);
     }

@@ -42,7 +42,7 @@
                                 <input type="checkbox" :id="`col-${column.field}`" v-model="column.visible" 
                                     class="rounded text-blue-500 focus:ring-blue-500 mr-2">
                                 <label :for="`col-${column.field}`" class="text-gray-700 dark:text-gray-300 cursor-pointer">
-                                    {{ $t(column.field) }}
+                                    {{ $t(column.label) }}
                                 </label>
                             </div>
                         </div>
@@ -86,49 +86,61 @@
         <div class="max-w-full overflow-x-auto custom-scrollbar">
             <table class="min-w-full text-sm">
                 <thead class="sticky top-0 bg-white dark:bg-gray-800 z-9">
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <!-- Checkbox column for row selection -->
-                        <th v-if="hasSelection" class="px-4 py-3 w-10">
-                            <input type="checkbox" v-model="selectAll" 
-                                class="rounded text-blue-500 focus:ring-blue-500 border-gray-300 dark:border-gray-600">
-                        </th>
-                        
-                        <!-- Data columns -->
-                        <th v-for="column in visibleColumns" :key="column.field" draggable="true"
-                            @dragstart="dragStart($event, column)" @dragover.prevent @drop="drop($event, column)"
-                            @click="sort(column.field)" 
-                            class="px-5 py-3 text-left cursor-pointer select-none sm:px-6"
-                            :class="{ 'bg-gray-50 dark:bg-gray-700': sortKey === column.field }">
-                            <div class="flex items-center justify-between">
-                                <p class="text-gray-500 text-xs tracking-wider dark:text-gray-400 flex items-center gap-1">
-                                    {{ $t(column.field) }}
-                                    <span v-if="sortKey === column.field" class="ml-1">
-                                        {{ sortOrder === 'asc' ? '↑' : '↓' }}
-                                    </span>
-                                </p>
-                                <button v-if="column.filterable" @click.stop="toggleColumnFilter(column)"
-                                    class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            
-                            <!-- Column filter -->
-                            <div v-if="column.filterActive" class="mt-2">
-                                <input v-model="column.filterValue" @input="applyColumnFilter(column)"
-                                    type="text" :placeholder="$t('filter')"
-                                    class="w-full px-2 py-1 text-xs rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"/>
-                            </div>
-                        </th>
-                        
-                        <!-- Action column -->
-                        <th v-if="hasActions" class="px-5 py-3 text-left cursor-pointer select-none sm:px-6 w-24">
-                            <p class="text-gray-500 text-xs tracking-wider dark:text-gray-400">
-                                {{ $t('action') }}
+                    <!-- Header row -->
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <!-- Checkbox column -->    
+                    <th v-if="hasSelection" class="px-4 py-3 w-10">
+                        <input type="checkbox" v-model="selectAll" 
+                            class="rounded text-blue-500 focus:ring-blue-500 border-gray-300 dark:border-gray-600">
+                    </th>
+                    
+                    <!-- Data columns -->
+                    <th v-for="column in visibleColumns" :key="column.field" draggable="true"
+                        @dragstart="dragStart($event, column)" @dragover.prevent @drop="drop($event, column)"
+                        @click="sort(column.field)" 
+                        class="px-5 py-3 text-left cursor-pointer select-none sm:px-6"
+                        :class="{ 'bg-gray-50 dark:bg-gray-700': sortKey === column.field }">
+                        <div class="flex items-center justify-between">
+                            <p class="text-gray-500 text-xs tracking-wider dark:text-gray-400 flex items-center gap-1">
+                                {{ $t(column.label) }}
+                                <span v-if="sortKey === column.field" class="ml-1">
+                                    {{ sortOrder === 'asc' ? '↑' : '↓' }}
+                                </span>
                             </p>
-                        </th>
-                    </tr>
+                            <button v-if="column.filterable" @click.stop="toggleColumnFilter(column)"
+                                class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </th>
+                    
+                    <!-- Action column -->
+                    <th v-if="hasActions" class="px-5 py-3 text-left cursor-pointer select-none sm:px-6 w-24">
+                        <p class="text-gray-500 text-xs tracking-wider dark:text-gray-400">
+                            {{ $t('action') }}
+                        </p>
+                    </th>
+                </tr>
+
+                <!-- Filter row - hiển thị khi có ít nhất một filter active -->
+                <tr v-if="hasActiveFilters" class="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <!-- Ô trống cho checkbox column nếu có -->
+                    <th v-if="hasSelection" class="px-4 py-2"></th>
+                    
+                    <!-- Các ô filter tương ứng với từng cột -->
+                    <th v-for="column in visibleColumns" :key="'filter-'+column.field" class="px-5 py-2 sm:px-6">
+                        <div v-if="column.filterActive">
+                            <input v-model="column.filterValue" @input="applyColumnFilter(column)"
+                                type="text" :placeholder="$t('filter')"
+                                class="font-medium w-full px-2 py-1 text-theme-xs bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"/>
+                        </div>
+                    </th>
+                    
+                    <!-- Ô trống cho action column nếu có -->
+                    <th v-if="hasActions" class="px-5 py-2 sm:px-6"></th>
+                </tr>
                 </thead>
                 
                 <tbody>
@@ -143,22 +155,23 @@
                         
                         <!-- Data cells -->
                         <td v-for="column in visibleColumns" :key="column.field" class="px-5 py-3 sm:px-6">
-                            <slot :name="`cell-${column.field}`" :row="row" :value="row[column.field]">
-                                <input v-if="editingCell === `${row.id}-${column.field}`" v-model="row[column.field]"
-                                    @blur="saveEdit(row)" @keydown.enter="saveEdit(row)"
-                                    class="font-medium w-full px-2 py-1 text-theme-xs bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
-                                <span v-else @click="startEdit(row.id, column.field)" 
-                                    class="cursor-pointer font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                    {{ formatCellValue(row[column.field], column) }}
-                                </span>
-                            </slot>
+                        <slot :name="`cell-${column.field}`" :row="row" :value="row[column.field]">
+                            <input v-if="editingCell === `${row.id}-${column.field}`" v-model="row[column.field]"
+                            @blur="saveEdit(row)" @keydown.enter="saveEdit(row)"
+                            class="font-medium w-full px-2 py-1 text-theme-xs bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
+                            <span v-else @click="startEdit(row.id, column.field)" 
+                            class="cursor-pointer font-medium text-theme-xs"
+                            :class="getCellClass(row[column.field], column)">
+                            {{ formatCellValue(row[column.field], column) }}
+                            </span>
+                        </slot>
                         </td>
                         
                         <!-- Action cells -->
                         <td v-if="hasActions" class="px-5 py-3 sm:px-6 flex items-center gap-2">
                             <button v-for="(action, index) in props.actions" :key="index" @click="action.handler(row)"
                                 :title="action.tooltip" :class="action.class">
-                                <span v-html="action.icon"></span>
+                                <component :is="action.icon" />
                             </button>
                         </td>
                     </tr>
@@ -171,10 +184,10 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <p class="text-sm">{{ $t('no_data') }}</p>
-                                <button v-if="showAddButton" @click="emit('add')"
+                                <!-- <button v-if="showAddButton" @click="emit('add')"
                                     class="mt-2 px-3 py-1.5 text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600">
                                     {{ $t('add_first_item') }}
-                                </button>
+                                </button> -->
                             </div>
                         </td>
                     </tr>
@@ -307,7 +320,6 @@ const props = defineProps({
         validator: (actions) =>
             actions.every(
                 (action) =>
-                    typeof action.icon === 'string' &&
                     typeof action.tooltip === 'string' &&
                     typeof action.handler === 'function' &&
                     typeof action.class === 'string'
@@ -516,12 +528,37 @@ const handleBulkAction = (action) => {
 };
 
 // Column filtering
+const hasActiveFilters = computed(() => {
+    return visibleColumns.value.some(col => col.filterActive);
+});
 const toggleColumnFilter = (column) => {
+    // Tắt tất cả các filter khác trước
+    visibleColumns.value.forEach(col => {
+        if (col !== column) {
+            col.filterActive = false;
+            col.filterValue = '';
+            delete columnFilters.value[col.field];
+        }
+    });
+    
+    // Bật/tắt filter cho cột hiện tại
     column.filterActive = !column.filterActive;
+    
     if (!column.filterActive) {
         column.filterValue = '';
         delete columnFilters.value[column.field];
-        filterData();
+    }
+    
+    // Áp dụng filter
+    filterData();
+    
+    // Focus vào input nếu filter được bật
+    if (column.filterActive) {
+        nextTick(() => {
+            const colIndex = visibleColumns.value.indexOf(column) + (hasSelection.value ? 1 : 0);
+            const input = document.querySelector(`tr:nth-child(2) th:nth-child(${colIndex + 1}) input`);
+            if (input) input.focus();
+        });
     }
 };
 
@@ -551,6 +588,21 @@ const formatCellValue = (value, column) => {
 // Export
 const exportData = () => {
     emit('export', filteredData.value);
+};
+const getCellClass = (value, column) => {
+  // Class mặc định
+  let classes = 'text-gray-500 dark:text-gray-400';
+  
+  // Nếu column có định nghĩa cellClass
+  if (column.cellClass) {
+    if (typeof column.cellClass === 'function') {
+      classes += ' ' + column.cellClass(value);
+    } else {
+      classes += ' ' + column.cellClass;
+    }
+  }
+  
+  return classes;
 };
 </script>
 

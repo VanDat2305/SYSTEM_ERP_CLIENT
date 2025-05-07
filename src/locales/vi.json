@@ -111,5 +111,22 @@
   "export_selected": "Xuất đã chọn",
   "access" : {
     "denied": "Bạn không có quyền truy cập vào trang này."
+  },
+  "status" : "Trạng thái",
+  "status_map" : {
+    "name" : "Trạng thái",
+    "active": "Đang hoạt động",
+    "inactive": "Không hoạt động",
+    "pending": "Đang chờ xử lý",
+    "suspended": "Bị đình chỉ"
+  },
+  "roles_module" : {
+    "fields" : {
+      "name" : "Tên vai trò",
+      "description" : "Mô tả",
+      "permissions" : "Quyền",
+      "created_at" : "Ngày tạo"
+    }
   }
+
 }

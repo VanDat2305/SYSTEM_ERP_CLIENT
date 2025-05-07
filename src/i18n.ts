@@ -13,7 +13,7 @@ const messages = {
 };
 
 const i18n = createI18n<[MessageSchema], 'en' | 'vi'>({
-  locale: 'en', // Ngôn ngữ mặc định
+  locale: localStorage.getItem('lang') || 'en', // Ngôn ngữ mặc định
   fallbackLocale: 'en', // Ngôn ngữ dự phòng
   messages, // Các thông điệp đã dịch
   legacy: false, // Sử dụng Composition API

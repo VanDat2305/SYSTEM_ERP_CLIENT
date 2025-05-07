@@ -110,5 +110,22 @@
     "export_selected": "Export selected",
     "access" : {
         "denied": "Access Denied"
-      }
+    },
+    "status" : "Status",
+    "status_map" : {
+        "name" : "Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "pending": "Pedding",
+        "suspended": "Suspended"
+    },
+    "roles_module" : {
+        "fields" : {
+            "name": "Name",
+            "description": "Description",
+            "permissions": "Permissions",
+            "created_at": "Created At",
+            "updated_at": "Updated At"
+        }
+    }
 }

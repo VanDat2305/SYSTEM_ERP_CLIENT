@@ -210,7 +210,7 @@ const handleSubmit = async () => {
     await login({
       email: email.value,
       password: password.value,
-    });
+    }, keepLoggedIn.value);
     
     // Redirect sau khi login thành công (đã xử lý trong useAuth)
   } catch (error) {
