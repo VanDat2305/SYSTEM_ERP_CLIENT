@@ -167,6 +167,7 @@ import FullScreenLayout from '@/components/layout/FullScreenLayout.vue'
 import { notificationService } from '@/services/notification'
 import { useI18n } from 'vue-i18n';
 import {useAuth} from "@/auth/useAuth";
+import type { AxiosError } from "axios";
 
 const setLoading = inject("setLoading");
 
@@ -213,15 +214,18 @@ const handleSubmit = async () => {
     }, keepLoggedIn.value);
     
     // Redirect sau khi login thành công (đã xử lý trong useAuth)
-  } catch (error) {
-    validationErrors.value = { email: "", password: "" };
-    if (error.response?.status === 422) {
-      const errors = error.response.data.errors;
-      validationErrors.value.email = errors.email?.join(", ") || "";
-      validationErrors.value.password = errors.password?.join(", ") || "";
-    } else {
-      notificationService.error(error.message || "ERROR_SYSTEM");
-    }
+  } catch (err: unknown) {
+  validationErrors.value = { email: "", password: "" };
+
+  const error = err as AxiosError<{ errors?: Record<string, string[]>; message?: string }>;
+
+  if (error.response?.status === 422) {
+    const errors = error.response.data?.errors || {};
+    validationErrors.value.email = errors.email?.join(", ") || "";
+    validationErrors.value.password = errors.password?.join(", ") || "";
+  } else {
+    notificationService.error(error.message || "ERROR_SYSTEM");
+  }
   } finally {
     if (typeof setLoading === "function") {
       setLoading(false);

@@ -1,12 +1,20 @@
 import axios from '@/plugins/axios';
 import { useAuthStore } from '@/stores/auth';
+import type { InternalAxiosRequestConfig } from 'axios';
 const api = axios;
 
-api.interceptors.request.use((config: { headers: { Authorization: string; }; }) => {
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const authStore = useAuthStore();
+
   if (authStore.token) {
-    config.headers.Authorization = `Bearer ${authStore.token}`;
+    // Axios v1 headers có thể là AxiosHeaders
+    config.headers.set?.('Authorization', `Bearer ${authStore.token}`);
+    // hoặc nếu headers là object thường
+    if (typeof config.headers === 'object' && !config.headers.set) {
+      config.headers['Authorization'] = `Bearer ${authStore.token}`;
+    }
   }
+
   return config;
 });
 

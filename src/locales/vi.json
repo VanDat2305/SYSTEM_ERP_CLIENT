@@ -125,7 +125,8 @@
       "name" : "Tên vai trò",
       "description" : "Mô tả",
       "permissions" : "Quyền",
-      "created_at" : "Ngày tạo"
+      "created_at" : "Ngày tạo",
+      "updated_at" : "Ngày cập nhật"
     }
   }
 
