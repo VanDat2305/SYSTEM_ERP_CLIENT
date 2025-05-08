@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import i18n from '@/i18n';
 import ecommerceRoutes from "./ecommerceRoutes";
 import authRoutes from "./authRoutes";
 import systemRoutes from "./systemRoutes";
@@ -76,7 +77,9 @@ const router = createRouter({
   ],
 });
 router.beforeEach((to, from, next) => {
-  document.title = `ERP System | ${to.meta.title || "Dashboard"}`;
+  const titleKey = to.meta?.title as string | undefined;;
+  const translatedTitle = titleKey ? i18n.global.t(titleKey) : '';
+  document.title = i18n.global.t('title_default') + ` | ${translatedTitle}`;
   next();
 });
 router.beforeEach(authGuard);

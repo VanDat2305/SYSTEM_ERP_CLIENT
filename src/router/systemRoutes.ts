@@ -4,8 +4,11 @@ const systemRoutes: Array<RouteRecordRaw> = [
     {
         path: '/system/roles',
         name: 'system.roles',
-        component: () => import('@/modules/system/views/RoleView.vue'),
-        meta: { requiresAuth: true, permissions: ['roles.read'] },
+        component: () => import('@/modules/system/role/views/RoleView.vue'),
+        meta: { 
+            title: 'menu.roles',
+            requiresAuth: true, permissions: ['roles.read'] 
+        },
     },
 ];
 

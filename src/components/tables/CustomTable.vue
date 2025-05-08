@@ -300,7 +300,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
 
 const props = defineProps({
     columns: { 
@@ -317,6 +317,10 @@ const props = defineProps({
     actions: {
         type: Array,
         default: () => [],
+        permission: {
+            type: String,
+            default: null,
+        },
         validator: (actions) =>
             actions.every(
                 (action) =>
@@ -372,17 +376,31 @@ const currentPage = ref(1);
 const pageSize = ref(props.defaultPageSize);
 const goToPage = ref(1);
 const columnFilters = ref({});
+const hasSelection = computed(() => props.hasSelection || props.selectable);
+
 
 // Initialize columns with visibility and filter options
 onMounted(() => {
     allColumns.value = props.columns.map(column => ({
-        ...column,
+        field: column.field,
+        label: column.label || column.field,
         visible: column.visible !== false,
         filterable: column.filterable || false,
         filterActive: false,
         filterValue: '',
+        searchable: column.searchable !== false,
+        sortable: column.sortable || false,
+        formatter: column.formatter || null,
+        cellClass: column.cellClass || null
     }));
 });
+watch(
+  () => props.rowData,
+  (newData) => {
+    filteredData.value = [...newData];
+  },
+  { immediate: true } // Cập nhật ngay lần đầu tiên
+);
 
 // Computed properties
 const visibleColumns = computed(() => allColumns.value.filter(col => col.visible));

@@ -5,7 +5,7 @@
             <div :class="[
                 'relative bg-white dark:bg-gray-900 shadow-2xl w-full p-0 overflow-hidden modal-content',
                 sizeClass,
-                size === 'full' ? 'rounded-none h-full' : 'rounded-2xl'
+                size === 'full' ? 'rounded-none h-full' : 'rounded-2xl max-h-[90vh]'
             ]">
                 <!-- Close Button -->
                 <button @click="close" class="absolute top-3 right-4 text-gray-400 hover:text-red-500 text-2xl z-10">
@@ -18,7 +18,7 @@
                 </div>
 
                 <!-- Body Slot -->
-                <div class="px-6 py-4">
+                <div class="px-6 py-4 overflow-y-auto" style="max-height: 60vh">
                     <slot name="body" />
                 </div>
 

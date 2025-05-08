@@ -25,7 +25,9 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const { locale, t } = useI18n();
 const dropdownOpen = ref(false);
 const dropdownRef = ref(null);
@@ -56,6 +58,10 @@ const changeLanguage = (lang) => {
     locale.value = lang.code;
     localStorage.setItem('lang', lang.code);
     dropdownOpen.value = false;
+
+    const titleKey = route.meta.title;
+    document.title = t('title_default') + ` | ${titleKey ? t(titleKey) : 'Dashboard'}`;
+    
 };
 
 // Đóng dropdown khi click bên ngoài

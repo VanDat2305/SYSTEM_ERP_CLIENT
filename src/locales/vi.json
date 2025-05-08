@@ -1,4 +1,5 @@
 {
+  "title_default": "Hệ thống ERP",
   "welcome": "Chào mừng đến với Hệ thống ERP",
   "dashboard": "Bảng điều khiển",
   "profile": "Hồ sơ",
@@ -118,7 +119,9 @@
     "active": "Đang hoạt động",
     "inactive": "Không hoạt động",
     "pending": "Đang chờ xử lý",
-    "suspended": "Bị đình chỉ"
+    "suspended": "Bị đình chỉ",
+    "disable_role": "Vô hiệu hóa vai trò",
+    "enable_role" : "Kích hoạt vai trò"
   },
   "roles_module" : {
     "fields" : {
@@ -126,8 +129,40 @@
       "description" : "Mô tả",
       "permissions" : "Quyền",
       "created_at" : "Ngày tạo",
-      "updated_at" : "Ngày cập nhật"
-    }
+      "updated_at" : "Ngày cập nhật",
+      "status" : "Trạng thái"
+    },
+    "add_role" : "Thêm vai trò",
+    "edit_role" : "Chỉnh sửa vai trò",
+    "delete_role" : "Xóa vai trò",
+    "view_role" : "Xem vai trò",
+    "placeholders" : {
+      "name" : "Nhập tên vai trò",
+      "description" : "Nhập mô tả vai trò"
+    },
+    "delete_failed" : "Xóa vai trò không thành công",
+    "delete_success" : "Xóa vai trò thành công",
+    "permissions_helper" : "Chọn quyền cho vai trò này. Bạn có thể chọn nhiều quyền"
+  },
+  "common" : {
+    "save" : "Lưu",
+    "cancel" : "Hủy",
+    "delete" : "Xóa",
+    "edit" : "Chỉnh sửa",
+    "update" : "Cập nhật",
+    "view" : "Xem",
+    "add" : "Thêm",
+    "confirm" : "Xác nhận",
+    "confirm_delete" : "Bạn có chắc chắn muốn xóa mục này không?",
+    "yes" : "Có",
+    "no" : "Không",
+    "loading": "Đang tải...",
+    "no_description": "Không có mô tả",
+    "permissions": "Quyền",
+    "select_all": "Chọn tất cả",
+    "deselect_all": "Bỏ chọn tất cả",
+    "submission_error" : "Có lỗi xảy ra trong quá trình gửi biểu mẫu. Vui lòng kiểm tra lại thông tin và thử lại.",
+    "close": "Đóng"
   }
 
 }

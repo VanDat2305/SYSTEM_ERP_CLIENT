@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { api } from '@/utils/api';
+import { notificationService } from '@/services/notification'
 
 export const useAuth = () => {
   const router = useRouter();
@@ -37,7 +38,7 @@ export const useAuth = () => {
       
       const matchedRoute = router.getRoutes().find(r => r.name === defaultRoute.name);
       const nextRoute = (matchedRoute || (matchedRoute != undefined)) ? defaultRoute : '/'
-      
+      notificationService.success(data.message);
       await router.push(nextRoute);
     } catch (err) {
       //console.log('Login error:', err);

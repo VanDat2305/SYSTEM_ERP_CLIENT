@@ -16,7 +16,7 @@
           </div>
   
           <!-- Title -->
-          <h2 class="text-xl font-semibold mt-4 text-gray-900">
+          <h2 class="text-xl font-semibold mt-4 text-gray-900 dark:text-gray-300">
             {{ title }}
           </h2>
   

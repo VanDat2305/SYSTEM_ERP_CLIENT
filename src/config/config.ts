@@ -1,5 +1,5 @@
 const config = {
-    api_be: 'https://datmv-solutions-erp.me/api/v1',
+    api_be: 'http://127.0.0.1:8000/v1',
 };
   
 export default config;
