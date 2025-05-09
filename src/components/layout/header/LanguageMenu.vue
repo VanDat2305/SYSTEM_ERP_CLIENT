@@ -60,7 +60,7 @@ const changeLanguage = (lang) => {
     dropdownOpen.value = false;
 
     const titleKey = route.meta.title;
-    document.title = t('title_default') + ` | ${titleKey ? t(titleKey) : 'Dashboard'}`;
+    document.title =  `${titleKey ? t(titleKey) : 'Dashboard'}  | ` +  t('title_default') ;
     
 };
 

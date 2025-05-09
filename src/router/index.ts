@@ -77,9 +77,9 @@ const router = createRouter({
   ],
 });
 router.beforeEach((to, from, next) => {
-  const titleKey = to.meta?.title as string | undefined;;
+  const titleKey = to.meta?.title as string | undefined;
   const translatedTitle = titleKey ? i18n.global.t(titleKey) : '';
-  document.title = i18n.global.t('title_default') + ` | ${translatedTitle}`;
+  document.title = `${translatedTitle}` + ' | ' + i18n.global.t('title_default') ;
   next();
 });
 router.beforeEach(authGuard);

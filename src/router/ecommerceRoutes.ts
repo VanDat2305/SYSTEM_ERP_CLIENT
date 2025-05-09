@@ -6,7 +6,7 @@ const ecommerceRoutes: Array<RouteRecordRaw> = [
     name: 'Ecommerce',
     component: () => import('../views/Ecommerce.vue'),
     meta: {
-      title: 'eCommerce Dashboard',
+      title: 'pages.Dashboard',
       requiresAuth: true
     },
   },

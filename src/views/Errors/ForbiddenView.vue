@@ -1,21 +1,42 @@
 <template>
-  <div class="forbidden-page">
-    <h1>403 Forbidden</h1>
-    <p>You don't have permission to access this resource.</p>
-    <button @click="goBack">Go Back</button>
+  <div class="relative flex flex-col items-center justify-center min-h-screen p-6 overflow-hidden z-1">
+    <common-grid-shape />
+    <!-- Centered Content -->
+    <div class="mx-auto w-full max-w-[442px] text-center sm:max-w-[672px]">
+      <div class="flex items-center justify-center mb-4 w-full">
+        <svg viewBox="0 0 24 24" width="64" height="64" class="text-gray-700 dark:text-gray-300" stroke="currentColor"
+          stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+      <h1
+        class="mb-8 font-bold text-gray-800 text-title-md dark:text-white/90 xl:text-title-2xl"
+      >
+      {{ $t("errors.forbidden") }}
+      </h1>
+  
+      <p class="mt-10 mb-6 text-base text-gray-700 dark:text-gray-400 sm:text-lg">
+        {{ $t("errors.403_description") }}
+      </p>
+
+      <router-link to="/"
+        class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-3.5 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
+        {{ $t("common.back_to_home") }}
+      </router-link>
+    </div>
+    <!-- Footer -->
+    <p class="absolute text-sm text-center text-gray-500 -translate-x-1/2 bottom-6 left-1/2 dark:text-gray-400">
+      © {{ currentYear }} - ERPAdmin
+    </p>
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { ref } from "vue";
+import CommonGridShape from "../../components/common/CommonGridShape.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
-const router = useRouter();
-const goBack = () => router.go(-1);
+const currentYear = ref(new Date().getFullYear());
 </script>
-
-<style scoped>
-.forbidden-page {
-  text-align: center;
-  padding: 2rem;
-}
-</style>

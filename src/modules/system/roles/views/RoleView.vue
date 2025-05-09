@@ -48,7 +48,7 @@ import { useI18n } from 'vue-i18n'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import PageBreadcrumb from "@/components/common/PageBreadcrumb.vue"
 import CustomTable from "@/components/tables/CustomTable.vue"
-import RoleModal from "@/modules/system/role/views/RoleModal.vue"
+import RoleModal from "@/modules/system/roles/views/RoleModal.vue"
 import ConfirmModal from '@/components/modals/ConfirmModal.vue'
 import { EyeIcon, PencilIcon, TrashIcon, DownloadIcon, TrashIcon as BulkTrashIcon } from '@/icons'
 import { api } from '@/utils/api'

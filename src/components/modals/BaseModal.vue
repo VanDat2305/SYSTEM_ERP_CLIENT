@@ -18,7 +18,7 @@
                 </div>
 
                 <!-- Body Slot -->
-                <div class="px-6 py-4 overflow-y-auto" style="max-height: 60vh">
+                <div class="px-6 py-4 overflow-y-auto max-h-[60vh] modal-content">
                     <slot name="body" />
                 </div>
 

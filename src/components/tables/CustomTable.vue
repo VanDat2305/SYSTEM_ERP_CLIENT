@@ -17,7 +17,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
-                        <div v-if="showBulkActions" class="absolute z-10 mt-1 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                        <div @mouseleave="showBulkActions = false" v-if="showBulkActions" class="absolute z-10 mt-1 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                             <div class="py-1">
                                 <button v-for="action in bulkActions" :key="action.name" @click="handleBulkAction(action)"
                                     class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                         <!-- Column visibility toggle -->
-                        <div class="relative">
+                    <div class="relative">
                     <button @click="showColumnMenu = !showColumnMenu"
                         class="flex items-center gap-1 px-3 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                         <span>{{ $t('columns') }}</span>
@@ -36,7 +36,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <div v-if="showColumnMenu" class="absolute z-10 mt-1 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                    <div @mouseleave="showColumnMenu = false" v-if="showColumnMenu" class="absolute z-10 mt-1 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                         <div class="py-1">
                             <div v-for="column in allColumns" :key="column.field" class="px-4 py-2 text-sm flex items-center">
                                 <input type="checkbox" :id="`col-${column.field}`" v-model="column.visible" 
@@ -52,7 +52,7 @@
 
             <div class="flex items-center gap-3">
                 <!-- Search -->
-                <div class="relative w-full sm:w-64">
+                <!-- <div class="relative w-full sm:w-64">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 dark:text-gray-500">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -60,6 +60,89 @@
                     </span>
                     <input v-model="searchQuery" @input="filterData" type="text" :placeholder="$t('search')"
                         class="w-full pl-10 pr-4 py-2 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div> -->
+                <!-- Phần tìm kiếm - thay thế phần search hiện tại -->
+                <div class="relative w-full sm:w-200">
+                    <div class="flex rounded-md shadow-sm">
+                        <!-- Dropdown chọn field search -->
+                        <button v-if="searchOptions.length > 1" @click="showSearchFields = !showSearchFields"
+                            class="px-3 py-2 text-sm rounded-l-md border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            {{ getSearchFieldLabel(selectedSearchField) }}
+                            <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        
+                        <!-- Dropdown menu cho search fields -->
+                        <div @mouseleave="showSearchFields = false" v-if="showSearchFields" class=" w-max absolute z-20 mt-10 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                            <div class="py-1">
+                                <button v-for="option in searchOptions" :key="option.field" 
+                                    @click="selectedSearchField = option.field; showSearchFields = false"
+                                    class="block w-full  text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {{ option.label }}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Input tìm kiếm -->
+                        <div class="relative flex-grow">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 dark:text-gray-500">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </span>
+                            <input v-model="searchQuery" @change="filterData" type="text" :placeholder="$t('search')"
+                                class="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                :class="{ 'rounded-l-md': searchOptions.length <= 1, 'rounded-r-md': filterOptions.length <= 1 }" />
+                        </div>
+                        
+                        <!-- Nút filter -->
+                        <button  @click="showFilters = !showFilters"
+                            v-if="filterOptions.length > 0"
+                            class="px-3 py-2 text-sm rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Panel bộ lọc -->
+                <div @mouseleave="showFilters = false" v-if="showFilters && filterOptions.length > 0" class="absolute z-20 mt-2 w-full sm:w-96 right-0 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div v-for="filter in filterOptions" :key="filter.field" class="col-span-1">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ filter.label }}</label>
+                            
+                            <!-- Select filter -->
+                            <select v-if="filter.type === 'select'" v-model="activeFilters[filter.field]"
+                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                <option value="">{{ $t('common.all') }}</option>
+                                <option v-for="option in filter.options" :key="option.value" :value="option.value">
+                                    {{ option.label }}
+                                </option>
+                            </select>
+                            
+                            <!-- Date filter -->
+                            <input v-else-if="filter.type === 'date'" v-model="activeFilters[filter.field]" type="date"
+                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+                            
+                            <!-- Checkbox filter -->
+                            <div v-else-if="filter.type === 'checkbox'" class="flex items-center">
+                                <input v-model="activeFilters[filter.field]" type="checkbox"
+                                    class="rounded-md text-blue-500 focus:ring-blue-500">
+                                <label class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ $t('common.enabled') }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end mt-4 gap-2">
+                        <button @click="resetFilters" class="px-3 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                            {{ $t('common.reset') }}
+                        </button>
+                        <button @click="applyFilters" class="px-3 py-1.5 text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600">
+                            {{ $t('common.apply') }}
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Add button and other actions -->
@@ -357,9 +440,60 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    searchOptions: {
+        type: Array,
+        default: () => [],
+        validator: (options) => options.every(opt => typeof opt.field === 'string' && typeof opt.label === 'string')
+    },
+    filterOptions: {
+        type: Array,
+        default: () => [],
+        validator: (filters) => filters.every(filter => 
+            typeof filter.field === 'string' && 
+            typeof filter.label === 'string' &&
+            (filter.type === 'select' || filter.type === 'date' || filter.type === 'checkbox') &&
+            (filter.type !== 'select' || Array.isArray(filter.options))
+        )
+    },
+    defaultSearchField: {
+        type: String,
+        default: ''
+    },
+    enableServerSearch: {
+        type: Boolean,
+        default: false
+    },
 });
 
-const emit = defineEmits(['add', 'edit', 'update:selectedRows', 'export']);
+const emit = defineEmits([
+    'add',
+    'edit',
+    'update:selectedRows',
+    'export',
+    'search',
+    'filter',
+    'bulk-action',
+]);
+const selectedSearchField = ref(props.defaultSearchField || (props.searchOptions.length > 0 ? props.searchOptions[0].field : ''));
+const activeFilters = ref({});
+const showFilters = ref(false);
+const showSearchFields = ref(false);
+
+const getSearchFieldLabel = (field) => {
+    const option = props.searchOptions.find(opt => opt.field === field);
+    return option ? option.label : '';
+};
+
+const applyFilters = () => {
+    emit('filter', activeFilters.value);
+    showFilters.value = false;
+};
+
+const resetFilters = () => {
+    activeFilters.value = {};
+    emit('filter', {});
+};
+
 
 // State
 const searchQuery = ref('');
@@ -455,6 +589,15 @@ watch(currentPage, (newVal) => {
 
 // Methods
 const filterData = () => {
+   
+    if (props.enableServerSearch) {
+        emit('search', {
+            query: searchQuery.value,
+            field: selectedSearchField.value
+        });
+        return; // Dừng lại không thực hiện search client-side
+    }
+
     let result = [...props.rowData];
     const q = searchQuery.value.toLowerCase();
     
@@ -654,5 +797,13 @@ const getCellClass = (value, column) => {
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #718096;
+}
+/* Thêm transition cho filter panel */
+.filter-panel-enter-active, .filter-panel-leave-active {
+    transition: opacity 0.2s, transform 0.2s;
+}
+.filter-panel-enter-from, .filter-panel-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
 }
 </style>

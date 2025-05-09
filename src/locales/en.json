@@ -162,6 +162,47 @@
         "select_all": "Select all",
         "deselect_all": "Deselect all",
         "submission_error": "There was an error submitting the form. Please check your input and try again.",
-        "close": "Close"
-      }
+        "close": "Close",
+        "back_to_home": "Back to Home",
+        "reset": "Reset",
+        "apply": "Apply",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "all": "All"   
+      },
+      "errors" : {
+        "forbidden": "403 Forbidden",
+        "name": "Error",
+        "404": "404 Not Found",
+        "404_decsription": "We can't seem to find the page you are looking for!",
+        "403_description": "You don't have permission to access this resource.",
+        "500_description": "An error occurred on the server. Please try again later.",
+        "401_description": "You are not authorized to access this page."
+      },
+    "permissions_module": {
+        "fields": {
+            "name": "Name",
+            "description": "Description",
+            "permissions": "Permissions",
+            "created_at": "Created at",
+            "updated_at": "Updated at",
+            "status": "Status"
+        },
+        "add_permission": "Add Permission",
+        "edit_permission": "Edit Permission",
+        "delete_permission": "Delete Permission",
+        "view_permission": "View Permission",
+        "placeholders": {
+            "name": "Enter permission name",
+            "description": "Enter permission description"
+        },
+        "delete_failed": "Failed to delete permission",
+        "delete_success": "Permission deleted successfully"
+    },
+    "pages" : {
+        "Signin" : "Sign In",
+        "Signout" : "Sign Out",
+        "Ecommerce" : "Ecommerce",
+        "Dashboard" : "Dashboard"
+    }
 }

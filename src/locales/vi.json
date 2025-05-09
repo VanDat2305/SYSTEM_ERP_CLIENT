@@ -8,8 +8,8 @@
     "vi": "Tiếng Việt"
   },
   "SearchBar": {
-        "placeholder": "Tìm kiếm hoặc nhập lệnh..."
-    },
+    "placeholder": "Tìm kiếm hoặc nhập lệnh..."
+  },
   "login_page": {
     "sologan": "ERP - Kết nối mọi quy trình, tối ưu mọi hoạt động.",
     "back_to_dashboard": "Quay lại bảng điều khiển",
@@ -31,10 +31,9 @@
       "required": "Email không được để trống"
     },
     "password_valid": {
-        "required": "Mât khẩu không được để trống",
-        "min_length": "Mật khẩu phải có ít nhất 6 ký tự"
+      "required": "Mât khẩu không được để trống",
+      "min_length": "Mật khẩu phải có ít nhất 6 ký tự"
     }
-
   },
   "signup_page": {
     "sign_up": "Đăng ký",
@@ -55,7 +54,6 @@
     "already_have_account": "Đã có tài khoản?",
     "sign_in": "Đăng nhập"
   },
-  
   "menu": {
     "dashboard": "Bảng điều khiển",
     "sales": "Bán hàng",
@@ -77,15 +75,15 @@
     "api_integration": "Kết nối API bên thứ ba",
     "payment_gateway": "Cổng thanh toán",
     "webhook_settings": "Cấu hình Webhook",
-    "roles" : "Vai trò",
-    "permissions" : "Quyền",
-    "home" : "Trang chủ",
-    "roles_management" : "Quản lý vai trò",
-    "permissions_management" : "Quản lý quyền"
+    "roles": "Vai trò",
+    "permissions": "Quyền",
+    "home": "Trang chủ",
+    "roles_management": "Quản lý vai trò",
+    "permissions_management": "Quản lý quyền"
   },
   "auth": {
-    "logout_success": "Đăng xuất thành công"
-    ,"logout" : "Đăng xuất"
+    "logout_success": "Đăng xuất thành công",
+    "logout": "Đăng xuất"
   },
   "show": "Hiển thị",
   "entries": "mục",
@@ -100,8 +98,8 @@
   "startDate": "Ngày bắt đầu",
   "salary": "Lương",
   "action": "Hành động",
-  "columns" : "Cột",
-  "selected_count" : "Đã chọn {count} mục",
+  "columns": "Cột",
+  "selected_count": "Đã chọn {count} mục",
   "bulk_actions": "Tác vụ",
   "add": "Thêm",
   "export": "Xuất",
@@ -110,59 +108,99 @@
   "add_first_item": "Thêm mục đầu tiên của bạn",
   "delete_selected": "Xóa đã chọn",
   "export_selected": "Xuất đã chọn",
-  "access" : {
+  "access": {
     "denied": "Bạn không có quyền truy cập vào trang này."
   },
-  "status" : "Trạng thái",
-  "status_map" : {
-    "name" : "Trạng thái",
+  "status": "Trạng thái",
+  "status_map": {
+    "name": "Trạng thái",
     "active": "Đang hoạt động",
     "inactive": "Không hoạt động",
     "pending": "Đang chờ xử lý",
     "suspended": "Bị đình chỉ",
     "disable_role": "Vô hiệu hóa vai trò",
-    "enable_role" : "Kích hoạt vai trò"
+    "enable_role": "Kích hoạt vai trò"
   },
-  "roles_module" : {
-    "fields" : {
-      "name" : "Tên vai trò",
-      "description" : "Mô tả",
-      "permissions" : "Quyền",
-      "created_at" : "Ngày tạo",
-      "updated_at" : "Ngày cập nhật",
-      "status" : "Trạng thái"
+  "roles_module": {
+    "fields": {
+      "name": "Tên vai trò",
+      "description": "Mô tả",
+      "permissions": "Quyền",
+      "created_at": "Ngày tạo",
+      "updated_at": "Ngày cập nhật",
+      "status": "Trạng thái"
     },
-    "add_role" : "Thêm vai trò",
-    "edit_role" : "Chỉnh sửa vai trò",
-    "delete_role" : "Xóa vai trò",
-    "view_role" : "Xem vai trò",
-    "placeholders" : {
-      "name" : "Nhập tên vai trò",
-      "description" : "Nhập mô tả vai trò"
+    "add_role": "Thêm vai trò",
+    "edit_role": "Chỉnh sửa vai trò",
+    "delete_role": "Xóa vai trò",
+    "view_role": "Xem vai trò",
+    "placeholders": {
+      "name": "Nhập tên vai trò",
+      "description": "Nhập mô tả vai trò"
     },
-    "delete_failed" : "Xóa vai trò không thành công",
-    "delete_success" : "Xóa vai trò thành công",
-    "permissions_helper" : "Chọn quyền cho vai trò này. Bạn có thể chọn nhiều quyền"
+    "delete_failed": "Xóa vai trò không thành công",
+    "delete_success": "Xóa vai trò thành công",
+    "permissions_helper": "Chọn quyền cho vai trò này. Bạn có thể chọn nhiều quyền"
   },
-  "common" : {
-    "save" : "Lưu",
-    "cancel" : "Hủy",
-    "delete" : "Xóa",
-    "edit" : "Chỉnh sửa",
-    "update" : "Cập nhật",
-    "view" : "Xem",
-    "add" : "Thêm",
-    "confirm" : "Xác nhận",
-    "confirm_delete" : "Bạn có chắc chắn muốn xóa mục này không?",
-    "yes" : "Có",
-    "no" : "Không",
+  "common": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "update": "Cập nhật",
+    "view": "Xem",
+    "add": "Thêm",
+    "confirm": "Xác nhận",
+    "confirm_delete": "Bạn có chắc chắn muốn xóa mục này không?",
+    "yes": "Có",
+    "no": "Không",
     "loading": "Đang tải...",
     "no_description": "Không có mô tả",
     "permissions": "Quyền",
     "select_all": "Chọn tất cả",
     "deselect_all": "Bỏ chọn tất cả",
-    "submission_error" : "Có lỗi xảy ra trong quá trình gửi biểu mẫu. Vui lòng kiểm tra lại thông tin và thử lại.",
-    "close": "Đóng"
+    "submission_error": "Có lỗi xảy ra trong quá trình gửi biểu mẫu. Vui lòng kiểm tra lại thông tin và thử lại.",
+    "close": "Đóng",
+    "back_to_home": "Quay lại",
+    "reset": "Đặt lại",
+    "apply": "Áp dụng",
+    "enabled": "Đã kích hoạt",
+    "disabled": "Đã vô hiệu hóa",
+    "all": "Tất cả" 
+  },
+  "errors": {
+    "forbidden": "Truy cập bị từ chối",
+    "name": "Lỗi",
+    "404": "404 Không tìm thấy",
+    "404_decsription": "Trang bạn đang tìm kiếm không tồn tại.",
+    "403_description": "Bạn không có quyền truy cập vào trang này.",
+    "500_description": "Đã xảy ra lỗi máy chủ. Vui lòng thử lại sau.",
+    "401_description": "Bạn không được phép truy cập trang này."
+  },
+  "permissions_module": {
+    "fields": {
+      "name": "Tên quyền",
+      "description": "Mô tả",
+      "permissions": "Quyền",
+      "created_at": "Ngày tạo",
+      "updated_at": "Ngày cập nhật",
+      "status": "Trạng thái"
+    },
+    "add_permission": "Thêm quyền",
+    "edit_permission": "Chỉnh sửa quyền",
+    "delete_permission": "Xóa quyền",
+    "view_permission": "Xem quyền",
+    "placeholders": {
+      "name": "Nhập tên quyền",
+      "description": "Nhâp mô tả quyền"
+    },
+    "delete_failed": "Xóa quyền không thành công",
+    "delete_success": "Xóa quyền thành công"
+  },
+  "pages" : {
+    "Signin" : "Đăng nhập",
+    "Signout" : "Đăng xuất",
+    "Ecommerce" : "Thương mại điện tử",
+    "Dashboard" : "Bảng điều khiển"
   }
-
 }
