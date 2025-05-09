@@ -63,6 +63,7 @@
     "contracts": "Hợp đồng",
     "system": "Hệ thống",
     "user_list": "Danh sách người dùng",
+    "users": "Người dùng",
     "roles_permissions": "Nhóm & Vai trò",
     "security_settings": "Cấu hình bảo mật",
     "access_settings": "Thiết lập quyền truy cập",
@@ -79,7 +80,8 @@
     "permissions": "Quyền",
     "home": "Trang chủ",
     "roles_management": "Quản lý vai trò",
-    "permissions_management": "Quản lý quyền"
+    "permissions_management": "Quản lý quyền",
+    "users_management": "Quản lý người dùng"
   },
   "auth": {
     "logout_success": "Đăng xuất thành công",
@@ -119,7 +121,9 @@
     "pending": "Đang chờ xử lý",
     "suspended": "Bị đình chỉ",
     "disable_role": "Vô hiệu hóa vai trò",
-    "enable_role": "Kích hoạt vai trò"
+    "enable_role": "Kích hoạt vai trò",
+    "banned": "Bị cấm",
+    "deleted": "Đã xóa"
   },
   "roles_module": {
     "fields": {
@@ -166,7 +170,14 @@
     "apply": "Áp dụng",
     "enabled": "Đã kích hoạt",
     "disabled": "Đã vô hiệu hóa",
-    "all": "Tất cả" 
+    "all": "Tất cả",
+    "search": "Tìm kiếm",
+    "no_results_found": "Không tìm thấy kết quả nào",
+    "show_permissions": "Hiển thị quyền",
+    "hide_permissions": "Ẩn quyền",
+    "select": "Chọn",
+    "deselect": "Bỏ chọn",
+    "more_permissions": "Thêm quyền"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -202,5 +213,43 @@
     "Signout" : "Đăng xuất",
     "Ecommerce" : "Thương mại điện tử",
     "Dashboard" : "Bảng điều khiển"
+  },
+  "users_module" : {
+    "fields": {
+      "name": "Tên",
+      "email": "Email",
+      "status": "Trạng thái",
+      "created_at": "Ngày tạo",
+      "updated_at": "Ngày cập nhật",
+      "two_factor_enabled": "Xác thực hai yếu tố",
+      "last_login": "Lần đăng nhập cuối",
+      "roles": "Vai trò",
+      "permissions": "Quyền",
+      "password": "Mật khẩu",
+      "confirm_password": "Xác nhận mật khẩu"
+    },
+    "roles_helper": "Chọn vai trò cho người dùng này. Bạn có thể chọn nhiều vai trò.",
+    "add_user": "Thêm người dùng",
+    "edit_user": "Chỉnh sửa người dùng",
+    "delete_user": "Xóa người dùng",
+    "view_user": "Xem người dùng",    
+    "placeholders": {
+      "name": "Nhập tên người dùng",
+      "email": "Nhập email người dùng",
+      "password": "Nhập mật khẩu người dùng",
+      "confirm_password": "Xác nhận mật khẩu người dùng"
+    },
+    "delete_failed": "Xóa người dùng không thành công",
+    "delete_success": "Xóa người dùng thành công",
+    "fetch_failed": "Lấy dữ liệu người dùng không thành công",
+    "password_requirements": "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt."
+  },
+  "validation" : {
+    "required": "{field} không được để trống",
+    "email": "Email không hợp lệ",
+    "min_length": "{field} phải có ít nhất {length} ký tự",
+    "max_length": "{field} không được vượt quá {length} ký tự",
+    "password_mismatch": "Mật khẩu không khớp",
+    "confirmed": "{field} không khớp"
   }
 }

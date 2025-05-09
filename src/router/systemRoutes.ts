@@ -19,6 +19,15 @@ const systemRoutes: Array<RouteRecordRaw> = [
             requiresAuth: true, permissions: ['permissions.read'] 
         },
     },
+    {
+        path: '/system/users',
+        name: 'system.users',
+        component: () => import('@/modules/system/users/views/UserList.vue'),
+        meta: { 
+            title: 'menu.users',
+            requiresAuth: true, permissions: ['users.read'] 
+        },
+    },
 ];
 
 export default systemRoutes;

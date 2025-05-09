@@ -3,7 +3,7 @@
         <div v-if="show" class="fixed inset-0 z-[99999] flex items-center justify-center bg-black bg-opacity-80 overlay"
             @click.self="handleOverlayClick" >
             <div :class="[
-                'relative bg-white dark:bg-gray-900 shadow-2xl w-full p-0 overflow-hidden modal-content',
+                'relative bg-white dark:bg-gray-900 shadow-2xl w-full p-0 modal-content',
                 sizeClass,
                 size === 'full' ? 'rounded-none h-full' : 'rounded-2xl max-h-[90vh]'
             ]">

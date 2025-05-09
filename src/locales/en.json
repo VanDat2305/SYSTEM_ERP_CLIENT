@@ -64,6 +64,7 @@
         "contracts": "Contracts",
         "system": "System",
         "user_list": "User List",
+        "users": "Users",
         "roles_permissions": "Roles & Permissions",
         "security_settings": "Security Settings",
         "access_settings": "Access Settings",
@@ -80,7 +81,8 @@
         "permissions" : "Permissions",
         "home" : "Home",
         "roles_management" : "Roles Management",
-        "permissions_management" : "Permissions Management"
+        "permissions_management" : "Permissions Management",
+        "users_management" : "Users Management"
     },
     "auth": {
         "logout_success": "Logout successful",
@@ -120,7 +122,9 @@
         "pending": "Pedding",
         "suspended": "Suspended",
         "disable_role": "Disable Role",
-         "enable_role": "Enable Role"
+        "enable_role": "Enable Role",
+        "banned": "Banned",
+        "deleted": "Deleted"
     },
     "roles_module" : {
         "fields" : {
@@ -168,7 +172,14 @@
         "apply": "Apply",
         "enabled": "Enabled",
         "disabled": "Disabled",
-        "all": "All"   
+        "all": "All",
+        "search": "Search",
+        "no_results_found": "No results found",
+        "show_permissions": "Show Permissions",
+        "hide_permissions": "Hide Permissions",
+        "select": "Select",
+        "deselect": "Deselect",
+        "more_permissions": "More Permissions"
       },
       "errors" : {
         "forbidden": "403 Forbidden",
@@ -204,5 +215,43 @@
         "Signout" : "Sign Out",
         "Ecommerce" : "Ecommerce",
         "Dashboard" : "Dashboard"
+    },
+    "users_module" : {
+        "fields": {
+            "name": "Name",
+            "email": "Email",
+            "status": "Status",
+            "created_at": "Created at",
+            "updated_at": "Updated at",
+            "two_factor_enabled": "Two-Factor Authentication",
+            "last_login": "Last Login",
+            "roles": "Roles",
+            "permissions": "Permissions",
+            "password": "Password",
+            "confirm_password": "Confirm Password"
+        },
+        "roles_helper": "Select roles for this user. You can select multiple roles.",
+        "add_user": "Add User",
+        "edit_user": "Edit User",
+        "delete_user": "Delete User",
+        "view_user": "View User",
+        "placeholders": {
+            "name": "Enter user name",
+            "email": "Enter user email",
+            "password": "Enter user password",
+            "confirm_password": "Confirm user password"
+        },
+        "delete_failed": "Failed to delete user",
+        "delete_success": "User deleted successfully",
+        "fetch_failed": "Failed to fetch user data",
+        "password_requirements" : "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+    },
+    "validation" : {
+        "required": "{field} is required",
+        "email": "Invalid email address",
+        "min_length": "{field} must be at least {length} characters long",
+        "max_length": "{field} must be at most {length} characters long",
+        "password_mismatch": "Passwords do not match",
+        "confirmed": "{field} does not match"
     }
 }
