@@ -1,5 +1,5 @@
 <template>
-  <BaseModal :show="isModalOpen" :close="closeModal" :size="modalSize"
+  <BaseModal :show="isModalOpen" :close="closeModal" :size="modalSize" :closeOnClickOutside="false" 
     :aria-labelledby="isEditMode ? 'edit-role-title' : 'add-role-title'">
     <template #header>
       <h3 :id="isEditMode ? 'edit-role-title' : 'add-role-title'"
