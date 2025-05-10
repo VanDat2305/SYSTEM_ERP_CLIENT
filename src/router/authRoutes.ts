@@ -17,6 +17,45 @@ const authRoutes: Array<RouteRecordRaw> = [
       title: 'pages.Signup',
     },
   },
+  {
+    path: '/forgot-password',
+    name: 'forgot-password',
+    component: () => import('../modules/Auth/ForgotPassword.vue'), 
+    meta: {
+      title: 'pages.ForgotPassword',
+    },
+  },
+  {
+    path: '/reset-password',
+    redirect: to => {
+      const { token, email } = to.query;
+  
+      // Nếu có token và email, chuyển hướng đến /reset-password/:token với email trong query
+      if (token && email) {
+        return `/reset-password/${token}?email=${email}`;
+      }
+  
+      // Nếu không, chỉ cần quay lại /reset-password
+      return '/reset-password';
+    }
+  },
+  {
+    path: '/reset-password/:token',
+    name: 'ResetPassword',
+    component: () => import('../modules/Auth/ResetPassword.vue'),
+    props: route => ({ token: route.params.token, email: route.query.email }), // Truyền token và email từ route vào component
+    meta: {
+      title: 'pages.ResetPassword',
+    },
+  },
+  {
+    path: '/send-success',
+    name: 'send-success',
+    component: () => import('../views/Pages/SendEmailSuccesPage.vue'),
+    meta: {
+      title: 'pages.sendSuccess',
+    },
+  },
 ];
 
 export default authRoutes;

@@ -48,6 +48,14 @@
           ]" :placeholder="t('users_module.placeholders.email')" />
           <p v-if="errors.email" class="mt-1.5 text-theme-xs text-error-500 mt-1">{{ Array.isArray(errors.email) ? errors.email[0] : errors.email }}</p>
         </div>
+        
+          <!-- Change password toggle (only in edit mode) -->
+          <div v-if="isEditMode" class="flex items-center">
+            <button type="button" @click="toggleChangePassword"
+              class="text-sm text-blue-600 dark:text-blue-400 hover:underline focus:outline-none">
+              {{ changePassword ? t('users_module.cancel_password_change') : t('users_module.change_password') }}
+            </button>
+          </div>
 
         <div v-if="!isViewMode && (!isEditMode || changePassword)" class="space-y-4">
           <!-- Password Field -->
@@ -105,13 +113,6 @@
             </p>
           </div>
 
-          <!-- Change password toggle (only in edit mode) -->
-          <div v-if="isEditMode" class="flex items-center">
-            <button type="button" @click="toggleChangePassword"
-              class="text-sm text-blue-600 dark:text-blue-400 hover:underline focus:outline-none">
-              {{ changePassword ? t('users_module.cancel_password_change') : t('users_module.change_password') }}
-            </button>
-          </div>
         </div>
 
         <!-- Two-Factor Authentication Toggle -->

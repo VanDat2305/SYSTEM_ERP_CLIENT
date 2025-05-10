@@ -208,13 +208,20 @@
     "delete_failed": "Xóa quyền không thành công",
     "delete_success": "Xóa quyền thành công"
   },
-  "pages" : {
-    "Signin" : "Đăng nhập",
-    "Signout" : "Đăng xuất",
-    "Ecommerce" : "Thương mại điện tử",
-    "Dashboard" : "Bảng điều khiển"
+  "pages": {
+    "Signin": "Đăng nhập",
+    "Signout": "Đăng xuất",
+    "Ecommerce": "Thương mại điện tử",
+    "Dashboard": "Bảng điều khiển",
+    "send_success" : {
+      "title": "Gửi thành công",
+      "message": "Email đã được gửi thành công đến địa chỉ của bạn."
+    },
+    "ForgotPassword": "Quên mật khẩu",
+    "ResetPassword": "Đặt lại mật khẩu",
+    "sendSuccess": "Gửi thành công"
   },
-  "users_module" : {
+  "users_module": {
     "fields": {
       "name": "Tên",
       "email": "Email",
@@ -232,7 +239,7 @@
     "add_user": "Thêm người dùng",
     "edit_user": "Chỉnh sửa người dùng",
     "delete_user": "Xóa người dùng",
-    "view_user": "Xem người dùng",    
+    "view_user": "Xem người dùng",
     "placeholders": {
       "name": "Nhập tên người dùng",
       "email": "Nhập email người dùng",
@@ -242,14 +249,51 @@
     "delete_failed": "Xóa người dùng không thành công",
     "delete_success": "Xóa người dùng thành công",
     "fetch_failed": "Lấy dữ liệu người dùng không thành công",
-    "password_requirements": "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt."
+    "password_requirements": "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.",
+    "cancel_password_change": "Hủy thay đổi mật khẩu",
+    "change_password": "Thay đổi mật khẩu"
   },
-  "validation" : {
+  "validation": {
     "required": "{field} không được để trống",
     "email": "Email không hợp lệ",
     "min_length": "{field} phải có ít nhất {length} ký tự",
     "max_length": "{field} không được vượt quá {length} ký tự",
     "password_mismatch": "Mật khẩu không khớp",
     "confirmed": "{field} không khớp"
+  },
+  "forgot_password": {
+    "title": "Quên Mật Khẩu",
+    "prompt": "Nhập email của bạn và chúng tôi sẽ gửi cho bạn một liên kết để đặt lại.",
+    "email": "Email",
+    "email_placeholder": "Nhập email của bạn",
+    "send_reset_link": "Gửi liên kết đặt lại",
+    "sending": "Đang gửi...",
+    "back_to_login": "Đăng Nhập",
+    "back_to": "Quay lại",
+    "login": "Đăng Nhập",
+    "slogan": "Hành trình của bạn bắt đầu từ đây",
+    "success_message": "Liên kết đặt lại mật khẩu đã được gửi đến email của bạn!",
+    "error_message": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "email_valid": {
+      "required": "Email là bắt buộc",
+      "invalid": "Vui lòng nhập địa chỉ email hợp lệ"
+    }
+  },
+  "reset_password": {
+    "title": "Đặt lại mật khẩu",
+    "email": "Email",
+    "new_password": "Mật khẩu mới",
+    "confirm_password": "Xác nhận mật khẩu",
+    "new_password_placeholder": "Nhập mật khẩu mới",
+    "confirm_password_placeholder": "Nhập lại mật khẩu mới",
+    "password_requirements": "Phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số",
+    "submit": "Đặt lại mật khẩu",
+    "processing": "Đang xử lý...",
+    "invalid_link": "Liên kết đặt lại mật khẩu không hợp lệ.",
+    "link_expired": "Liên kết đã hết hạn hoặc không hợp lệ.",
+    "verify_failed": "Xác minh liên kết thất bại.",
+    "success": "Đặt lại mật khẩu thành công! Đang chuyển hướng...",
+    "failed": "Không thể đặt lại mật khẩu. Vui lòng thử lại.",
+    "prompt": "Nhập mật khẩu mới của bạn và xác nhận lại."
   }
 }

@@ -117,7 +117,7 @@
                           {{ $t('login_page.keep_me_logged_in') }}
                         </label>
                       </div>
-                      <router-link to="/reset-password"
+                      <router-link to="/forgot-password"
                         class="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400">{{
                           $t('login_page.forgot_password') }}</router-link>
                     </div>
