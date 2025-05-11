@@ -206,7 +206,6 @@
   
   async function handleUserSubmit(userData: Partial<User>) {
     setLoading?.(true)
-    console.log('User Data:', userData);
     
     try {
       const isEdit = !!userData.id
@@ -214,7 +213,6 @@
       const url = isEdit ? `/users/${userData.id}` : '/users'
       
       const response = await api[method](url, userData)
-      console.log(1123);
       
       if (response.data.status) {
         notificationService.success(response.data.message)

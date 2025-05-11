@@ -12,6 +12,7 @@ export const useAuth = () => {
 
   const login = async (credentials: { email: string; password: string; }, rememberLogin: boolean) => {
     try {
+      authStore.clear();
       isLoading.value = true;
       error.value = null;
       
@@ -27,6 +28,20 @@ export const useAuth = () => {
       
       const response = await api.post('/login', credentials);
       const data = response.data.data;
+      if (data.user?.two_factor_enabled) {
+        // Lưu thông tin tạm thời chờ xác thực 2FA
+        authStore.setPreTwoFactorData({
+          user: data.user,
+          roles: data.roles,
+          permissions: data.permissions,
+          menu: data.menu,
+          token: data.token
+        });
+        
+        return router.push({ name: 'two-factor-challenge' });
+      }
+
+      
       authStore.setUser(data.user);
       authStore.setRoles(data.roles);
       authStore.setPermissions(data.permissions);
@@ -91,6 +106,37 @@ export const useAuth = () => {
     };
     return findDefault(menu) || { name: 'Ecommerce' };
   };
+  const verifyTwoFactor = async (code: string, recoveryCode?: string) => {
+    try {
+      isLoading.value = true;
+      const token = authStore.preTwoFactorData?.token;
+      const payload = recoveryCode 
+        ? { recovery_code: recoveryCode }
+        : { code };
+      
+      const resp = await api.post('/two-factor-challenge', payload,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // Hoàn tất quá trình đăng nhập
+      authStore.completeTwoFactorAuth();
+      
+      navigateAfterLogin(authStore.menu);
+    } catch (err) {
+      throw err;
+    } finally {
+      isLoading.value = false;
+    }
+  };
+  const navigateAfterLogin = (menu: any[]) => {
+    const defaultRoute = getDefaultRoute(menu);
+    const matchedRoute = router.getRoutes().find(r => r.name === defaultRoute.name);
+    const nextRoute = matchedRoute ? defaultRoute : '/';
+    
+    // notificationService.success(t(''));
+    router.push(nextRoute);
+  };
   
 
   return {
@@ -99,5 +145,6 @@ export const useAuth = () => {
     login,
     logout,
     fetchUser,
+    verifyTwoFactor
   };
 };

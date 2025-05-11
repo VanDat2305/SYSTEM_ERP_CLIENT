@@ -81,7 +81,9 @@
     "home": "Trang chủ",
     "roles_management": "Quản lý vai trò",
     "permissions_management": "Quản lý quyền",
-    "users_management": "Quản lý người dùng"
+    "users_management": "Quản lý người dùng",
+    "account": "Tài khoản",
+    "account_settings_title": "Cài đặt tài khoản"
   },
   "auth": {
     "logout_success": "Đăng xuất thành công",
@@ -177,7 +179,8 @@
     "hide_permissions": "Ẩn quyền",
     "select": "Chọn",
     "deselect": "Bỏ chọn",
-    "more_permissions": "Thêm quyền"
+    "more_permissions": "Thêm quyền",
+    "back": "Quay lại"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -219,7 +222,8 @@
     },
     "ForgotPassword": "Quên mật khẩu",
     "ResetPassword": "Đặt lại mật khẩu",
-    "sendSuccess": "Gửi thành công"
+    "sendSuccess": "Gửi thành công",
+    "TwoFactorAuthentication": "Xác thực hai yếu tố"
   },
   "users_module": {
     "fields": {
@@ -295,5 +299,52 @@
     "success": "Đặt lại mật khẩu thành công! Đang chuyển hướng...",
     "failed": "Không thể đặt lại mật khẩu. Vui lòng thử lại.",
     "prompt": "Nhập mật khẩu mới của bạn và xác nhận lại."
+  },
+  "account_settings": {
+    "title": "Cài đặt tài khoản",
+    "update_success": "Cập nhật tài khoản thành công",
+    "update_failed": "Cập nhật tài khoản không thành công",
+    "two_factor_authentication": "Xác thực hai yếu tố",
+    "check_2fa_failed": "Kiểm tra xác thực hai yếu tố không thành công",
+    "enable_2fa_failed": "Kích hoạt xác thực hai yếu tố không thành công",
+    "enable_2fa": "Kích hoạt",
+    "setup_2fa": "Thiết lập xác thực hai yếu tố",
+    "disable_2fa": "Vô hiệu hóa",
+    "scan_qr_code": "Quét mã QR",
+    "confirm_and_enable": "Xác nhận và Kích hoạt",
+    "2fa_enabled": "Xác thực hai yếu tố đã được kích hoạt",
+    "show_recovery_codes": "Hiển thị mã khôi phục",
+    "recovery_codes": "Mã khôi phục",
+    "verification_code": "Mã xác minh",
+    "verification_code_placeholder": "Nhập mã xác minh",
+    "invalid_verification_code": "Mã xác minh không hợp lệ",
+    "2fa_enabled_successfully": "Xác thực hai yếu tố đã được kích hoạt thành công",
+    "2fa_disabled_successfully": "Xác thực hai yếu tố đã được vô hiệu hóa thành công",
+    "confirm_disable_2fa": "Bạn có chắc muốn vô hiệu hóa 2FA?",
+    "confirm_disable_2fa_message": "Việc vô hiệu hóa xác thực sẽ loại bỏ một lớp bảo mật bổ sung khỏi tài khoản của bạn.",
+    "recovery_codes_success": "Mã khôi phục đã được tạo thành công",
+    "recovery_codes_failed": "Tạo mã khôi phục không thành công",
+    "recovery_codes_description": "Lưu trữ mã khôi phục này ở nơi an toàn. Bạn sẽ cần chúng nếu không thể truy cập ứng dụng xác thực của mình.",
+    "recovery_codes_warning": "Mã khôi phục chỉ hiển thị một lần. Hãy chắc chắn sao chép chúng.",
+    "two_factor_authentication_description": "Bảo vệ tài khoản của bạn bằng cách kích hoạt xác thực hai yếu tố. Bạn sẽ cần một mã xác thực từ ứng dụng xác thực mỗi khi đăng nhập."
+  },
+  "two_factor": {
+    "title": "Xác thực hai yếu tố",
+    "description": "Nhập mã xác thực để truy cập tài khoản.",
+    "auth_code": "Mã xác thực",
+    "enter_auth_code": "Nhập mã khôi phục",
+    "recovery_code": "Mã khôi phục",
+    "enter_recovery_code": "Nhập mã khôi phục gồm 8 chữ số",
+    "verify": "Xác minh",
+    "use_recovery_code": "Sử dụng mã khôi phục",
+    "use_auth_code": "Sử dụng mã xác thực",
+    "code_required": "Vui lòng nhập mã xác thực",
+    "recovery_code_required": "Vui lòng nhập mã khôi phục",
+    "invalid_code": "Mã xác thực không hợp lệ",
+    "invalid_recovery_code": "Mã khôi phục không hợp lệ",
+    "trouble": "Gặp sự cố với xác thực hai yếu tố?",
+    "contact_support": "Liên hệ hỗ trợ",
+    "success_message": "Xác thực thành công! Đang chuyển hướng..."
   }
+  
 }

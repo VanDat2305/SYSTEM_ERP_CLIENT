@@ -56,6 +56,15 @@ const authRoutes: Array<RouteRecordRaw> = [
       title: 'pages.sendSuccess',
     },
   },
+  {
+    path: '/two-factor-challenge',
+    name: 'two-factor-challenge',
+    component: () => import('../modules/Auth/TwoFactorAuthForm.vue'),
+    meta: {
+      title: 'pages.TwoFactorAuthentication',
+    },
+  },
+  
 ];
 
 export default authRoutes;

@@ -208,6 +208,7 @@ const menuGroups = [
         icon: SettingsIcon,
         name: t("menu.settings"),
         subItems: [
+          { name: t("menu.account"), path: "/settings/account" },
           { name: t("menu.system_info"), path: "/settings/system-info" },
           { name: t("menu.company_info"), path: "/settings/company-info" },
           // { name: t("menu.language_timezone"), path: "/settings/language" },

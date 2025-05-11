@@ -3,6 +3,7 @@ import i18n from '@/i18n';
 import ecommerceRoutes from "./ecommerceRoutes";
 import authRoutes from "./authRoutes";
 import systemRoutes from "./systemRoutes";
+import settingRouters from "./settingRouters";
 
 
 import { authGuard, permissionGuard } from '@/router/gaurds';
@@ -16,6 +17,7 @@ const router = createRouter({
     ...ecommerceRoutes,
     ...authRoutes,
     ...systemRoutes,
+    ...settingRouters,
     {
       path: "/calendar",
       name: "Calendar",

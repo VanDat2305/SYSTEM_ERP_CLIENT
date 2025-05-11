@@ -82,7 +82,9 @@
         "home": "Home",
         "roles_management": "Roles Management",
         "permissions_management": "Permissions Management",
-        "users_management": "Users Management"
+        "users_management": "Users Management",
+        "account" : "Account",
+        "account_settings_title": "Account settings"
     },
     "auth": {
         "logout_success": "Logout successful",
@@ -178,7 +180,8 @@
         "hide_permissions": "Hide Permissions",
         "select": "Select",
         "deselect": "Deselect",
-        "more_permissions": "More Permissions"
+        "more_permissions": "More Permissions",
+        "back": "Back"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -220,7 +223,8 @@
         },
         "ForgotPassword": "Forgot Password",
         "ResetPassword": "Reset Password",
-        "sendSuccess": "Send Success"
+        "sendSuccess": "Send Success",
+        "TwoFactorAuthentication": "Two-Factor Authentication"
     },
     "users_module": {
         "fields": {
@@ -296,5 +300,52 @@
         "success": "Password reset successfully! Redirecting to login...",
         "failed": "Failed to reset password. Please try again.",
         "prompt": "Enter your new password and confirm it."
+    },
+    "account_settings": {
+        "title": "Account Settings",
+        "update_success": "Account settings updated successfully.",
+        "update_failed": "Failed to update account settings.",
+        "two_factor_authentication": "Two-Factor Authentication",
+        "check_2fa_failed": "Failed to check Two-Factor Authentication status.",
+        "enable_2fa_failed": "Failed to enable Two-Factor Authentication.",
+        "enable_2fa": "Enable",
+        "setup_2fa": "Set up Two-Factor Authentication",
+        "disable_2fa": "Disable",
+        "scan_qr_code": "Scan the QR code with your authenticator app.",
+        "confirm_and_enable": "Confirm and Enable",
+        "2fa_enabled": "Two-Factor Authentication is enabled.",
+        "show_recovery_codes": "Show Recovery Codes",
+        "recovery_codes": "Recovery Codes",
+        "verification_code": "Verification Code",
+        "verification_code_placeholder": "Enter the verification code from your authenticator app",
+        "invalid_verification_code": "Invalid verification code.",
+        "2fa_enabled_successfully": "Two-Factor Authentication enabled successfully.",
+        "2fa_disabled_successfully": "Two-Factor Authentication disabled successfully.",
+        "confirm_disable_2fa": "Are you sure you want to disable 2FA?",
+        "confirm_disable_2fa_message": "This will remove an extra layer of security from your account.",
+        "recovery_codes_success": "Recovery codes generated successfully.",
+        "recovery_codes_failed": "Failed to generate recovery codes.",
+        "recovery_codes_description": "These codes can be used to access your account if you lose access to your authenticator app. Store them in a safe place.",
+        "recovery_codes_warning": "Warning: If you lose access to your authenticator app and do not have these codes, you may lose access to your account.",
+        "two_factor_authentication_description": "Two-Factor Authentication adds an extra layer of security to your account. When enabled, you will need to enter a verification code sent to your email or phone in addition to your password."
+    },
+    "two_factor": {
+        "title": "Two-Factor",
+        "description": "Please confirm access to your account by entering the authentication.",
+        "auth_code": "Authentication Code",
+        "enter_auth_code": "Enter 6-digit code",
+        "recovery_code": "Recovery Code",
+        "enter_recovery_code": "Enter recovery code",
+        "verify": "Verify",
+        "use_recovery_code": "Use a recovery code instead",
+        "use_auth_code": "Use an authentication code instead",
+        "code_required": "Authentication code is required",
+        "recovery_code_required": "Recovery code is required",
+        "invalid_code": "Invalid authentication code",
+        "invalid_recovery_code": "Invalid recovery code",
+        "trouble": "Having trouble with two-factor authentication?",
+        "contact_support": "Contact support",
+        "success_message": "Two-Factor Authentication verified successfully."
     }
+      
 }
