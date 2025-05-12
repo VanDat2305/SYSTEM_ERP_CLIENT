@@ -12,7 +12,7 @@ export const useAuth = () => {
 
   const login = async (credentials: { email: string; password: string; }, rememberLogin: boolean) => {
     try {
-      authStore.clear();
+      // authStore.clear();
       isLoading.value = true;
       error.value = null;
       
@@ -85,7 +85,7 @@ export const useAuth = () => {
       if (typeof err === 'object' && err !== null && 'response' in err) {
         const axiosError = err as { response?: { status?: number } };
         if (axiosError.response?.status === 401) {
-          authStore.clear();
+          // authStore.clear();
         }
       }
       throw err;

@@ -115,7 +115,9 @@ export const useAuthStore = defineStore('auth', () => {
       }
       return savedState;
     } catch (e) {
-      clear();
+      console.log('Error loading auth state:', e);
+      
+      // clear();
       return null;
     }
   };
