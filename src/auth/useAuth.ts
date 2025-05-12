@@ -35,7 +35,8 @@ export const useAuth = () => {
           roles: data.roles,
           permissions: data.permissions,
           menu: data.menu,
-          token: data.token
+          token: data.token,
+          rememberLogin : rememberLogin
         });
         
         return router.push({ name: 'two-factor-challenge' });
@@ -121,7 +122,7 @@ export const useAuth = () => {
       });
       // Hoàn tất quá trình đăng nhập
       authStore.completeTwoFactorAuth();
-      
+      authStore.setToken(resp.data.data.token, authStore.preTwoFactorData?.rememberLogin);
       navigateAfterLogin(authStore.menu);
     } catch (err) {
       throw err;

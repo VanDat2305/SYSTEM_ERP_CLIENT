@@ -11,6 +11,7 @@ interface PreTwoFactorData {
   menu: any[];
   token: string;
   timestamp: number; // Thêm timestamp để theo dõi thời gian
+  rememberLogin: boolean;
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -33,10 +34,11 @@ export const useAuthStore = defineStore('auth', () => {
     permissions: PermissionValues[];
     menu: MenuItem[];
     token: string;
+    rememberLogin: boolean;
   }) => {
       preTwoFactorData.value = {
         ...data,
-        timestamp: Date.now() // Thêm timestamp
+        timestamp: Date.now(), // Thêm timestamp
       };
     // Lưu tạm vào sessionStorage
     sessionStorage.setItem('pre_2fa_data', JSON.stringify(preTwoFactorData.value));
@@ -105,7 +107,7 @@ export const useAuthStore = defineStore('auth', () => {
       
       if (pre2faData) {
         const parsed = JSON.parse(pre2faData);
-        if (parsed.timestamp && Date.now() - parsed.timestamp > 300000) {
+        if (parsed.timestamp && Date.now() - parsed.timestamp > 300000) {// // 5 phút
           sessionStorage.removeItem('pre_2fa_data');
         } else {
           preTwoFactorData.value = parsed;
