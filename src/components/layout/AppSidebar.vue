@@ -163,7 +163,8 @@ import {
   PlugInIcon,
   DashboardIcon,
   SystemIcon,
-  SettingsIcon
+  SettingsIcon,
+  FolderIcon
 } from "../../icons";
 import BoxCubeIcon from "@/icons/BoxCubeIcon.vue";
 import { useSidebar } from "@/composables/useSidebar";
@@ -191,6 +192,11 @@ const menuGroups = [
           { name: t("menu.orders"), path: "/sales/orders" },
           { name: t("menu.contracts"), path: "/sales/contracts" },
         ],
+      },
+      {
+        icon: FolderIcon,
+        name: t("menu.file_manager"),
+        path: "/filemanager",
       },
       {
         icon: SystemIcon,

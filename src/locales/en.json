@@ -10,6 +10,9 @@
     "SearchBar": {
         "placeholder": "Search or type command..."
     },
+    "View": "View",
+    "Edit": "Edit",
+    "Delete": "Delete",
     "login_page": {
         "sologan": "ERP - Connecting all processes, optimizing all operations.",
         "back_to_dashboard": "Back to Dashboard",
@@ -34,7 +37,6 @@
             "required": "Password is required",
             "min_length": "Password must be at least 6 characters long"
         }
-
     },
     "signup_page": {
         "sign_up": "Sign Up",
@@ -83,8 +85,9 @@
         "roles_management": "Roles Management",
         "permissions_management": "Permissions Management",
         "users_management": "Users Management",
-        "account" : "Account",
-        "account_settings_title": "Account settings"
+        "account": "Account",
+        "account_settings_title": "Account settings",
+        "file_manager": "File Management"
     },
     "auth": {
         "logout_success": "Logout successful",
@@ -181,7 +184,8 @@
         "select": "Select",
         "deselect": "Deselect",
         "more_permissions": "More Permissions",
-        "back": "Back"
+        "back": "Back",
+        "download": "Download"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -217,7 +221,7 @@
         "Signout": "Sign Out",
         "Ecommerce": "Ecommerce",
         "Dashboard": "Dashboard",
-        "send_success":{
+        "send_success": {
             "title": "Success",
             "message": "Your request has been successfully processed."
         },
@@ -346,6 +350,65 @@
         "trouble": "Having trouble with two-factor authentication?",
         "contact_support": "Contact support",
         "success_message": "Two-Factor Authentication verified successfully."
+    },
+    "file_manager": {
+        "title": "File Manager",
+        "upload": "Upload",
+        "upload_file": "Upload File",
+        "uploading": "Uploading...",
+        "file_name": "File Name",
+        "file_size": "File Size",
+        "file_type": "File Type",
+        "uploaded_at": "Uploaded at",
+        "actions": "Actions",
+        "delete_file": "Delete File",
+        "confirm_delete_file": "Are you sure you want to delete this file?",
+        "delete_success": "File deleted successfully",
+        "delete_failed": "File deletion failed",
+        "orderby": {
+            "name_asc": "Name (A-Z)",
+            "name_desc": "Name (Z-A)",
+            "size_asc": "Size (Small to Large)",
+            "size_desc": "Size (Large to Small)",
+            "date_asc": "Date (Oldest to Newest)",
+            "date_desc": "Date (Newest to Oldest)"
+        },
+        "only_folders": "Only folders",
+        "only_files": "Only files",
+        "create_folder": "Create Folder",
+        "not_found": "Not Found",
+        "not_found_description": "Sorry, we couldn't find the file you were looking for.",
+        "fields": {
+            "name": "Name",
+            "size": "Size",
+            "type": "Type",
+            "created_at": "Created at",
+            "updated_at": "Updated at",
+            "actions": "Actions",
+            "folder_name": "Folder Name",
+            "folders": "Folders"
+        },
+        "messages": {
+            "fetch_folders_failed": "Failed to fetch folder list",
+            "fetch_files_failed": "Failed to fetch file list",
+            "upload_success": "File uploaded successfully",
+            "upload_failed": "File upload failed",
+            "folder_created": "Folder created successfully",
+            "delete_success": "Folder deleted successfully",
+            "delete_failed": "Failed to delete folder",
+            "not_preview": "File type not supported for preview",
+            "type_not_supports": "File type not supported",
+            "document_preview": "Document Preview",
+            "failed_to_load_content": "Failed to load content"
+        },
+        "placeholders": {
+            "folder_name": "Enter folder name"
+        },
+        "action_map": {
+            "download": "Download",
+            "open_in_google_docs": "Open in Google Docs"
+        },
+        "items": "items",
+        "root": "Root"
     }
-      
 }

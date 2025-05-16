@@ -166,7 +166,7 @@
         </div>
 
         <!-- Bảng -->
-        <div class="max-w-full overflow-x-auto custom-scrollbar">
+        <div class="max-w-full overflow-x-auto custom-scrollbar table-scroll-container">
             <table class="min-w-full text-sm">
                 <thead class="sticky top-0 bg-white dark:bg-gray-800 z-9">
                     <!-- Header row -->
@@ -251,12 +251,33 @@
                         </td>
                         
                         <!-- Action cells -->
-                        <td v-if="hasActions" class="px-5 py-3 sm:px-6 flex items-center gap-2">
-                            <button v-for="(action, index) in props.actions" :key="index" @click="action.handler(row)"
-                                :title="action.tooltip" :class="action.class">
-                                <component :is="action.icon" />
+                        <td v-if="hasActions" class="px-5 py-3 sm:px-6 relative">
+                        <!-- Nút ba chấm -->
+                        <button @click.stop="toggleActionMenu(row.id, $event)"
+                            class="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 4 15">
+                            <path
+                                d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown menu -->
+                        <div v-if="activeActionMenu === row.id" @mouseleave="activeActionMenu = null"
+                             :class="['absolute right-0 z-20 w-max rounded-md shadow-lg', dropdownDirection === 'up' ? 'bottom-full mb-2' : 'top-full mt-2',
+                            'bg-white dark:bg-gray-700']">
+                            <div class="py-1">
+                            <button v-for="(action, index) in props.actions" :key="index"
+                                @click="() => { action.handler(row); closeActionMenu(); }"
+                                class="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100 dark:hover:bg-gray-600"
+                                :class="action.class" :title="action.tooltip">
+                                <component :is="action.icon" class="w-4 h-4 mr-2" />
+                                {{ t(action.tooltip) }}
                             </button>
+                            </div>
+                        </div>
                         </td>
+
                     </tr>
                     
                     <!-- Empty state -->
@@ -384,6 +405,9 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps({
     columns: { 
@@ -511,7 +535,24 @@ const pageSize = ref(props.defaultPageSize);
 const goToPage = ref(1);
 const columnFilters = ref({});
 const hasSelection = computed(() => props.hasSelection || props.selectable);
+const activeActionMenu = ref(null);
+const dropdownDirection = ref('up');
+const toggleActionMenu = (id, event) => {
 
+    const buttonRect = event.currentTarget.getBoundingClientRect();
+    const wrapper = document.querySelector('.table-scroll-container'); // hoặc dùng ref
+    const wrapperRect = wrapper.getBoundingClientRect();
+
+    const spaceBelow = wrapperRect.bottom - buttonRect.bottom;
+    const spaceAbove = buttonRect.top - wrapperRect.top;
+
+    dropdownDirection.value = spaceBelow < 150 && spaceAbove > 150 ? 'up' : 'down';
+    activeActionMenu.value = activeActionMenu.value === id ? null : id;
+}
+
+ const closeActionMenu = () => {
+    activeActionMenu.value = null
+  }
 
 // Initialize columns with visibility and filter options
 onMounted(() => {

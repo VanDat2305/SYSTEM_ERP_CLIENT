@@ -10,6 +10,9 @@
   "SearchBar": {
     "placeholder": "Tìm kiếm hoặc nhập lệnh..."
   },
+  "View": "Xem",
+  "Edit": "Sửa",
+  "Delete": "Xóa",
   "login_page": {
     "sologan": "ERP - Kết nối mọi quy trình, tối ưu mọi hoạt động.",
     "back_to_dashboard": "Quay lại bảng điều khiển",
@@ -83,7 +86,8 @@
     "permissions_management": "Quản lý quyền",
     "users_management": "Quản lý người dùng",
     "account": "Tài khoản",
-    "account_settings_title": "Cài đặt tài khoản"
+    "account_settings_title": "Cài đặt tài khoản",
+    "file_manager": "Quản lý tệp"
   },
   "auth": {
     "logout_success": "Đăng xuất thành công",
@@ -180,7 +184,8 @@
     "select": "Chọn",
     "deselect": "Bỏ chọn",
     "more_permissions": "Thêm quyền",
-    "back": "Quay lại"
+    "back": "Quay lại",
+    "download": "Tải xuống"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -216,7 +221,7 @@
     "Signout": "Đăng xuất",
     "Ecommerce": "Thương mại điện tử",
     "Dashboard": "Bảng điều khiển",
-    "send_success" : {
+    "send_success": {
       "title": "Gửi thành công",
       "message": "Email đã được gửi thành công đến địa chỉ của bạn."
     },
@@ -345,6 +350,65 @@
     "trouble": "Gặp sự cố với xác thực hai yếu tố?",
     "contact_support": "Liên hệ hỗ trợ",
     "success_message": "Xác thực thành công! Đang chuyển hướng..."
+  },
+  "file_manager": {
+    "title": "Quản lý tệp",
+    "upload": "Tải lên",
+    "upload_file": "Tải lên tệp",
+    "uploading": "Đang tải lên...",
+    "file_name": "Tên tệp",
+    "file_size": "Kích thước tệp",
+    "file_type": "Loại tệp",
+    "uploaded_at": "Tải lên lúc",
+    "actions": "Hành động",
+    "delete_file": "Xóa tệp",
+    "confirm_delete_file": "Bạn có chắc chắn muốn xóa tệp này không?",
+    "delete_success": "Xóa tệp thành công",
+    "delete_failed": "Xóa tệp không thành công",
+    "orderby": {
+      "name_asc": "Tên (Tăng dần)",
+      "name_desc": "Tên (Giảm dần)",
+      "size_asc": "Kích thước (Tăng dần)",
+      "size_desc": "Kích thước (Giảm dần)",
+      "date_asc": "Ngày (Tăng dần)",
+      "date_desc": "Ngày (Giảm dần)"
+    },
+    "only_folders": "Chỉ hiển thị thư mục",
+    "only_files": "Chỉ hiển thị tệp",
+    "create_folder": "Tạo thư mục",
+    "not_found": "Không tìm thấy tệp nào",
+    "not_found_description": "Không có tệp nào trong thư mục này. Hãy thử tải lên một tệp mới.",
+    "fields": {
+      "name": "Tên",
+      "size": "Kích thước",
+      "type": "Loại",
+      "created_at": "Ngày tạo",
+      "updated_at": "Ngày cập nhật",
+      "actions": "Hành động",
+      "folder_name": "Tên thư mục",
+      "folders": "Thư mục"
+    },
+    "messages": {
+      "fetch_folders_failed": "Lấy danh sách thư mục không thành công",
+      "fetch_files_failed": "Lấy danh sách tệp không thành công",
+      "upload_success": "Tải lên tệp thành công",
+      "upload_failed": "Tải lên tệp không thành công",
+      "folder_created": "Thư mục đã được tạo thành công",
+      "delete_success": "Xóa tệp thành công",
+      "delete_failed": "Xóa tệp không thành công",
+      "not_preview": "Không thể xem trước tệp này",
+      "type_not_supports": "Loại tệp này không được hỗ trợ",
+      "document_preview": "Xem trước tài liệu",
+      "failed_to_load_content": "Không thể tải nội dung"
+    },
+    "placeholders": {
+      "folder_name": "Nhập tên thư mục"
+    },
+    "action_map": {
+      "download": "Tải xuống",
+      "open_in_google_docs": "Mở trong Google Docs"
+    },
+    "items": "mục",
+    "root": "root"
   }
-  
 }

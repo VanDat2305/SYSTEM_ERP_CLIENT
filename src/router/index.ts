@@ -19,6 +19,15 @@ const router = createRouter({
     ...systemRoutes,
     ...settingRouters,
     {
+      path: '/filemanager',
+      name: 'filemanager.name',
+      component: () => import('@/modules/filemanager/views/FileManager.vue'),
+      meta: { 
+          title: 'file_manager.title',
+          requiresAuth: true, permissions: ['files.list'] 
+      },
+    },
+    {
       path: "/calendar",
       name: "Calendar",
       component: () => import("../views/Others/Calendar.vue"),

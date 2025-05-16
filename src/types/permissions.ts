@@ -9,6 +9,15 @@ export const Permission = {
     ROLE_READ: 'role.read',
     ROLE_UPDATE: 'role.update',
     ROLE_DELETE: 'role.delete',
+    FILE_UPLOAD: 'files.upload',
+    FILE_DOWNLOAD: 'files.download',
+    FILE_DELETE: 'files.delete',
+    FILE_VIEW: 'files.view',
+    FILE_UPADTE: 'files.update',
+    FILe_CREATE: 'files.create',
+    FOLDER_CREATE: 'folders.create',
+    FOLDER_DELETE: 'folders.delete'
+
   } as const;
 
   export interface MenuItem {
