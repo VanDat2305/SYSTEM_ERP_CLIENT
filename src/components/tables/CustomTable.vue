@@ -296,110 +296,106 @@
                         </td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr><td colspan="100%">
+                    <!-- Phân trang -->
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-700 text-sm gap-3">
+                    <!-- Show entries -->
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ $t('show') }}</span>
+                        <div class="relative">
+                            <select v-model="pageSize"
+                                class="pl-3 pr-8 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none cursor-pointer transition-colors duration-200">
+                                <option v-for="size in pageSizeOptions" :value="size" :key="size">{{ size }}</option>
+                            </select>
+                        </div>
+                        <span class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ $t('entries') }}</span>
+                    </div>
+                    <!-- Pagination controls -->
+                    <div class="flex items-center gap-1">
+                        <button 
+                            :disabled="currentPage === 1" 
+                            @click="currentPage--"
+                            class="px-3 py-1.5 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center min-w-[2.5rem]"
+                            aria-label="Previous page"
+                            >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" class="text-gray-600 dark:text-gray-300"></path>
+                            </svg>
+                        </button>
+                        <!-- First page -->
+                        <button 
+                            v-if="currentPage > 3 && totalPages > 5" 
+                            @click="currentPage = 1"
+                            class="px-3 py-1.5 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 flex items-center justify-center min-w-[2.5rem] text-gray-700 dark:text-gray-200"
+                            aria-label="Go to first page"
+                            >
+                        1
+                        </button>
+                        <span v-if="currentPage > 3 && totalPages > 5" class="px-2 py-1 text-gray-500 dark:text-gray-400 flex items-center">...</span>
+                        <!-- Page numbers -->
+                        <button 
+                            v-for="page in displayedPages" 
+                            :key="page" 
+                            @click="currentPage = page"
+                            class="px-3 py-1.5 rounded-md min-w-[2.5rem] flex items-center justify-center transition-colors duration-200 text-gray-700 dark:text-gray-200"
+                            :class="currentPage === page
+                            ? 'bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
+                            : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'"
+                            :aria-label="`Go to page ${page}`"
+                            :aria-current="currentPage === page ? 'page' : null"
+                            >
+                        {{ page }}
+                        </button>
+                        <!-- Last page -->
+                        <span v-if="currentPage < totalPages - 2 && totalPages > 5" class="px-2 py-1 text-gray-500 dark:text-gray-400 flex items-center">...</span>
+                        <button 
+                            v-if="currentPage < totalPages - 1 && totalPages > 5" 
+                            @click="currentPage = totalPages"
+                            class="px-3 py-1.5 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 flex items-center justify-center min-w-[2.5rem] text-gray-700 dark:text-gray-200"
+                            aria-label="Go to last page"
+                            >
+                        {{ totalPages }}
+                        </button>
+                        <!-- Go to page input -->
+                        <div v-if="totalPages > 10" class="flex items-center ml-2 gap-2">
+                            <span class="text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ $t('go_to') }}</span>
+                            <input 
+                                v-model.number="goToPage" 
+                                @keyup.enter="goToSpecificPage" 
+                                type="number" 
+                                min="1" 
+                                :max="totalPages"
+                                class="w-16 px-2 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 transition-colors duration-200"
+                                aria-label="Page number input"
+                                >
+                        </div>
+                        <button 
+                            :disabled="currentPage === totalPages" 
+                            @click="currentPage++"
+                            class="px-3 py-1.5 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center min-w-[2.5rem]"
+                            aria-label="Next page"
+                            >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="text-gray-600 dark:text-gray-300"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Showing info -->
+                    <div class="flex items-center gap-4">
+                        <span class="text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                        {{ $t('showing', {
+                        start: (currentPage - 1) * pageSize + 1, 
+                        end: Math.min(currentPage * pageSize, filteredData.length), 
+                        total: filteredData.length 
+                        }) }}
+                        </span>
+                    </div>
+                    </div>
+                    </td></tr>
+                </tfoot>
             </table>
         </div>
-
-        <!-- Phân trang -->
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-700 text-sm gap-3">
-    <!-- Show entries -->
-    <div class="flex items-center gap-2">
-        <span class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ $t('show') }}</span>
-        <div class="relative">
-            <select v-model="pageSize"
-                class="pl-3 pr-8 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none cursor-pointer transition-colors duration-200">
-                <option v-for="size in pageSizeOptions" :value="size" :key="size">{{ size }}</option>
-            </select>
-        </div>
-        <span class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ $t('entries') }}</span>
-    </div>
-   <!-- Pagination controls -->
-<div class="flex items-center gap-1">
-    <button 
-        :disabled="currentPage === 1" 
-        @click="currentPage--"
-        class="px-3 py-1.5 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center min-w-[2.5rem]"
-        aria-label="Previous page"
-    >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" class="text-gray-600 dark:text-gray-300"></path>
-        </svg>
-    </button>
-    
-    <!-- First page -->
-    <button 
-        v-if="currentPage > 3 && totalPages > 5" 
-        @click="currentPage = 1"
-        class="px-3 py-1.5 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 flex items-center justify-center min-w-[2.5rem] text-gray-700 dark:text-gray-200"
-        aria-label="Go to first page"
-    >
-        1
-    </button>
-    <span v-if="currentPage > 3 && totalPages > 5" class="px-2 py-1 text-gray-500 dark:text-gray-400 flex items-center">...</span>
-    
-    <!-- Page numbers -->
-    <button 
-        v-for="page in displayedPages" 
-        :key="page" 
-        @click="currentPage = page"
-        class="px-3 py-1.5 rounded-md min-w-[2.5rem] flex items-center justify-center transition-colors duration-200 text-gray-700 dark:text-gray-200"
-        :class="currentPage === page
-            ? 'bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700'
-            : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'"
-        :aria-label="`Go to page ${page}`"
-        :aria-current="currentPage === page ? 'page' : null"
-    >
-        {{ page }}
-    </button>
-    
-    <!-- Last page -->
-    <span v-if="currentPage < totalPages - 2 && totalPages > 5" class="px-2 py-1 text-gray-500 dark:text-gray-400 flex items-center">...</span>
-    <button 
-        v-if="currentPage < totalPages - 1 && totalPages > 5" 
-        @click="currentPage = totalPages"
-        class="px-3 py-1.5 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 flex items-center justify-center min-w-[2.5rem] text-gray-700 dark:text-gray-200"
-        aria-label="Go to last page"
-    >
-        {{ totalPages }}
-    </button>
-    
-    <!-- Go to page input -->
-    <div v-if="totalPages > 10" class="flex items-center ml-2 gap-2">
-        <span class="text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ $t('go_to') }}</span>
-        <input 
-            v-model.number="goToPage" 
-            @keyup.enter="goToSpecificPage" 
-            type="number" 
-            min="1" 
-            :max="totalPages"
-            class="w-16 px-2 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 transition-colors duration-200"
-            aria-label="Page number input"
-        >
-    </div>
-    
-    <button 
-        :disabled="currentPage === totalPages" 
-        @click="currentPage++"
-        class="px-3 py-1.5 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center justify-center min-w-[2.5rem]"
-        aria-label="Next page"
-    >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="text-gray-600 dark:text-gray-300"></path>
-        </svg>
-    </button>
-</div>
-    <!-- Showing info -->
-    <div class="flex items-center gap-4">
-        <span class="text-gray-600 dark:text-gray-400 whitespace-nowrap">
-            {{ $t('showing', {
-                start: (currentPage - 1) * pageSize + 1, 
-                end: Math.min(currentPage * pageSize, filteredData.length), 
-                total: filteredData.length 
-            }) }}
-        </span>
-    </div>
-    
- 
-</div>
     </div>
 </template>
 

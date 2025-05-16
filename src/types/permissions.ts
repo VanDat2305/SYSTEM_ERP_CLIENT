@@ -13,6 +13,7 @@ export const Permission = {
     FILE_DOWNLOAD: 'files.download',
     FILE_DELETE: 'files.delete',
     FILE_VIEW: 'files.view',
+    FILE_LIST: 'files.list',
     FILE_UPADTE: 'files.update',
     FILe_CREATE: 'files.create',
     FOLDER_CREATE: 'folders.create',

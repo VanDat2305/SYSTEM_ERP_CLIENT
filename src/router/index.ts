@@ -76,7 +76,7 @@ const router = createRouter({
     {
       path: '/forbidden',
       name: 'forbidden',
-      component: import("../views/Errors/ForbiddenView.vue"),
+      component:  () => import("../views/Errors/ForbiddenView.vue"),
       meta: {
         title: '403 - Forbidden'
       }
