@@ -240,31 +240,29 @@
                   </svg>
                 </button>
 
-                <!-- Dropdown menu -->
-                <div v-if="activeFileMenu === item.id" @mouseleave="activeFileMenu = null"
-                  class="absolute right-6 mt-1 w-48 bg-white rounded-md shadow-lg dark:bg-gray-700 z-10">
-                  <div class="py-1">
-                    <a v-if="item.type === 'file'" href="#" @click.prevent="downloadFile(item)"
-                      class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600">
-                      <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 16 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3" />
-                      </svg>
-                      {{ t('common.download') }}
-                    </a>
-                    <a v-if="hasPermission(item.type === 'folder' ? 'folders.delete' : 'files.delete')" href="#"
-                      @click="openModalDelete(item)"
-                      class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600">
-                      <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 18 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z" />
-                      </svg>
-                      {{ t('common.delete') }}
-                    </a>
+                <transition name="fade">
+                  <div v-if="activeFileMenu === item.id" @mouseleave="activeFileMenu = null"
+                    class="absolute z-20 right-0 mt-2 w-48 rounded-lg bg-white dark:bg-gray-700 shadow-xl ring-1 ring-black/5">
+                    <div class="py-2">
+                      <a v-if="item.type !== 'folder'" href="#" @click.prevent="downloadFile(item)"
+                        class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600">
+                        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 16 18" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3" />
+                        </svg>
+                        {{ t('common.download') }}
+                      </a>
+                      <a v-if="hasPermission('files.delete')" href="#" @click="openModalDelete(item)"
+                        class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 18 20" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z" />
+                        </svg>
+                        {{ t('common.delete') }}
+                      </a>
+                    </div>
                   </div>
-                </div>
+                </transition>
               </td>
             </tr>
           </tbody>
@@ -282,7 +280,8 @@
       :confirmText="t('common.yes')" :cancelText="t('common.no')" />
     <CreateFolderModal :errors="formErrors" :isModalOpen="openModalCreateFolder" @close="closeModalCreateFolder"
       @submit="createFolder" />
-    <FilePreview v-if="previewItem !== null" :open="previewItem !== null" :file="previewItem" @close="previewItem = null" />
+    <FilePreview v-if="previewItem !== null" :open="previewItem !== null" :file="previewItem"
+      @close="previewItem = null" />
   </AdminLayout>
 </template>
 
@@ -299,7 +298,7 @@ import CreateFolderModal from '@/modules/filemanager/components/CreateFolderModa
 import FilePreview from '@/modules/filemanager/components/FilePreview.vue'
 import config from "@/config/config";
 import { usePermissions } from '@/auth/usePermissions'
-  
+
 
 interface Folder {
   id: string;
