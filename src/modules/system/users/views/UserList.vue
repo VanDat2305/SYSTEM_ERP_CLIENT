@@ -178,6 +178,13 @@
       icon: DownloadIcon,
       handler: exportSelected,
       permission: 'users.export' as PermissionValues,
+    },
+    {
+      name: 'resend_email_verify',
+      label: 'Resend Email Verify',
+      icon: DownloadIcon,
+      handler: resendEmailVerify,
+      permission: 'users.resend_email_verify' as PermissionValues,
     }
   ].filter(action => !action.permission || hasPermission(action.permission))
   
@@ -242,8 +249,6 @@
   
   function editUser(user: User) {
     currentMode.value = 'edit'
-    console.log(user);
-    
     currentUser.value = { ...user }
     formErrors.value = {}
     isModalOpen.value = true
@@ -304,6 +309,28 @@
   // Bulk actions
   function handleSelectionChange(rows: User[]) {
     selectedRows.value = rows
+    console.log('Selected rows:', selectedRows.value);
+    
+  }
+
+  function resendEmailVerify() {
+    if (!selectedRows.value.length) return
+    if (selectedRows.value.length > 1) {
+      notificationService.error(t('users_module.not_resend_email_verify_multiple'))
+      return
+    }
+    const email = selectedRows.value[0].email;
+    setLoading?.(true)
+    api.post('/email/resend', { email: email })
+      .then(response => {
+        notificationService.success(response.data.message)
+      })
+      .catch(error => {
+        notificationService.error(error.response?.data?.message || t('users_module.resend_email_verify_failed'))
+      })
+      .finally(() => {
+        setLoading?.(false)
+      })
   }
   
   function deleteSelected() {

@@ -36,7 +36,8 @@ export const useAuth = () => {
           permissions: data.permissions,
           menu: data.menu,
           token: data.token,
-          rememberLogin : rememberLogin
+          rememberLogin : rememberLogin,
+          refresh_token: data.refresh_token
         });
         
         return router.push({ name: 'two-factor-challenge' });
@@ -49,6 +50,7 @@ export const useAuth = () => {
       authStore.setMenu(data.menu);
       
       authStore.setToken(data.token, rememberLogin);
+      authStore.setRefreshToken(data.refresh_token, rememberLogin);
       
       const defaultRoute = getDefaultRoute(data.menu);
       
@@ -123,6 +125,7 @@ export const useAuth = () => {
       // Hoàn tất quá trình đăng nhập
       authStore.completeTwoFactorAuth();
       authStore.setToken(resp.data.data.token, authStore.preTwoFactorData?.rememberLogin);
+      authStore.setRefreshToken(resp.data.data.refresh_token, authStore.preTwoFactorData?.rememberLogin);
       navigateAfterLogin(authStore.menu);
     } catch (err) {
       throw err;
@@ -138,6 +141,20 @@ export const useAuth = () => {
     // notificationService.success(t(''));
     router.push(nextRoute);
   };
+  const signup = async (data: any) => {
+    try {
+      isLoading.value = true;
+      error.value = null;
+      const response = await api.post('/register', data);
+      const dataResponse = response.data.data;
+      await router.push("/signin");
+      notificationService.success(dataResponse.message);
+    } catch (err) {
+      throw err;
+    } finally {
+      isLoading.value = false;
+    }
+  }
   
 
   return {
@@ -146,6 +163,7 @@ export const useAuth = () => {
     login,
     logout,
     fetchUser,
-    verifyTwoFactor
+    verifyTwoFactor,
+    signup
   };
 };

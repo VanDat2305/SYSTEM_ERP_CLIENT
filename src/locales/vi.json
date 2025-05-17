@@ -3,6 +3,8 @@
   "welcome": "Chào mừng đến với Hệ thống ERP",
   "dashboard": "Bảng điều khiển",
   "profile": "Hồ sơ",
+  "error": "Lỗi",
+  "success": "Thành công",
   "languages": {
     "en": "Tiếng Anh",
     "vi": "Tiếng Việt"
@@ -36,7 +38,8 @@
     "password_valid": {
       "required": "Mât khẩu không được để trống",
       "min_length": "Mật khẩu phải có ít nhất 6 ký tự"
-    }
+    },
+    "refresh_token_expired": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại."
   },
   "signup_page": {
     "sign_up": "Đăng ký",
@@ -116,6 +119,7 @@
   "add_first_item": "Thêm mục đầu tiên của bạn",
   "delete_selected": "Xóa đã chọn",
   "export_selected": "Xuất đã chọn",
+  "resend_email_verify": "Gửi lại email xác minh",
   "access": {
     "denied": "Bạn không có quyền truy cập vào trang này."
   },
@@ -218,6 +222,7 @@
   },
   "pages": {
     "Signin": "Đăng nhập",
+    "Signup": "Đăng ký",
     "Signout": "Đăng xuất",
     "Ecommerce": "Thương mại điện tử",
     "Dashboard": "Bảng điều khiển",
@@ -228,7 +233,14 @@
     "ForgotPassword": "Quên mật khẩu",
     "ResetPassword": "Đặt lại mật khẩu",
     "sendSuccess": "Gửi thành công",
-    "TwoFactorAuthentication": "Xác thực hai yếu tố"
+    "TwoFactorAuthentication": "Xác thực hai yếu tố",
+    "EmailVerify": "Xác minh email",
+    "email_verify": {
+        "success_title": "Email xác minh thành công",
+        "success_message": "Email của bạn đã được xác minh thành công. Bạn có thể đăng nhập vào tài khoản của mình.",
+        "failed_title": "Xác minh email không thành công",
+        "failed_message": "Đã xảy ra lỗi trong quá trình xác minh email của bạn. Vui lòng thử lại sau."
+    }
   },
   "users_module": {
     "fields": {
@@ -260,7 +272,8 @@
     "fetch_failed": "Lấy dữ liệu người dùng không thành công",
     "password_requirements": "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.",
     "cancel_password_change": "Hủy thay đổi mật khẩu",
-    "change_password": "Thay đổi mật khẩu"
+    "change_password": "Thay đổi mật khẩu",
+    "not_resend_email_verify_multiple": "Không thể gửi lại email xác minh cho nhiều người dùng cùng một lúc."
   },
   "validation": {
     "required": "{field} không được để trống",

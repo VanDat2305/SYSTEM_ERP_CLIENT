@@ -3,6 +3,8 @@
     "welcome": "Welcome to the ERP System",
     "dashboard": "Dashboard",
     "profile": "Profile",
+    "error": "Error",
+    "success": "Success",
     "languages": {
         "en": "English",
         "vi": "Vietnamese"
@@ -36,7 +38,8 @@
         "password_valid": {
             "required": "Password is required",
             "min_length": "Password must be at least 6 characters long"
-        }
+        },
+        "refresh_token_expired": "Your session has expired. Please log in again."
     },
     "signup_page": {
         "sign_up": "Sign Up",
@@ -116,6 +119,7 @@
     "add_first_item": "Add your first item",
     "delete_selected": "Delete selected",
     "export_selected": "Export selected",
+    "resend_email_verify": "Resend Email Verification",
     "access": {
         "denied": "Access Denied"
     },
@@ -218,6 +222,7 @@
     },
     "pages": {
         "Signin": "Sign In",
+        "Signup": "Sign Up",
         "Signout": "Sign Out",
         "Ecommerce": "Ecommerce",
         "Dashboard": "Dashboard",
@@ -228,7 +233,14 @@
         "ForgotPassword": "Forgot Password",
         "ResetPassword": "Reset Password",
         "sendSuccess": "Send Success",
-        "TwoFactorAuthentication": "Two-Factor Authentication"
+        "TwoFactorAuthentication": "Two-Factor Authentication",
+        "EmailVerify": "Email Verification",
+        "email_verify": {
+            "success_title": "Email Verified",
+            "success_message": "Your email has been successfully verified.",
+            "failed_title": "Email Verification Failed",
+            "failed_message": "Your email verification link is invalid or has expired."
+        }
     },
     "users_module": {
         "fields": {
@@ -260,7 +272,8 @@
         "fetch_failed": "Failed to fetch user data",
         "password_requirements": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
         "cancel_password_change": "Cancel Password Change",
-        "change_password": "Change Password"
+        "change_password": "Change Password",
+        "not_resend_email_verify_multiple": "You can only resend email verification for one user at a time."
     },
     "validation": {
         "required": "{field} is required",

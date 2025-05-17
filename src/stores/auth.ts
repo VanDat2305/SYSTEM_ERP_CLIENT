@@ -10,6 +10,7 @@ interface PreTwoFactorData {
   permissions: PermissionValues[];
   menu: any[];
   token: string;
+  refresh_token: string;
   timestamp: number; // Thêm timestamp để theo dõi thời gian
   rememberLogin: boolean;
 }
@@ -18,6 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
   // State
   const user = ref(null);
   const token = ref<string | null>(null);
+  const refresh_token = ref<string | null>(null);
   const roles = ref<string[]>([]);
   const permissions = ref<PermissionValues[]>([]);
   const menu = ref<MenuItem[]>([]);
@@ -34,6 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
     permissions: PermissionValues[];
     menu: MenuItem[];
     token: string;
+    refresh_token: string;
     rememberLogin: boolean;
   }) => {
       preTwoFactorData.value = {
@@ -55,6 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
     permissions.value = preTwoFactorData.value.permissions;
     menu.value = preTwoFactorData.value.menu;
     token.value = preTwoFactorData.value.token;
+    refresh_token.value = preTwoFactorData.value.refresh_token;
     twoFactorVerified.value = true;
     
     // Xóa dữ liệu tạm
@@ -69,12 +73,12 @@ export const useAuthStore = defineStore('auth', () => {
     const state = {
       user: user.value,
       token: token.value,
+      refresh_token: refresh_token.value,
       roles: roles.value,
       permissions: permissions.value,
       menu: menu.value,
       twoFactorVerified: twoFactorVerified.value // Lưu cả trạng thái 2FA
     };
-
     sessionStorage.setItem('auth_session', JSON.stringify(state));
     
     if (persist) {
@@ -95,6 +99,7 @@ export const useAuthStore = defineStore('auth', () => {
       if (savedState) {
         user.value = savedState.user;
         token.value = savedState.token;
+        refresh_token.value = savedState.refresh_token;
         roles.value = savedState.roles;
         permissions.value = savedState.permissions;
         menu.value = savedState.menu;
@@ -131,6 +136,11 @@ export const useAuthStore = defineStore('auth', () => {
 
   const setToken = (newToken: string, rememberMe = false) => {
     token.value = newToken;
+    // persistAuthState(rememberMe);
+  };
+
+  const setRefreshToken = (newRefreshToken: string, rememberMe = false) => {
+    refresh_token.value = newRefreshToken;
     persistAuthState(rememberMe);
   };
 
@@ -149,6 +159,7 @@ export const useAuthStore = defineStore('auth', () => {
   const clear = () => {
     user.value = null;
     token.value = null;
+    refresh_token.value = null;
     roles.value = [];
     permissions.value = [];
     menu.value = [];
@@ -162,6 +173,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     user,
     token,
+    refresh_token,
     roles,
     permissions,
     menu,
@@ -170,6 +182,7 @@ export const useAuthStore = defineStore('auth', () => {
     preTwoFactorData,
     setUser,
     setToken,
+    setRefreshToken,
     setRoles,
     setPermissions,
     setMenu,

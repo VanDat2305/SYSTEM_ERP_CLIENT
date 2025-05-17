@@ -64,7 +64,14 @@ const authRoutes: Array<RouteRecordRaw> = [
       title: 'pages.TwoFactorAuthentication',
     },
   },
-  
+  {
+    path: '/verify/:id/:hash',
+    name: 'EmailVerify',
+    component: () => import('@/modules/Auth/EmailVerify.vue'),
+    meta: {
+      title: 'pages.EmailVerify',
+    },
+  }
 ];
 
 export default authRoutes;

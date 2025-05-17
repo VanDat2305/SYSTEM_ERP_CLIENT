@@ -25,7 +25,7 @@
             {{ message }}
           </p>
         </div>
-        <div class="flex justify-center gap-4">
+        <div class="flex justify-center gap-4 mb-5">
           <button @click="close" class="btn-cancel">
             {{ cancelText }}
           </button>

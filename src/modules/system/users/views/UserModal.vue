@@ -430,11 +430,11 @@ const formatModuleName = (module) => {
 };
 
 const formatPermissionName = (permission) => {
-
   const parts = permission.split('.');
-  return parts.length > 1
-    ? parts[1].charAt(0).toUpperCase() + parts[1].slice(1)
-    : permission;
+  if (parts.length < 2) return permission;
+
+  const formatted = parts[1].replace(/_/g, ' ');
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1);
 };
 
 const toggleTwoFactor = () => {
