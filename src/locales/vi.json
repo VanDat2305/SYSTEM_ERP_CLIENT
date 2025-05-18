@@ -273,7 +273,8 @@
     "password_requirements": "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.",
     "cancel_password_change": "Hủy thay đổi mật khẩu",
     "change_password": "Thay đổi mật khẩu",
-    "not_resend_email_verify_multiple": "Không thể gửi lại email xác minh cho nhiều người dùng cùng một lúc."
+    "not_resend_email_verify_multiple": "Không thể gửi lại email xác minh cho nhiều người dùng cùng một lúc.",
+    "resend_email_verify_failed": "Gửi lại email xác minh không thành công"
   },
   "validation": {
     "required": "{field} không được để trống",

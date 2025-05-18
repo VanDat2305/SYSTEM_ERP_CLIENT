@@ -273,7 +273,8 @@
         "password_requirements": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
         "cancel_password_change": "Cancel Password Change",
         "change_password": "Change Password",
-        "not_resend_email_verify_multiple": "You can only resend email verification for one user at a time."
+        "not_resend_email_verify_multiple": "You can only resend email verification for one user at a time.",
+        "resend_email_verify_failed": "Failed to resend email verification"
     },
     "validation": {
         "required": "{field} is required",
