@@ -1,5 +1,5 @@
 const config = {
-    api_be: 'https://datmv-solutions-erp.me/api/v1',
+    api_be: 'https://api.datmv-solutions-erp.me/v1',
 };
   
 export default config;
