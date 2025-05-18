@@ -141,7 +141,7 @@
     {
       icon: EyeIcon,
       tooltip: 'View',
-      permission: 'users.read' as PermissionValues,
+      permission: 'users.view' as PermissionValues,
       handler: (row: User) => viewUser(row),
       class: 'text-gray-400 hover:text-green-500'
     },

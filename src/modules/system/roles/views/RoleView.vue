@@ -15,6 +15,8 @@
         @add="openAddRoleModal" 
         @export="exportToExcel" 
         @update:selectedRows="handleSelectionChange" 
+        @refresh="handleRefresh"
+        :show-refresh-button="true"
       />
     </div>
     
@@ -82,6 +84,7 @@ const showModal = ref(false)
 // Interfaces
 interface Role {
   id: number
+  title: string
   name: string
   description?: string
   status: 'active' | 'inactive'
@@ -107,8 +110,14 @@ function formatDate(dateString: string) {
 // Table Configuration
 const columns = [
   {
+    field: 'title',
+    label: 'roles_module.fields.title',
+    filterable: true,
+    sortable: true
+  },
+  {
     field: 'name',
-    label: 'roles_module.fields.name',
+    label: 'roles_module.fields.name_code',
     filterable: true,
     sortable: true
   },
@@ -222,6 +231,9 @@ async function handleRoleSubmit(roleData: any) {
 }
 
 // Modal handlers
+const handleRefresh = () => {
+  fetchRoles()
+}
 const openAddRoleModal = () => {
   currentMode.value = 'add'
   currentRole.value = { name: '', description: '', status: 'active' }
@@ -230,6 +242,7 @@ const openAddRoleModal = () => {
 
 function editRole(role: Role) {
   currentMode.value = 'edit'
+  
   currentRole.value = { ...role }
   formErrors.value = {}
   isModalOpen.value = true

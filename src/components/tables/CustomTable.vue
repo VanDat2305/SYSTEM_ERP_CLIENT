@@ -93,7 +93,7 @@
                             </span>
                             <input v-model="searchQuery" @change="filterData" type="text" :placeholder="$t('search')"
                                 class="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                :class="{ 'rounded-l-md': searchOptions.length <= 1, 'rounded-r-md': filterOptions.length <= 1 }" />
+                                :class="{ 'rounded-l-md': searchOptions.length <= 1, 'rounded-r-md': (filterOptions.length <= 1 || !showRefreshButton) }" />
                         </div>
                         
                         <!-- Nút filter -->
@@ -102,6 +102,14 @@
                             class="px-3 py-2 text-sm rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                            </svg>
+                        </button>
+                        <button @click="$emit('refresh')"
+                            v-if="showRefreshButton"
+                            class="px-3 py-2 text-sm rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            :title="$t('common.refresh')">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                             </svg>
                         </button>
                     </div>
@@ -483,6 +491,10 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
+    showRefreshButton: {
+        type: Boolean,
+        default: true
+    }
 });
 
 const emit = defineEmits([

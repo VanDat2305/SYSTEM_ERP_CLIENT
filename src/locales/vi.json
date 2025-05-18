@@ -90,7 +90,10 @@
     "users_management": "Quản lý người dùng",
     "account": "Tài khoản",
     "account_settings_title": "Cài đặt tài khoản",
-    "file_manager": "Quản lý tệp"
+    "file_manager": "Quản lý tệp",
+    "folders": "Thư mục",
+    "files": "Tệp",
+    "employees": "Nhân viên"
   },
   "auth": {
     "logout_success": "Đăng xuất thành công",
@@ -137,7 +140,9 @@
   },
   "roles_module": {
     "fields": {
+      "title": "Tên vai trò",
       "name": "Tên vai trò",
+      "name_code": "Mã vai trò",
       "description": "Mô tả",
       "permissions": "Quyền",
       "created_at": "Ngày tạo",
@@ -150,7 +155,8 @@
     "view_role": "Xem vai trò",
     "placeholders": {
       "name": "Nhập tên vai trò",
-      "description": "Nhập mô tả vai trò"
+      "description": "Nhập mô tả vai trò",
+      "name_code": "Nhập mã vai trò"
     },
     "delete_failed": "Xóa vai trò không thành công",
     "delete_success": "Xóa vai trò thành công",
@@ -189,7 +195,8 @@
     "deselect": "Bỏ chọn",
     "more_permissions": "Thêm quyền",
     "back": "Quay lại",
-    "download": "Tải xuống"
+    "download": "Tải xuống",
+    "refresh": "Tải lại"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -202,7 +209,9 @@
   },
   "permissions_module": {
     "fields": {
+      "title": "Tên quyền",
       "name": "Tên quyền",
+      "name_code": "Mã quyền",
       "description": "Mô tả",
       "permissions": "Quyền",
       "created_at": "Ngày tạo",
@@ -215,6 +224,7 @@
     "view_permission": "Xem quyền",
     "placeholders": {
       "name": "Nhập tên quyền",
+      "name_code": "Nhập mã quyền",
       "description": "Nhâp mô tả quyền"
     },
     "delete_failed": "Xóa quyền không thành công",

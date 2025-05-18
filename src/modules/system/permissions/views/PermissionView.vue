@@ -15,7 +15,8 @@
           @add="openAddPermissionModal" 
           @export="exportToExcel" 
           @update:selectedRows="handleSelectionChange"
-
+          @refresh="handleRefresh"
+          :show-refresh-button="true"
         />
       </div>
       
@@ -63,6 +64,7 @@
   // Interfaces
   interface Permission {
     id: number
+    title: string
     name: string
     guard_name: string
     description?: string
@@ -105,21 +107,17 @@
   
   // Table Configuration
   const columns = [
-    {
-      field: 'name',
+     {
+      field: 'title',
       label: 'permissions_module.fields.name',
       filterable: true,
       sortable: true
     },
     {
-      field: 'status',
-      label: 'permissions_module.fields.status',
+      field: 'name',
+      label: 'permissions_module.fields.name_code',
       filterable: true,
-      cellClass: (value: string) => ({
-      'active': 'px-2 py-0.5 rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-      'inactive': 'px-2 py-0.5 rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-    })[value] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
-    formatter: (value: string) => t(`status_map.${value}`),
+      sortable: true
     },
     {
       field: 'description',
@@ -132,6 +130,16 @@
       filterable: false,
       sortable: true,
       formatter: (value: string) => formatDate(value)
+    },
+    {
+      field: 'status',
+      label: 'permissions_module.fields.status',
+      filterable: true,
+      cellClass: (value: string) => ({
+      'active': 'px-2 py-0.5 rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+      'inactive': 'px-2 py-0.5 rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+      })[value] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+      formatter: (value: string) => t(`status_map.${value}`),
     }
   ]
   
@@ -140,7 +148,7 @@
     {
       icon: EyeIcon,
       tooltip: 'View',
-      permission: 'permissions.read' as PermissionValues,
+      permission: 'permissions.view' as PermissionValues,
       handler: (row: Permission) => viewPermission(row),
       class: 'text-gray-400 hover:text-green-500'
     },
@@ -232,6 +240,9 @@
   }
   
   // Modal handlers
+  const handleRefresh = () => {
+    fetchPermissions()
+  }
   const openAddPermissionModal = () => {
     currentMode.value = 'add'
     currentPermission.value = { name: '', guard_name: 'web', description: '' }
@@ -270,7 +281,7 @@
       : [permissionToDelete.value]
   
     const ids = permissionsToDelete.map(permission => permission.id)
-    setLoading?.(false)
+    setLoading?.(true)
     try {
       closeModalConfirm()
   
@@ -289,7 +300,7 @@
         notificationService.error(error.response?.data?.message || t('permissions_module.delete_failed'))
       }
     } finally {
-      setLoading?.(true)
+      setLoading?.(false)
     }
   }
   

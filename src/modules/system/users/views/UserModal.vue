@@ -14,7 +14,7 @@
     </template>
 
     <template #body>
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form @submit.prevent="handleSubmit" class="space-y-6 mx-4">
         <!-- ID Field (Only visible in edit/view mode) -->
         <div v-if="isEditMode || isViewMode">
           <input type="hidden" v-model="formData.id" readonly
@@ -176,16 +176,16 @@
                 <div class="role-content">
                   <div class="flex justify-between items-center">
                     <span class="role-name">
-                      {{ role.name }}
+                      {{ role.title || role.name }}
                     </span>
                     <button v-if="!isViewMode" type="button" @click.stop="toggleRolePermissions(role.id)"
                       class="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                       {{ showRolePermissions[role.id] ? t('common.hide_permissions') : t('common.show_permissions') }}
                     </button>
                   </div>
-                  <p v-if="role.description" class="role-description">
+                  <!-- <p v-if="role.description" class="role-description">
                     {{ role.description }}
-                  </p>
+                  </p> -->
 
                   <!-- Role Permissions Preview -->
                   <div v-if="showRolePermissions[role.id] && role.permissions" class="mt-2 pl-6">
@@ -196,7 +196,7 @@
                           d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                           clip-rule="evenodd" />
                       </svg>
-                      {{ permission.name }}
+                      {{ permission.title }}
                     </div>
                     <div v-if="role.permissions.length > 5" class="text-xs text-gray-400 mt-1">
                       + {{ role.permissions.length - 5 }} {{ t('common.more_permissions') }}
@@ -239,7 +239,7 @@
                           clip-rule="evenodd" />
                       </svg>
                     </span>
-                    {{ formatModuleName(moduleName) }}
+                     {{ t('menu.'+ moduleName) }}
                   </h4>
                 </div>
                 <button v-if="!isViewMode" @click="toggleAllModulePermissions(moduleName)" type="button"
@@ -256,11 +256,11 @@
                     <span class="custom-checkbox-permission"></span>
                     <div class="permission-content">
                       <span class="permission-name">
-                        {{ formatPermissionName(permission.name) }}
+                        {{ permission.title }}
                       </span>
-                      <p v-if="permission.description" class="permission-description">
+                      <!-- <p v-if="permission.description" class="permission-description">
                         {{ permission.description }}
-                      </p>
+                      </p> -->
                     </div>
                   </label>
                 </div>
@@ -289,7 +289,7 @@
     </template>
 
     <template #footer>
-      <div class="flex justify-end space-x-3">
+      <div class="flex justify-end space-x-3 mx-2">
         <Button type="button" variant="outline" @click="closeModal" size="md">
           {{ isViewMode ? t('common.close') : t('common.cancel') }}
         </Button>

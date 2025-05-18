@@ -13,24 +13,36 @@
     </template>
 
     <template #body>
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form @submit.prevent="handleSubmit" class="space-y-6 mx-4">
         <!-- ID Field (Only visible in edit/view mode) -->
         <div v-if="isEditMode || isViewMode">
           <input type="hidden" v-model="formData.id" readonly
             class="font-medium w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 cursor-not-allowed" />
         </div>
-
+        <!-- title Field -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            {{ t('roles_module.fields.title') }}
+            <span v-if="!isViewMode" class="text-red-500 ml-1 font-bold text-sm">*</span>
+          </label>
+          <input type="text" v-model="formData.title" :readonly="isViewMode" :required="!isViewMode" :class="[
+            'w-full px-3 py-2 rounded-lg border dark:text-white text-sm',
+            isViewMode ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed' : 'bg-white dark:bg-gray-800',
+            errors.title ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+          ]" :placeholder="t('roles_module.placeholders.name')" />
+          <p v-if="errors.title" class="mt-1.5 text-theme-xs text-error-500 mt-1">{{ errors.title[0] }}</p>
+        </div>
         <!-- Name Field -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            {{ t('roles_module.fields.name') }}
+            {{ t('roles_module.fields.name_code') }}
             <span v-if="!isViewMode" class="text-red-500 ml-1 font-bold text-sm">*</span>
           </label>
           <input type="text" v-model="formData.name" :readonly="isViewMode" :required="!isViewMode" :class="[
             'w-full px-3 py-2 rounded-lg border dark:text-white text-sm',
             isViewMode ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed' : 'bg-white dark:bg-gray-800',
             errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-          ]" :placeholder="t('roles_module.placeholders.name')" />
+          ]" :placeholder="t('roles_module.placeholders.name_code')" />
           <p v-if="errors.name" class="mt-1.5 text-theme-xs text-error-500 mt-1">{{ errors.name[0] }}</p>
         </div>
 
@@ -95,7 +107,7 @@
                             clip-rule="evenodd" />
                         </svg>
                       </span>
-                      {{ formatModuleName(moduleName) }}
+                      {{ t('menu.'+ moduleName) }}
                     </h4>
                   </div>
 
@@ -113,7 +125,7 @@
                       <span class="custom-checkbox"></span>
                       <div class="permission-content">
                         <span class="permission-name">
-                          {{ formatPermissionName(permission.name) }}
+                          {{ permission.title }}
                           <span v-if="isViewMode && formData.permissions.includes(permission.name)"
                             class="selected-badge">
                             <svg viewBox="0 0 20 20" fill="currentColor">
@@ -123,9 +135,9 @@
                             </svg>
                           </span>
                         </span>
-                        <p v-if="permission.description" class="permission-description">
+                        <!-- <p v-if="permission.description" class="permission-description">
                           {{ permission.description }}
-                        </p>
+                        </p> -->
                       </div>
                     </label>
                   </div>
@@ -171,7 +183,7 @@
     </template>
 
     <template #footer>
-      <div class="flex justify-end space-x-3">
+      <div class="flex justify-end space-x-3 mx-2">
         <Button type="button" variant="outline" @click="closeModal" size="md">
           {{ isViewMode ? t('common.close') : t('common.cancel') }}
         </Button>
@@ -215,6 +227,7 @@ const emit = defineEmits(['close', 'submit']);
 // Data
 const formData = ref({
   id: null,
+  title: '',
   name: '',
   description: '',
   status: 'active',
@@ -299,6 +312,7 @@ const validateField = (field) => {
 const resetForm = () => {
   formData.value = {
     id: null,
+    title: '',
     name: '',
     description: '',
     status: 'active',
@@ -374,6 +388,7 @@ watch(() => props.currentRole, (role) => {
   if (role && (isViewMode.value || isEditMode.value)) {
     formData.value = {
       id: role.id,
+      title: role.title,
       name: role.name,
       description: role.description,
       status: role.status || 'active',

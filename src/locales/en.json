@@ -90,7 +90,10 @@
         "users_management": "Users Management",
         "account": "Account",
         "account_settings_title": "Account settings",
-        "file_manager": "File Management"
+        "file_manager": "File Management",
+        "folders": "Folders",
+        "files": "Files",
+        "employees": "Employees"
     },
     "auth": {
         "logout_success": "Logout successful",
@@ -137,7 +140,9 @@
     },
     "roles_module": {
         "fields": {
+            "title": "Name",
             "name": "Name",
+            "name_code": "Name code",
             "description": "Description",
             "permissions": "Permissions",
             "created_at": "Created at",
@@ -150,7 +155,8 @@
         "view_role": "View Role",
         "placeholders": {
             "name": "Enter role name",
-            "description": "Enter role description"
+            "description": "Enter role description",
+            "name_code": "Enter role name code"
         },
         "delete_failed": "Failed to delete role",
         "delete_success": "Role deleted successfully",
@@ -189,7 +195,8 @@
         "deselect": "Deselect",
         "more_permissions": "More Permissions",
         "back": "Back",
-        "download": "Download"
+        "download": "Download",
+        "refresh": "Refresh"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -202,7 +209,9 @@
     },
     "permissions_module": {
         "fields": {
+            "title": "Name",
             "name": "Name",
+            "name_code": "Name code",
             "description": "Description",
             "permissions": "Permissions",
             "created_at": "Created at",
