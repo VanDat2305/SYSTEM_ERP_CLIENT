@@ -95,7 +95,8 @@
     "files": "Tệp",
     "employees": "Nhân viên",
     "dynamiclists": "Danh mục hệ thống",
-    "objects": "Danh mục hệ thống"
+    "objects": "Danh mục hệ thống",
+    "account_settings": "Cài đặt tài khoản"
   },
   "auth": {
     "logout_success": "Đăng xuất thành công",

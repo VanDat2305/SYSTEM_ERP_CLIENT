@@ -155,6 +155,7 @@ export const useAuth = () => {
       isLoading.value = false;
     }
   }
+  const user = ref(authStore.user);
   
 
   return {
@@ -164,6 +165,7 @@ export const useAuth = () => {
     logout,
     fetchUser,
     verifyTwoFactor,
-    signup
+    signup,
+    user
   };
 };

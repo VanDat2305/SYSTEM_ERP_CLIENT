@@ -95,7 +95,8 @@
         "files": "Files",
         "employees": "Employees",
         "dynamiclists": "Dynamic Lists System",
-        "objects": "Dynamic Lists System"
+        "objects": "Dynamic Lists System",
+        "account_settings": "Account Settings"
     },
     "auth": {
         "logout_success": "Logout successful",
