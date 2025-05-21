@@ -93,7 +93,9 @@
     "file_manager": "Quản lý tệp",
     "folders": "Thư mục",
     "files": "Tệp",
-    "employees": "Nhân viên"
+    "employees": "Nhân viên",
+    "dynamiclists": "Danh mục hệ thống",
+    "objects": "Danh mục hệ thống"
   },
   "auth": {
     "logout_success": "Đăng xuất thành công",
@@ -196,7 +198,8 @@
     "more_permissions": "Thêm quyền",
     "back": "Quay lại",
     "download": "Tải xuống",
-    "refresh": "Tải lại"
+    "refresh": "Tải lại",
+    "remove": "Xóa"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -434,5 +437,91 @@
     },
     "items": "mục",
     "root": "root"
+  },
+  "dynamic_lists": {
+    "catalog-types": {
+        "title": "Loại danh mục",
+        "add": "Thêm loại",
+        "edit": "Chỉnh sửa loại",
+        "delete": "Xóa loại",
+        "view_type": "Xem loại danh mục",
+        "edit_type": "Chỉnh sửa loại danh mục",
+        "add_type": "Thêm loại danh mục",
+        "fields": {
+          "code": "Mã",
+          "name": "Tên",
+          "order": "Thứ tự",
+          "status": "Trạng thái"
+        },
+        "placeholders": {
+          "code": "Nhập mã loại danh mục...",
+          "name": "Nhập tên loại danh mục...",
+          "description": "Nhập mô tả loại danh mục...",
+          "order": "Nhập thứ tự loại danh mục..."
+        },
+        "messages" : {
+          "confirm_delete": "Bạn có chắc muốn xóa loại này không? Tất cả giá trị thuộc loại này cũng sẽ bị xóa."
+        }
+    },
+    "catalog-values": {
+        "title": "Giá trị danh mục",
+        "add": "Thêm giá trị",
+        "edit": "Chỉnh sửa giá trị",
+        "delete": "Xóa giá trị",
+        "messages": {
+          "choose_one_type": "Vui lòng chọn một loại danh mục để xem giá trị",
+          "not_values": "Không có giá trị nào trong danh mục này",
+          "confirm_delete": "Bạn có chắc muốn xóa giá trị này không?"
+        },
+        "placeholders": {
+          "code": "Nhập mã...",
+          "name": "Nhập tên...",
+          "order": "Nhập thứ tự..."
+        },
+        "fields": {
+          "code": "Mã giá trị",
+          "name": "Tên giá trị",
+          "order": "Thứ tự",
+          "status": "Trạng thái",
+          "type": "Loại danh mục"
+        },
+        "basic_info": "Thông tin cơ bản",
+        "metadata": "Thông tin bổ sung",
+        "no_parent": "-- Không có danh mục cha --"
+    },
+    "catalog-meta": {
+        "title": "Thông tin bổ sung",
+        "add": "Thêm thông tin bổ sung",
+        "edit": "Chỉnh sửa thông tin bổ sung",
+        "delete": "Xóa thông tin bổ sung",
+        "no_metadata": "Không có thông tin bổ sung nào",
+        "fields": {
+          "key": "Khóa",
+          "value": "Giá trị",
+          "type": "Loại danh mục"
+        },
+        "placeholders": {
+          "key": "Nhập khóa thông tin bổ sung...",
+          "value": "Nhập giá trị thông tin bổ sung..."
+        },
+        "messages" : {
+          "confirm_delete": "Bạn có chắc muốn xóa thông tin bổ sung này không?"
+        }
+    },
+    "import": {
+      "type_title": "Import Loại Danh Mục",
+      "value_title": "Import Giá Trị Danh Mục",
+      "download_template": "Tải file mẫu",
+      "download": "Tải xuống",
+      "select_file": "Chọn file Excel",
+      "choose_file": "Chọn file...",
+      "preview": "Xem trước",
+      "confirm_import": "Xác nhận Import",
+      "importing": "Đang import...",
+      "template_download_error": "Lỗi khi tải file mẫu",
+      "preview_error": "Lỗi khi xem trước dữ liệu",
+      "import_success": "Import thành công!",
+      "import_error": "Lỗi khi import dữ liệu"
+    }
   }
 }

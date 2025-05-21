@@ -28,6 +28,15 @@ const systemRoutes: Array<RouteRecordRaw> = [
             requiresAuth: true, permissions: ['users.view'] 
         },
     },
+    {
+        path: '/system/dynamic-lists',
+        name: 'system.dynamiclists',
+        component: () => import('@/modules/system/dynamiclists/dynamiclists.vue'),
+        meta: { 
+            title: 'menu.dynamiclists',
+            requiresAuth: true, permissions: ['objects.view'] 
+        },
+    },
 ];
 
 export default systemRoutes;

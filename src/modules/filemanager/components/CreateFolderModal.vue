@@ -13,7 +13,7 @@
     </template>
 
     <template #body>
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+      <form @submit.prevent="handleSubmit" class="space-y-6 mx-4">
         <!-- Folder Name -->
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
