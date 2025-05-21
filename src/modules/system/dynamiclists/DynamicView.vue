@@ -454,12 +454,12 @@ onMounted(() => {
 }
 
 .header h4 {
-  @apply text-base font-semibold text-gray-800 dark:text-gray-200;
+  @apply text-base font-semibold text-gray-700 dark:text-gray-200;
 }
 
 .type-list,
 .value-list {
-  @apply divide-y divide-gray-200 dark:divide-gray-700 max-h-[calc(100vh-250px)] overflow-y-auto;
+  @apply divide-y divide-gray-200 dark:divide-gray-700 max-h-[calc(100vh-250px)] overflow-y-auto text-gray-700 dark:text-gray-200;
 }
 
 .type-item,
