@@ -31,7 +31,7 @@ const systemRoutes: Array<RouteRecordRaw> = [
     {
         path: '/system/dynamic-lists',
         name: 'system.dynamiclists',
-        component: () => import('@/modules/system/dynamiclists/dynamiclists.vue'),
+        component: () => import('@/modules/system/dynamiclists/DynamicListView.vue'),
         meta: { 
             title: 'menu.dynamiclists',
             requiresAuth: true, permissions: ['objects.view'] 
