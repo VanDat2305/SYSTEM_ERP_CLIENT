@@ -205,7 +205,6 @@ const menuGroups = [
           { name: t("menu.users"), path: "/system/users" },
           { name: t("menu.roles"), path: "/system/roles" },
           { name: t("menu.permissions"), path: "/system/permissions" },
-          { name: t("menu.dynamiclists"), path: "/system/dynamic-lists" },
           // { name: t("menu.security_settings"), path: "/system/security" },
           // { name: t("menu.access_settings"), path: "/system/access" },
           // { name: t("menu.system_logs"), path: "/system/logs" },
@@ -216,8 +215,10 @@ const menuGroups = [
         name: t("menu.settings"),
         subItems: [
           { name: t("menu.account"), path: "/settings/account" },
+          { name: t("menu.dynamiclists"), path: "/settings/dynamic-lists" },
           { name: t("menu.system_info"), path: "/settings/system-info" },
           { name: t("menu.company_info"), path: "/settings/company-info" },
+
           // { name: t("menu.language_timezone"), path: "/settings/language" },
           // { name: t("menu.email_notifications"), path: "/settings/email" },
           // { name: t("menu.api_integration"), path: "/settings/api" },
