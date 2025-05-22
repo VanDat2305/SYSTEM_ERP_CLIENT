@@ -15,7 +15,7 @@
             <button
               v-for="tab in sanitizedTabs"
               :key="tab.id"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium transition-colors duration-200 ease-in-out rounded-lg sm:p-3"
+              class="inline-flex items-center px-3 py-2 text-sm font-medium transition-colors duration-200 ease-in-out rounded-lg sm:p-3 shadow-sm"
               :class="{
                 'text-brand-500 dark:bg-brand-400/20 dark:text-brand-400 bg-brand-50': activeTab === tab.id,
                 'bg-transparent text-gray-500 border-transparent hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200': activeTab !== tab.id

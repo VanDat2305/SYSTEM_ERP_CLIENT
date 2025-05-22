@@ -163,7 +163,8 @@
         },
         "delete_failed": "Failed to delete role",
         "delete_success": "Role deleted successfully",
-        "permissions_helper": "Select the permissions you want to assign to this role."
+        "permissions_helper": "Select the permissions you want to assign to this role.",
+        "operation_failed": "Operation failed"
     },
     "common": {
         "save": "Save",
@@ -201,7 +202,13 @@
         "download": "Download",
         "refresh": "Refresh",
         "remove": "Remove",
-        "coppy_id": "Copy ID"
+        "coppy_id": "Copy ID",
+        "show_details": "Show details",
+        "hide_details": "Hide details",
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page",
+        "of": "of"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -232,7 +239,8 @@
             "description": "Enter permission description"
         },
         "delete_failed": "Failed to delete permission",
-        "delete_success": "Permission deleted successfully"
+        "delete_success": "Permission deleted successfully",
+        "operation_failed": "Operation failed"
     },
     "pages": {
         "Signin": "Sign In",
@@ -288,7 +296,8 @@
         "cancel_password_change": "Cancel Password Change",
         "change_password": "Change Password",
         "not_resend_email_verify_multiple": "You can only resend email verification for one user at a time.",
-        "resend_email_verify_failed": "Failed to resend email verification"
+        "resend_email_verify_failed": "Failed to resend email verification",
+        "operation_failed": "Operation failed"
     },
     "validation": {
         "required": "{field} is required",
@@ -359,7 +368,17 @@
         "recovery_codes_failed": "Failed to generate recovery codes.",
         "recovery_codes_description": "These codes can be used to access your account if you lose access to your authenticator app. Store them in a safe place.",
         "recovery_codes_warning": "Warning: If you lose access to your authenticator app and do not have these codes, you may lose access to your account.",
-        "two_factor_authentication_description": "Two-Factor Authentication adds an extra layer of security to your account. When enabled, you will need to enter a verification code sent to your email or phone in addition to your password."
+        "two_factor_authentication_description": "Two-Factor Authentication adds an extra layer of security to your account. When enabled, you will need to enter a verification code sent to your email or phone in addition to your password.",
+        "history": {
+            "activity_history": "Activity history",
+            "no_data":"No data available",
+            "fetch_failed": "Failed to fetch account history",
+            "ip_address": "IP",
+            "new_values": "New values",
+            "old_values": "Old values",
+            "note": "Note"
+        }
+
     },
     "two_factor": {
         "title": "Two-Factor",

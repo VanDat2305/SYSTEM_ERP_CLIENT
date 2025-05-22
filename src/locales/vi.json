@@ -163,7 +163,8 @@
     },
     "delete_failed": "Xóa vai trò không thành công",
     "delete_success": "Xóa vai trò thành công",
-    "permissions_helper": "Chọn quyền cho vai trò này. Bạn có thể chọn nhiều quyền"
+    "permissions_helper": "Chọn quyền cho vai trò này. Bạn có thể chọn nhiều quyền",
+    "operation_failed": "Thao tác không thành công"
   },
   "common": {
     "save": "Lưu",
@@ -201,7 +202,13 @@
     "download": "Tải xuống",
     "refresh": "Tải lại",
     "remove": "Xóa",
-    "coppy_id": "Sao chép ID"
+    "coppy_id": "Sao chép ID",
+    "show_details": "Hiển thị chi tiết",
+    "hide_details": "Ẩn chi tiết",
+    "previous": "Trước",
+    "next": "Sau",
+    "page": "Trang",
+    "of": "của"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -233,7 +240,8 @@
       "description": "Nhâp mô tả quyền"
     },
     "delete_failed": "Xóa quyền không thành công",
-    "delete_success": "Xóa quyền thành công"
+    "delete_success": "Xóa quyền thành công",
+    "operation_failed": "Thao tác không thành công"
   },
   "pages": {
     "Signin": "Đăng nhập",
@@ -289,7 +297,8 @@
     "cancel_password_change": "Hủy thay đổi mật khẩu",
     "change_password": "Thay đổi mật khẩu",
     "not_resend_email_verify_multiple": "Không thể gửi lại email xác minh cho nhiều người dùng cùng một lúc.",
-    "resend_email_verify_failed": "Gửi lại email xác minh không thành công"
+    "resend_email_verify_failed": "Gửi lại email xác minh không thành công",
+    "operation_failed": "Thao tác không thành công"
   },
   "validation": {
     "required": "{field} không được để trống",
@@ -360,7 +369,16 @@
     "recovery_codes_failed": "Tạo mã khôi phục không thành công",
     "recovery_codes_description": "Lưu trữ mã khôi phục này ở nơi an toàn. Bạn sẽ cần chúng nếu không thể truy cập ứng dụng xác thực của mình.",
     "recovery_codes_warning": "Mã khôi phục chỉ hiển thị một lần. Hãy chắc chắn sao chép chúng.",
-    "two_factor_authentication_description": "Bảo vệ tài khoản của bạn bằng cách kích hoạt xác thực hai yếu tố. Bạn sẽ cần một mã xác thực từ ứng dụng xác thực mỗi khi đăng nhập."
+    "two_factor_authentication_description": "Bảo vệ tài khoản của bạn bằng cách kích hoạt xác thực hai yếu tố. Bạn sẽ cần một mã xác thực từ ứng dụng xác thực mỗi khi đăng nhập.",
+    "history": {
+      "activity_history": "Lịch sử hoạt động",
+      "no_data" : "Không có hoạt động nào được ghi lại",
+      "fetch_failed": "Lấy lịch sử hoạt động không thành công",
+      "ip_address": "IP",
+      "new_values": "Giá trị mới",
+      "old_values": "Giá trị cũ",
+      "note": "Ghi chú"
+    }
   },
   "two_factor": {
     "title": "Xác thực hai yếu tố",
