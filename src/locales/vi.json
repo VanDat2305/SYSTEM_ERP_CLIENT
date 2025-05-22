@@ -200,7 +200,8 @@
     "back": "Quay lại",
     "download": "Tải xuống",
     "refresh": "Tải lại",
-    "remove": "Xóa"
+    "remove": "Xóa",
+    "coppy_id": "Sao chép ID"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -427,7 +428,10 @@
       "not_preview": "Không thể xem trước tệp này",
       "type_not_supports": "Loại tệp này không được hỗ trợ",
       "document_preview": "Xem trước tài liệu",
-      "failed_to_load_content": "Không thể tải nội dung"
+      "failed_to_load_content": "Không thể tải nội dung",
+      "clipboard_copied": "Sao chép {0} thành công",
+      "clipboard_copy_failed": "Sao chép ID không thành công"
+
     },
     "placeholders": {
       "folder_name": "Nhập tên thư mục"

@@ -200,7 +200,8 @@
         "back": "Back",
         "download": "Download",
         "refresh": "Refresh",
-        "remove": "Remove"
+        "remove": "Remove",
+        "coppy_id": "Copy ID"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -426,7 +427,10 @@
             "not_preview": "File type not supported for preview",
             "type_not_supports": "File type not supported",
             "document_preview": "Document Preview",
-            "failed_to_load_content": "Failed to load content"
+            "failed_to_load_content": "Failed to load content",
+            "clipboard_copied": "Copied {0} to clipboard",
+            "clipboard_copy_failed": "Failed to copy to clipboard"
+
         },
         "placeholders": {
             "folder_name": "Enter folder name"

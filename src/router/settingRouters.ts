@@ -10,6 +10,15 @@ const settingRouters: Array<RouteRecordRaw> = [
             requiresAuth: true, permissions: ['account.panel'] 
         },
     },
+    {
+        path: '/settings/dynamic-lists',
+        name: 'settings.dynamiclists',
+        component: () => import('@/modules/settings/dynamiclists/DynamicView.vue'),
+        meta: { 
+            title: 'menu.dynamiclists',
+            requiresAuth: true, permissions: ['objects.view'] 
+        },
+    },
 ];
 
 export default settingRouters;
