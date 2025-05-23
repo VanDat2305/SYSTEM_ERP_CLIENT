@@ -119,14 +119,14 @@
                 <div @mouseleave="showFilters = false" v-if="showFilters && filterOptions.length > 0" class="absolute z-20 mt-2 w-full sm:w-96 right-0 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div v-for="filter in filterOptions" :key="filter.field" class="col-span-1">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ filter.label }}</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ t(filter.label) }}</label>
                             
                             <!-- Select filter -->
                             <select v-if="filter.type === 'select'" v-model="activeFilters[filter.field]"
                                 class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
                                 <option value="">{{ $t('common.all') }}</option>
                                 <option v-for="option in filter.options" :key="option.value" :value="option.value">
-                                    {{ option.label }}
+                                    {{ t(option.label) }}
                                 </option>
                             </select>
                             
@@ -392,11 +392,11 @@
                     <!-- Showing info -->
                     <div class="flex items-center gap-4">
                         <span class="text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                        {{ $t('showing', {
-                        start: (currentPage - 1) * pageSize + 1, 
-                        end: Math.min(currentPage * pageSize, filteredData.length), 
-                        total: filteredData.length 
-                        }) }}
+                            {{ $t('showing', {
+                                start: (currentPage - 1) * pageSize + 1, 
+                                end: Math.min(currentPage * pageSize, totalItems), 
+                                total: totalItems 
+                            }) }}
                         </span>
                     </div>
                     </div>
@@ -494,6 +494,26 @@ const props = defineProps({
     showRefreshButton: {
         type: Boolean,
         default: true
+    },
+        serverPagination: {
+        type: Boolean,
+        default: false
+    },
+    serverTotalItems: {
+        type: Number,
+        default: 0
+    },
+    serverCurrentPage: {
+        type: Number,
+        default: 1
+    },
+    serverPerPage: {
+        type: Number,
+        default: 10
+    },
+    serverLastPage: {
+        type: Number,
+        default: 1
     }
 });
 
@@ -505,6 +525,9 @@ const emit = defineEmits([
     'search',
     'filter',
     'bulk-action',
+    'server-page-change',
+    'server-sort',
+    'server-filter'
 ]);
 const selectedSearchField = ref(props.defaultSearchField || (props.searchOptions.length > 0 ? props.searchOptions[0].field : ''));
 const activeFilters = ref({});
@@ -590,12 +613,26 @@ const visibleColumns = computed(() => allColumns.value.filter(col => col.visible
 const totalColumns = computed(() => visibleColumns.value.length + (hasSelection.value ? 1 : 0) + (hasActions.value ? 1 : 0));
 const hasActions = computed(() => props.actions.length > 0);
 
-const paginatedData = computed(() => {
-    const start = (currentPage.value - 1) * pageSize.value;
-    return filteredData.value.slice(start, start + pageSize.value);
+const totalItems = computed(() => {
+    return props.serverPagination
+        ? props.serverTotalItems
+        : filteredData.value.length;
 });
 
-const totalPages = computed(() => Math.ceil(filteredData.value.length / pageSize.value) || 1);
+const paginatedData = computed(() => {
+    return props.serverPagination
+        ? props.rowData
+        : filteredData.value.slice(
+            (currentPage.value - 1) * pageSize.value,
+            currentPage.value * pageSize.value
+          );
+});
+
+const totalPages = computed(() => {
+    return props.serverPagination 
+        ? props.serverLastPage 
+        : Math.ceil(filteredData.value.length / pageSize.value) || 1;
+});
 
 const displayedPages = computed(() => {
     const pages = [];
@@ -629,22 +666,50 @@ watch(selectedRows, (newVal) => {
 }, { deep: true });
 
 watch(pageSize, () => {
-    currentPage.value = 1;
+    if (props.serverPagination) {
+        emit('server-page-change', {
+            page: currentPage.value,
+            perPage: pageSize.value
+        });
+    } else {
+        currentPage.value = 1; // Reset về trang đầu tiên cho client-side
+    }
 });
 
 watch(currentPage, (newVal) => {
-    goToPage.value = newVal;
+    if (props.serverPagination) {
+        emit('server-page-change', {
+            page: newVal,
+            perPage: pageSize.value
+        });
+    } else {
+        goToPage.value = newVal;
+    }
+});
+watch(() => props.serverCurrentPage, (newPage) => {
+    if (props.serverPagination && newPage !== currentPage.value) {
+        currentPage.value = newPage;
+        goToPage.value = newPage;
+    }
+});
+
+watch(() => props.serverPerPage, (newPerPage) => {
+    if (props.serverPagination && newPerPage !== pageSize.value) {
+        pageSize.value = newPerPage;
+    }
 });
 
 // Methods
 const filterData = () => {
    
-    if (props.enableServerSearch) {
-        emit('search', {
+    if (props.enableServerSearch || props.serverPagination) {
+        emit('server-filter', {
             query: searchQuery.value,
-            field: selectedSearchField.value
+            field: selectedSearchField.value,
+            filters: activeFilters.value,
+            columnFilters: columnFilters.value
         });
-        return; // Dừng lại không thực hiện search client-side
+        return;
     }
 
     let result = [...props.rowData];
@@ -680,12 +745,20 @@ const sort = (field) => {
         sortKey.value = field;
         sortOrder.value = 'asc';
     }
-    filteredData.value = [...filteredData.value].sort((a, b) => {
-        const A = a[field];
-        const B = b[field];
-        if (A === B) return 0;
-        return sortOrder.value === 'asc' ? (A > B ? 1 : -1) : (A < B ? 1 : -1);
-    });
+    
+    if (props.serverPagination) {
+        emit('server-sort', {
+            field: field,
+            direction: sortOrder.value
+        });
+    } else {
+        filteredData.value = [...filteredData.value].sort((a, b) => {
+            const A = a[field];
+            const B = b[field];
+            if (A === B) return 0;
+            return sortOrder.value === 'asc' ? (A > B ? 1 : -1) : (A < B ? 1 : -1);
+        });
+    }
 };
 
 // Column drag and drop
@@ -785,8 +858,14 @@ const applyColumnFilter = (column) => {
 const goToSpecificPage = () => {
     const page = Math.max(1, Math.min(goToPage.value, totalPages.value));
     currentPage.value = page;
+    
+    if (props.serverPagination) {
+        emit('server-page-change', {
+            page: page,
+            perPage: pageSize.value
+        });
+    }
 };
-
 // Cell formatting
 const formatCellValue = (value, column) => {
     if (column.formatter) {
