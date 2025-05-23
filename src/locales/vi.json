@@ -548,7 +548,23 @@
         "import_success": "Import thành công!",
         "import_error": "Lỗi khi import dữ liệu"
       }
-    }
+    },
+    "import": {
+    "type_title": "Nhập Loại Danh Mục",
+    "value_title": "Nhập Giá Trị Danh Mục",
+    "download_template": "Tải file mẫu",
+    "download": "Tải xuống",
+    "select_file": "Chọn file Excel",
+    "choose_file": "Chọn file...",
+    "preview": "Xem trước",
+    "confirm_import": "Xác nhận Import",
+    "importing": "Đang import...",
+    "template_download_error": "Lỗi khi tải file mẫu",
+    "preview_error": "Lỗi khi xem trước dữ liệu",
+    "import_success": "Import thành công!",
+    "import_error": "Lỗi khi import dữ liệu"
+  }
+
   },
   "activity_logs": {
     "title": "Nhật ký hoạt động",
