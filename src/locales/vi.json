@@ -96,7 +96,9 @@
     "employees": "Nhân viên",
     "dynamiclists": "Danh mục hệ thống",
     "objects": "Danh mục hệ thống",
-    "account_settings": "Cài đặt tài khoản"
+    "account_settings": "Cài đặt tài khoản",
+    "logs": "Nhật ký",
+    "activity_logs": "Nhật ký hoạt động"
   },
   "auth": {
     "logout_success": "Đăng xuất thành công",
@@ -208,7 +210,9 @@
     "previous": "Trước",
     "next": "Sau",
     "page": "Trang",
-    "of": "của"
+    "of": "của",
+    "from": "từ",
+    "to": "đến"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -259,10 +263,10 @@
     "TwoFactorAuthentication": "Xác thực hai yếu tố",
     "EmailVerify": "Xác minh email",
     "email_verify": {
-        "success_title": "Email xác minh thành công",
-        "success_message": "Email của bạn đã được xác minh thành công. Bạn có thể đăng nhập vào tài khoản của mình.",
-        "failed_title": "Xác minh email không thành công",
-        "failed_message": "Đã xảy ra lỗi trong quá trình xác minh email của bạn. Vui lòng thử lại sau."
+      "success_title": "Email xác minh thành công",
+      "success_message": "Email của bạn đã được xác minh thành công. Bạn có thể đăng nhập vào tài khoản của mình.",
+      "failed_title": "Xác minh email không thành công",
+      "failed_message": "Đã xảy ra lỗi trong quá trình xác minh email của bạn. Vui lòng thử lại sau."
     }
   },
   "users_module": {
@@ -372,7 +376,7 @@
     "two_factor_authentication_description": "Bảo vệ tài khoản của bạn bằng cách kích hoạt xác thực hai yếu tố. Bạn sẽ cần một mã xác thực từ ứng dụng xác thực mỗi khi đăng nhập.",
     "history": {
       "activity_history": "Lịch sử hoạt động",
-      "no_data" : "Không có hoạt động nào được ghi lại",
+      "no_data": "Không có hoạt động nào được ghi lại",
       "fetch_failed": "Lấy lịch sử hoạt động không thành công",
       "ip_address": "IP",
       "new_values": "Giá trị mới",
@@ -449,7 +453,6 @@
       "failed_to_load_content": "Không thể tải nội dung",
       "clipboard_copied": "Sao chép {0} thành công",
       "clipboard_copy_failed": "Sao chép ID không thành công"
-
     },
     "placeholders": {
       "folder_name": "Nhập tên thư mục"
@@ -463,88 +466,129 @@
   },
   "dynamic_lists": {
     "catalog-types": {
-        "title": "Loại danh mục",
-        "add": "Thêm loại",
-        "edit": "Chỉnh sửa loại",
-        "delete": "Xóa loại",
-        "view_type": "Xem loại danh mục",
-        "edit_type": "Chỉnh sửa loại danh mục",
-        "add_type": "Thêm loại danh mục",
-        "fields": {
-          "code": "Mã",
-          "name": "Tên",
-          "order": "Thứ tự",
-          "status": "Trạng thái"
-        },
-        "placeholders": {
-          "code": "Nhập mã loại danh mục...",
-          "name": "Nhập tên loại danh mục...",
-          "description": "Nhập mô tả loại danh mục...",
-          "order": "Nhập thứ tự loại danh mục..."
-        },
-        "messages" : {
-          "confirm_delete": "Bạn có chắc muốn xóa loại này không? Tất cả giá trị thuộc loại này cũng sẽ bị xóa."
-        }
+      "title": "Loại danh mục",
+      "add": "Thêm loại",
+      "edit": "Chỉnh sửa loại",
+      "delete": "Xóa loại",
+      "view_type": "Xem loại danh mục",
+      "edit_type": "Chỉnh sửa loại danh mục",
+      "add_type": "Thêm loại danh mục",
+      "fields": {
+        "code": "Mã",
+        "name": "Tên",
+        "order": "Thứ tự",
+        "status": "Trạng thái"
+      },
+      "placeholders": {
+        "code": "Nhập mã loại danh mục...",
+        "name": "Nhập tên loại danh mục...",
+        "description": "Nhập mô tả loại danh mục...",
+        "order": "Nhập thứ tự loại danh mục..."
+      },
+      "messages": {
+        "confirm_delete": "Bạn có chắc muốn xóa loại này không? Tất cả giá trị thuộc loại này cũng sẽ bị xóa."
+      }
     },
     "catalog-values": {
-        "title": "Giá trị danh mục",
-        "add": "Thêm giá trị",
-        "edit": "Chỉnh sửa giá trị",
-        "delete": "Xóa giá trị",
-        "messages": {
-          "choose_one_type": "Vui lòng chọn một loại danh mục để xem giá trị",
-          "not_values": "Không có giá trị nào trong danh mục này",
-          "confirm_delete": "Bạn có chắc muốn xóa giá trị này không?"
-        },
-        "placeholders": {
-          "code": "Nhập mã...",
-          "name": "Nhập tên...",
-          "order": "Nhập thứ tự..."
-        },
-        "fields": {
-          "code": "Mã giá trị",
-          "name": "Tên giá trị",
-          "order": "Thứ tự",
-          "status": "Trạng thái",
-          "type": "Loại danh mục"
-        },
-        "basic_info": "Thông tin cơ bản",
-        "metadata": "Thông tin bổ sung",
-        "no_parent": "-- Không có danh mục cha --"
+      "title": "Giá trị danh mục",
+      "add": "Thêm giá trị",
+      "edit": "Chỉnh sửa giá trị",
+      "delete": "Xóa giá trị",
+      "messages": {
+        "choose_one_type": "Vui lòng chọn một loại danh mục để xem giá trị",
+        "not_values": "Không có giá trị nào trong danh mục này",
+        "confirm_delete": "Bạn có chắc muốn xóa giá trị này không?"
+      },
+      "placeholders": {
+        "code": "Nhập mã...",
+        "name": "Nhập tên...",
+        "order": "Nhập thứ tự..."
+      },
+      "fields": {
+        "code": "Mã giá trị",
+        "name": "Tên giá trị",
+        "order": "Thứ tự",
+        "status": "Trạng thái",
+        "type": "Loại danh mục"
+      },
+      "basic_info": "Thông tin cơ bản",
+      "metadata": "Thông tin bổ sung",
+      "no_parent": "-- Không có danh mục cha --"
     },
     "catalog-meta": {
-        "title": "Thông tin bổ sung",
-        "add": "Thêm thông tin bổ sung",
-        "edit": "Chỉnh sửa thông tin bổ sung",
-        "delete": "Xóa thông tin bổ sung",
-        "no_metadata": "Không có thông tin bổ sung nào",
-        "fields": {
-          "key": "Khóa",
-          "value": "Giá trị",
-          "type": "Loại danh mục"
-        },
-        "placeholders": {
-          "key": "Nhập khóa thông tin bổ sung...",
-          "value": "Nhập giá trị thông tin bổ sung..."
-        },
-        "messages" : {
-          "confirm_delete": "Bạn có chắc muốn xóa thông tin bổ sung này không?"
-        }
+      "title": "Thông tin bổ sung",
+      "add": "Thêm thông tin bổ sung",
+      "edit": "Chỉnh sửa thông tin bổ sung",
+      "delete": "Xóa thông tin bổ sung",
+      "no_metadata": "Không có thông tin bổ sung nào",
+      "fields": {
+        "key": "Khóa",
+        "value": "Giá trị",
+        "type": "Loại danh mục"
+      },
+      "placeholders": {
+        "key": "Nhập khóa thông tin bổ sung...",
+        "value": "Nhập giá trị thông tin bổ sung..."
+      },
+      "messages": {
+        "confirm_delete": "Bạn có chắc muốn xóa thông tin bổ sung này không?"
+      },
+      "import": {
+        "type_title": "Import Loại Danh Mục",
+        "value_title": "Import Giá Trị Danh Mục",
+        "download_template": "Tải file mẫu",
+        "download": "Tải xuống",
+        "select_file": "Chọn file Excel",
+        "choose_file": "Chọn file...",
+        "preview": "Xem trước",
+        "confirm_import": "Xác nhận Import",
+        "importing": "Đang import...",
+        "template_download_error": "Lỗi khi tải file mẫu",
+        "preview_error": "Lỗi khi xem trước dữ liệu",
+        "import_success": "Import thành công!",
+        "import_error": "Lỗi khi import dữ liệu"
+      }
+    }
+  },
+  "activity_logs": {
+    "title": "Nhật ký hoạt động",
+    "fetch_failed": "Lấy danh sách nhật ký thất bại",
+    "delete_confirmation": "Bạn có chắc muốn xóa nhật ký '{description}'?",
+    "delete_selected_confirmation": "Bạn có chắc muốn xóa {count} nhật ký đã chọn?",
+    "delete_success": "Xóa nhật ký thành công",
+    "delete_failed": "Xóa nhật ký thất bại",
+    "export_started": "Đang xuất dữ liệu nhật ký...",
+    "export_selected_started": "Đang xuất {count} nhật ký được chọn...",
+    "details": "Chi tiết nhật ký",
+    "changes": "Thay đổi",
+    "before": "Trước khi thay đổi",
+    "after": "Sau khi thay đổi",
+    "note": "Ghi chú",
+    "system": "Hệ thống",
+    "fields": {
+      "name": "Nội dung",
+      "description": "Mô tả",
+      "user": "Người thực hiện",
+      "type": "Loại",
+      "time": "Thời gian",
+      "ip": "Địa chỉ IP",
+      "user_agent": "Trình duyệt"
     },
-    "import": {
-      "type_title": "Import Loại Danh Mục",
-      "value_title": "Import Giá Trị Danh Mục",
-      "download_template": "Tải file mẫu",
-      "download": "Tải xuống",
-      "select_file": "Chọn file Excel",
-      "choose_file": "Chọn file...",
-      "preview": "Xem trước",
-      "confirm_import": "Xác nhận Import",
-      "importing": "Đang import...",
-      "template_download_error": "Lỗi khi tải file mẫu",
-      "preview_error": "Lỗi khi xem trước dữ liệu",
-      "import_success": "Import thành công!",
-      "import_error": "Lỗi khi import dữ liệu"
+    "filters": {
+      "date_range": "Khoảng thời gian",
+      "type": "Loại nhật ký",
+      "created_at": "Ngày tạo"
+    },
+    "types": {
+      "login": "Đăng nhập",
+      "logout": "Đăng xuất",
+      "users.created": "Tạo người dùng",
+      "users.updated": "Cập nhật người dùng",
+      "users.deleted": "Xóa người dùng",
+      "roles.created": "Tạo vai trò",
+      "roles.updated": "Cập nhật vai trò",
+      "roles.deleted": "Xóa vai trò",
+      "permissions.updated": "Cập nhật quyền"
     }
   }
 }

@@ -17,7 +17,9 @@ export const Permission = {
     FILE_UPADTE: 'files.update',
     FILe_CREATE: 'files.create',
     FOLDER_CREATE: 'folders.create',
-    FOLDER_DELETE: 'folders.delete'
+    FOLDER_DELETE: 'folders.delete',
+    LOG_VIEW: 'logs.view',
+    LOG_DELETE: 'logs.delete',
 
   } as const;
 

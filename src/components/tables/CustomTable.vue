@@ -115,43 +115,147 @@
                     </div>
                 </div>
 
-                <!-- Panel bộ lọc -->
-                <div @mouseleave="showFilters = false" v-if="showFilters && filterOptions.length > 0" class="absolute z-20 mt-2 w-full sm:w-96 right-0 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div v-for="filter in filterOptions" :key="filter.field" class="col-span-1">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ t(filter.label) }}</label>
-                            
-                            <!-- Select filter -->
-                            <select v-if="filter.type === 'select'" v-model="activeFilters[filter.field]"
-                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
-                                <option value="">{{ $t('common.all') }}</option>
-                                <option v-for="option in filter.options" :key="option.value" :value="option.value">
-                                    {{ t(option.label) }}
-                                </option>
-                            </select>
-                            
-                            <!-- Date filter -->
-                            <input v-else-if="filter.type === 'date'" v-model="activeFilters[filter.field]" type="date"
-                                class="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
-                            
-                            <!-- Checkbox filter -->
-                            <div v-else-if="filter.type === 'checkbox'" class="flex items-center">
-                                <input v-model="activeFilters[filter.field]" type="checkbox"
-                                    class="rounded-md text-blue-500 focus:ring-blue-500">
-                                <label class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ $t('common.enabled') }}</label>
+            <!-- Filter Panel -->
+            <div 
+                v-if="showFilters && filterOptions.length > 0" 
+                class="absolute z-99999 top-10 mt-1 w-full sm:w-96 right-10 rounded-lg shadow-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4"
+            >
+               <div class="flex justify-end">
+                    <button @click="showFilters = false" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-sm">
+                        ✕
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div 
+                        v-for="filter in filterOptions" 
+                        :key="filter.field" 
+                        :class="['col-span-1', {
+                            'sm:col-span-2': filter.type === 'date-range' || filter.type === 'number-range'
+                        }]"
+                    >
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            {{ t(filter.label) }}
+                            <span v-if="filter.required" class="text-red-500">*</span>
+                        </label>
+                        
+                        <!-- Select filter -->
+                        <select 
+                            v-if="filter.type === 'select'" 
+                            v-model="activeFilters[filter.field]"
+                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                        >
+                            <option value="">{{ $t('common.all') }}</option>
+                            <option v-for="option in filter.options" :key="option.value" :value="option.value">
+                                {{ t(option.label) }}
+                            </option>
+                        </select>
+                        
+                        <!-- Single Date filter -->
+                        <flat-pickr 
+                            v-else-if="filter.type === 'date'" 
+                            v-model="activeFilters[filter.field]"
+                            :config="{
+                                dateFormat: 'Y-m-d',
+                                altInput: true,
+                                altFormat: 'F j, Y',
+                                maxDate: filter.maxDate || null,
+                                minDate: filter.minDate || null
+                            }"
+                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                        />
+                        
+                        <!-- Date Range filter -->
+                        <div v-else-if="filter.type === 'date-range'" class="grid grid-cols-2 gap-2 items-center">
+                        <flat-pickr 
+                            v-model="activeFilters[filter.field].from"
+                            :config="getDatePickerConfig(filter, 'from')"
+                            @on-change="() => validateDateRange(filter.field)"
+                            class="w-full col-span-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                            placeholder='dd/mm/yyyy'
+                        />
+                        <flat-pickr 
+                            v-model="activeFilters[filter.field].to"
+                            :config="getDatePickerConfig(filter, 'to')"
+                            @on-change="() => validateDateRange(filter.field)"
+                            class="w-full col-span-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                            placeholder='dd/mm/yyyy'
+                        />
+                        <p v-if="dateRangeErrors[filter.field]" class="col-span-2 text-xs text-red-500 mt-1">
+                            {{ dateRangeErrors[filter.field] }}
+                        </p>
+                        </div>
+                                                
+                        <!-- Checkbox filter -->
+                        <div v-else-if="filter.type === 'checkbox'" class="flex items-center">
+                            <input 
+                                v-model="activeFilters[filter.field]" 
+                                type="checkbox"
+                                class="h-4 w-4 rounded text-blue-500 focus:ring-blue-500 border-gray-300 dark:border-gray-600"
+                            >
+                            <label class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ $t('common.enabled') }}</label>
+                        </div>
+                        
+                        <!-- Text input filter -->
+                        <input 
+                            v-else-if="filter.type === 'text'" 
+                            v-model="activeFilters[filter.field]" 
+                            type="text"
+                            :placeholder="filter.placeholder || ''"
+                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                        >
+                        
+                        <!-- Number range filter - Improved version -->
+                        <div v-else-if="filter.type === 'number-range'" class="space-y-2">
+                            <div class="flex items-center">
+                                <label class="text-xs text-gray-500 dark:text-gray-400 w-16">{{ $t('common.min') }}:</label>
+                                <input 
+                                    v-model.number="activeFilters[filter.field].min" 
+                                    type="number"
+                                    :placeholder="filter.minPlaceholder || $t('common.min')"
+                                    :min="filter.minLimit"
+                                    :max="filter.maxLimit"
+                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                                    @input="validateNumberRange(filter.field)"
+                                >
                             </div>
+                            <div class="flex items-center">
+                                <label class="text-xs text-gray-500 dark:text-gray-400 w-16">{{ $t('common.max') }}:</label>
+                                <input 
+                                    v-model.number="activeFilters[filter.field].max" 
+                                    type="number"
+                                    :placeholder="filter.maxPlaceholder || $t('common.max')"
+                                    :min="filter.minLimit"
+                                    :max="filter.maxLimit"
+                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                                    @input="validateNumberRange(filter.field)"
+                                >
+                            </div>
+                            <p v-if="numberRangeErrors[filter.field]" class="text-xs text-red-500 mt-1">
+                                {{ numberRangeErrors[filter.field] }}
+                            </p>
                         </div>
                     </div>
-                    
-                    <div class="flex justify-end mt-4 gap-2">
-                        <button @click="resetFilters" class="px-3 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
-                            {{ $t('common.reset') }}
-                        </button>
-                        <button @click="applyFilters" class="px-3 py-1.5 text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600">
-                            {{ $t('common.apply') }}
-                        </button>
-                    </div>
                 </div>
+                
+                <div class="flex justify-between items-center mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <button 
+                        @click="resetFilters" 
+                        class="px-4 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    >
+                        {{ $t('common.reset') }}
+                    </button>
+                    <!-- <div class="text-xs text-gray-500 dark:text-gray-400" v-if="activeFilterCount > 0">
+                        {{ activeFilterCount }} {{ $t('common.filters_active') }}
+                    </div> -->
+                    <button 
+                        @click="applyFilters" 
+                        :disabled="hasErrors"
+                        class="px-4 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
+                    >
+                        {{ $t('common.apply') }}
+                    </button>
+                </div>
+            </div>
 
                 <!-- Add button and other actions -->
                 <button v-if="showAddButton" @click="emit('add')"
@@ -410,6 +514,8 @@
 <script setup>
 import { ref, computed, watch, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
+import flatPickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 
 const { t } = useI18n();
 
@@ -514,6 +620,15 @@ const props = defineProps({
     serverLastPage: {
         type: Number,
         default: 1
+    },
+    showFilters: Boolean,
+    filterOptions: {
+        type: Array,
+        default: () => []
+    },
+    initialFilters: {
+        type: Object,
+        default: () => ({})
     }
 });
 
@@ -540,15 +655,102 @@ const getSearchFieldLabel = (field) => {
 };
 
 const applyFilters = () => {
+    if (hasErrors.value) return;
     emit('filter', activeFilters.value);
     showFilters.value = false;
 };
 
 const resetFilters = () => {
     activeFilters.value = {};
+    dateRangeErrors.value = {};
+    numberRangeErrors.value = {};
+    activeFilters.value = {};
+    initializeFilters();
     emit('filter', {});
 };
 
+const getDatePickerConfig = (filter, rangeType = 'from') => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Đặt giờ về 00:00:00 để so sánh ngày chính xác
+  
+  // Format helper functions
+  const formatToDate = (dateStr) => {
+    if (!dateStr) return null;
+    const date = new Date(dateStr);
+    return isNaN(date.getTime()) ? null : date;
+  };
+
+  const formatToYMD = (date) => {
+    if (!date) return null;
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  // Base config
+  const baseConfig = {
+    dateFormat: 'Y-m-d',
+    altInput: true,
+    altFormat: 'd/m/Y',
+    locale: {
+      firstDayOfWeek: 1 // Thứ 2 đầu tuần
+    }
+  };
+
+  // Xử lý min/max date
+  let minDate = formatToDate(filter.minDate);
+  let maxDate = formatToDate(filter.maxDate);
+
+  // Ràng buộc mặc định
+  if (filter.preventFutureDates) {
+    maxDate = maxDate ? new Date(Math.min(maxDate.getTime(), today.getTime())) : today;
+  }
+
+  if (filter.preventPastDates) {
+    minDate = minDate ? new Date(Math.max(minDate.getTime(), today.getTime())) : today;
+  }
+
+  // Áp dụng min/max date đã xử lý
+  baseConfig.minDate = minDate ? formatToYMD(minDate) : null;
+  baseConfig.maxDate = maxDate ? formatToYMD(maxDate) : null;
+
+  // Xử lý date-range
+  if (filter.type === 'date-range') {
+    const activeRange = activeFilters.value[filter.field] || {};
+    
+    if (rangeType === 'to') {
+      // Ngày kết thúc phải ≥ ngày bắt đầu
+      const fromDate = formatToDate(activeRange.from) || minDate;
+      if (fromDate) {
+        baseConfig.minDate = formatToYMD(fromDate);
+      }
+      
+      // Nếu có cả maxDate từ filter và ràng buộc không tương lai
+      if (filter.preventFutureDates) {
+        baseConfig.maxDate = formatToYMD(today);
+      }
+    } else {
+      // Ngày bắt đầu phải ≤ ngày kết thúc
+      const toDate = formatToDate(activeRange.to) || maxDate;
+      if (toDate) {
+        baseConfig.maxDate = formatToYMD(toDate);
+      }
+      
+      // Nếu có cả minDate từ filter và ràng buộc không quá khứ
+      if (filter.preventPastDates) {
+        baseConfig.minDate = formatToYMD(today);
+      }
+    }
+  }
+
+  return baseConfig;
+};
+
+const closeFilters = () => {
+    showFilters.value = false;
+    showSearchFields.value = false;
+};
 
 // State
 const searchQuery = ref('');
@@ -585,6 +787,80 @@ const toggleActionMenu = (id, event) => {
     activeActionMenu.value = null
   }
 
+const dateRangeErrors = ref({});
+const numberRangeErrors = ref({});
+
+// Initialize filters
+const initializeFilters = () => {
+    props.filterOptions.forEach(filter => {
+        if (filter.type === 'date-range' || filter.type === 'number-range') {
+            if (!activeFilters.value[filter.field]) {
+                activeFilters.value[filter.field] = { from: null, to: null };
+            }
+        } else if (!activeFilters.value[filter.field]) {
+            activeFilters.value[filter.field] = null;
+        }
+    });
+};
+
+// Validate number range
+const validateNumberRange = (field) => {
+    const range = activeFilters.value[field];
+    if (!range) return;
+    
+    const filterConfig = props.filterOptions.find(f => f.field === field);
+    
+    // Check if min is greater than max
+    if (range.min !== null && range.max !== null && range.min > range.max) {
+        numberRangeErrors.value[field] = t('errors.min_greater_than_max');
+        return;
+    }
+    
+    // Check against min/max limits if defined
+    if (filterConfig?.minLimit !== undefined && range.min !== null && range.min < filterConfig.minLimit) {
+        numberRangeErrors.value[field] = t('errors.min_below_limit', { limit: filterConfig.minLimit });
+        return;
+    }
+    
+    if (filterConfig?.maxLimit !== undefined && range.max !== null && range.max > filterConfig.maxLimit) {
+        numberRangeErrors.value[field] = t('errors.max_above_limit', { limit: filterConfig.maxLimit });
+        return;
+    }
+    
+    // Clear error if validation passes
+    delete numberRangeErrors.value[field];
+};
+
+// Validate date range (keep your existing implementation)
+const validateDateRange = (field) => {
+    // ... (your existing date range validation code)
+};
+
+// Check if there are any errors
+const hasErrors = computed(() => {
+    return Object.keys(dateRangeErrors.value).length > 0 || 
+           Object.keys(numberRangeErrors.value).length > 0;
+});
+
+// Count active filters
+const activeFilterCount = computed(() => {
+    let count = 0;
+    for (const key in activeFilters.value) {
+        if (activeFilters.value[key] !== null && 
+            activeFilters.value[key] !== undefined && 
+            activeFilters.value[key] !== '' &&
+            !(typeof activeFilters.value[key] === 'object' && 
+              Object.values(activeFilters.value[key]).every(val => val === null || val === '' || val === undefined))) {
+            count++;
+        }
+    }
+    return count;
+});
+
+
+
+// Initialize on mount
+initializeFilters();
 // Initialize columns with visibility and filter options
 onMounted(() => {
     allColumns.value = props.columns.map(column => ({

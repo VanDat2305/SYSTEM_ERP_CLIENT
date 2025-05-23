@@ -28,6 +28,16 @@ const systemRoutes: Array<RouteRecordRaw> = [
             requiresAuth: true, permissions: ['users.view'] 
         },
     },
+    {
+        path: '/system/logs',
+        name: 'system.logs',
+        component: () => import('@/modules/system/logs/views/LogView.vue'),
+        meta: { 
+            title: 'menu.activity_logs',
+            requiresAuth: true, permissions: ['logs.view'] 
+        },
+    },
+    
 ];
 
 export default systemRoutes;

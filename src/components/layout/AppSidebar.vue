@@ -207,7 +207,7 @@ const menuGroups = [
           { name: t("menu.permissions"), path: "/system/permissions" },
           // { name: t("menu.security_settings"), path: "/system/security" },
           // { name: t("menu.access_settings"), path: "/system/access" },
-          // { name: t("menu.system_logs"), path: "/system/logs" },
+          { name: t("menu.activity_logs"), path: "/system/logs" },
         ],
       },
       {

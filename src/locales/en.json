@@ -96,7 +96,9 @@
         "employees": "Employees",
         "dynamiclists": "Dynamic Lists System",
         "objects": "Dynamic Lists System",
-        "account_settings": "Account Settings"
+        "account_settings": "Account Settings",
+        "logs": "Logs",
+        "activity_logs": "Activity Logs"
     },
     "auth": {
         "logout_success": "Logout successful",
@@ -208,7 +210,9 @@
         "previous": "Previous",
         "next": "Next",
         "page": "Page",
-        "of": "of"
+        "of": "of",
+        "from": "from",
+        "to": "to"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -371,14 +375,13 @@
         "two_factor_authentication_description": "Two-Factor Authentication adds an extra layer of security to your account. When enabled, you will need to enter a verification code sent to your email or phone in addition to your password.",
         "history": {
             "activity_history": "Activity history",
-            "no_data":"No data available",
+            "no_data": "No data available",
             "fetch_failed": "Failed to fetch account history",
             "ip_address": "IP",
             "new_values": "New values",
             "old_values": "Old values",
             "note": "Note"
         }
-
     },
     "two_factor": {
         "title": "Two-Factor",
@@ -449,7 +452,6 @@
             "failed_to_load_content": "Failed to load content",
             "clipboard_copied": "Copied {0} to clipboard",
             "clipboard_copy_failed": "Failed to copy to clipboard"
-
         },
         "placeholders": {
             "folder_name": "Enter folder name"
@@ -545,6 +547,47 @@
             "preview_error": "Error previewing data",
             "import_success": "Import successful!",
             "import_error": "Error importing data"
+        }
+    },
+    "activity_logs": {
+        "title": "Activity Logs",
+        "fetch_failed": "Failed to fetch activity logs",
+        "delete_confirmation": "Are you sure you want to delete log '{description}'?",
+        "delete_selected_confirmation": "Are you sure you want to delete {count} selected logs?",
+        "delete_success": "Log deleted successfully",
+        "delete_failed": "Failed to delete log",
+        "export_started": "Exporting activity logs...",
+        "export_selected_started": "Exporting {count} selected logs...",
+        "details": "Log Details",
+        "changes": "Changes",
+        "before": "Before",
+        "after": "After",
+        "note": "Note",
+        "system": "System",
+        "fields": {
+            "name": "Name",
+            "description": "Description",
+            "user": "User activity",
+            "type": "Type",
+            "time": "Time",
+            "ip": "IP Address",
+            "user_agent": "User Agent"
+        },
+        "filters": {
+            "date_range": "Date Range",
+            "type": "Log Type",
+            "created_at": "Created At"
+        },
+        "types": {
+            "login": "Login",
+            "logout": "Logout",
+            "users.created": "User Created",
+            "users.updated": "User Updated",
+            "users.deleted": "User Deleted",
+            "roles.created": "Role Created",
+            "roles.updated": "Role Updated",
+            "roles.deleted": "Role Deleted",
+            "permissions.updated": "Permissions Updated"
         }
     }
 }
