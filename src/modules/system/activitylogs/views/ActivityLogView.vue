@@ -27,7 +27,7 @@ import { useI18n } from 'vue-i18n'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import PageBreadcrumb from "@/components/common/PageBreadcrumb.vue"
 import CustomTable from "@/components/tables/CustomTable.vue"
-import ActivityLogModal from "@/modules/system/logs/components/ActivityLogModal.vue"
+import ActivityLogModal from "@/modules/system/activitylogs/components/ActivityLogModal.vue"
 import ConfirmModal from '@/components/modals/ConfirmModal.vue'
 import { EyeIcon, TrashIcon, DownloadIcon } from '@/icons'
 import { api } from '@/utils/api'
