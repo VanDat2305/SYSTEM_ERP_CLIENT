@@ -31,7 +31,7 @@ const systemRoutes: Array<RouteRecordRaw> = [
     {
         path: '/system/logs',
         name: 'system.logs',
-        component: () => import('@/modules/system/logs/views/LogView.vue'),
+        component: () => import('@/modules/system/logs/views/ActivityLogView.vue'),
         meta: { 
             title: 'menu.activity_logs',
             requiresAuth: true, permissions: ['logs.view'] 
