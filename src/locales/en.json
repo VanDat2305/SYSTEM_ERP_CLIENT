@@ -212,7 +212,11 @@
         "page": "Page",
         "of": "of",
         "from": "from",
-        "to": "to"
+        "to": "to",
+        "processing": "Processing",
+        "yes_change": "Yes, Change It",
+        "logout_now": "Logout Now",
+        "logout_later": "Logout Later"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -381,7 +385,32 @@
             "new_values": "New values",
             "old_values": "Old values",
             "note": "Note"
-        }
+        },
+        "change_password": "Change Password",
+        "current_password": "Current Password",
+        "current_password_placeholder": "Enter your current password",
+        "new_password": "New Password",
+        "new_password_placeholder": "Enter your new password",
+        "confirm_new_password": "Confirm New Password",
+        "confirm_new_password_placeholder": "Re-enter your new password",
+        "change_password_button": "Change Password",
+        "password_requirements": "Password Requirements",
+        "password_min_length": "At least {length} characters",
+        "password_has_number": "Contains at least one number",
+        "password_has_special_char": "Contains at least one special character",
+        "password_has_upper_case": "Contains at least one uppercase letter",
+        "password_changed_success": "Your password has been changed successfully!",
+        "password_change_failed": "Failed to change password. Please try again.",
+        "confirm_password_change_title": "Confirm Password Change",
+        "confirm_password_change_message": "Are you sure you want to change your password?",
+        "logout_after_change_title": "Security Recommendation",
+        "logout_after_change_message": "For security reasons, we recommend logging out of all devices after changing your password. Would you like to logout now?"
+    },
+    "password_strength": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
     },
     "two_factor": {
         "title": "Two-Factor",

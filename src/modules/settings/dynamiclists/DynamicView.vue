@@ -394,7 +394,9 @@ function confirmDeleteValue(value: any) {
 async function deleteType() {
   try {
     setLoading?.(true)
-    const response = await api.delete(`/object-types/${itemToDelete.value.id}`)
+    const response = await api.delete(`/object-types/${itemToDelete.value.id}`,{
+      params: { ids : [itemToDelete.value.id] }
+    })
     notificationService.success(response.data.message)
     if (selectedType.value?.id === itemToDelete.value.id) {
       selectedType.value = null
@@ -412,7 +414,9 @@ async function deleteType() {
 async function deleteValue() {
   try {
     setLoading?.(true)
-    const response = await api.delete(`/objects/${itemToDelete.value.id}`)
+    const response = await api.delete(`/objects/${itemToDelete.value.id}`, {
+      params: { ids : [itemToDelete.value.id] }
+    })
     notificationService.success(response.data.message)
     fetchObjectsByType(selectedType.value.id)
   } catch (error: any) {

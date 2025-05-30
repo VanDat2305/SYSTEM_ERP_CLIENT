@@ -196,20 +196,22 @@ const toggleStatus = () => {
 
 const validateField = (field) => {
   if (field === 'code') {
+    errors.value.code = errors.value.code || [];
     if (!formData.value.code.trim()) {
-      errors.value.code = t('validation.required', { field: t('dynamic_lists.catalog-fields.code') });
+      errors.value.code[0] = t('validation.required', { field: t('dynamic_lists.catalog-fields.code') });
     } else if (formData.value.code.length > 50) {
-      errors.value.code = t('validation.max_length', { field: t('dynamic_lists.catalog-fields.code'), count: 50 });
+      errors.value.code[0] = t('validation.max_length', { field: t('dynamic_lists.catalog-fields.code'), count: 50 });
     } else {
       errors.value.code = '';
     }
   }
   
   if (field === 'name') {
+    errors.value.name = errors.value.name || [];
     if (!formData.value.name.trim()) {
-      errors.value.name = t('validation.required', { field: t('dynamic_lists.catalog-fields.name') });
+      errors.value.name[0] = t('validation.required', { field: t('dynamic_lists.catalog-fields.name') });
     } else if (formData.value.name.length > 255) {
-      errors.value.name = t('validation.max_length', { field: t('dynamic_lists.catalog-fields.name'), count: 255 });
+      errors.value.name[0] = t('validation.max_length', { field: t('dynamic_lists.catalog-fields.name'), count: 255 });
     } else {
       errors.value.name = '';
     }

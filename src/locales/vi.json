@@ -212,7 +212,11 @@
     "page": "Trang",
     "of": "của",
     "from": "từ",
-    "to": "đến"
+    "to": "đến",
+    "processing": "Đang xử lý",
+    "yes_change": "Có, đổi mật khẩu",
+    "logout_now": "Đăng xuất ngay",
+    "logout_later": "Đăng xuất sau"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -382,7 +386,32 @@
       "new_values": "Giá trị mới",
       "old_values": "Giá trị cũ",
       "note": "Ghi chú"
-    }
+    },
+    "change_password": "Đổi Mật Khẩu",
+    "current_password": "Mật Khẩu Hiện Tại",
+    "current_password_placeholder": "Nhập mật khẩu hiện tại",
+    "new_password": "Mật Khẩu Mới",
+    "new_password_placeholder": "Nhập mật khẩu mới",
+    "confirm_new_password": "Xác Nhận Mật Khẩu Mới",
+    "confirm_new_password_placeholder": "Nhập lại mật khẩu mới",
+    "change_password_button": "Đổi Mật Khẩu",
+    "password_requirements": "Yêu Cầu Mật Khẩu",
+    "password_min_length": "Ít nhất {length} ký tự",
+    "password_has_number": "Chứa ít nhất một số",
+    "password_has_special_char": "Chứa ít nhất một ký tự đặc biệt",
+    "password_has_upper_case": "Chứa ít nhất một chữ hoa",
+    "password_changed_success": "Đổi mật khẩu thành công!",
+    "password_change_failed": "Đổi mật khẩu thất bại. Vui lòng thử lại.",
+    "confirm_password_change_title": "Xác Nhận Đổi Mật Khẩu",
+    "confirm_password_change_message": "Bạn có chắc chắn muốn đổi mật khẩu?",
+    "logout_after_change_title": "Khuyến Nghị Bảo Mật",
+    "logout_after_change_message": "Vì lý do bảo mật, chúng tôi khuyên bạn nên đăng xuất khỏi tất cả thiết bị sau khi đổi mật khẩu. Bạn có muốn đăng xuất ngay bây giờ?"
+  },
+  "password_strength": {
+    "weak": "Yếu",
+    "fair": "Trung bình",
+    "good": "Tốt",
+    "strong": "Mạnh"
   },
   "two_factor": {
     "title": "Xác thực hai yếu tố",
@@ -550,21 +579,20 @@
       }
     },
     "import": {
-    "type_title": "Nhập Loại Danh Mục",
-    "value_title": "Nhập Giá Trị Danh Mục",
-    "download_template": "Tải file mẫu",
-    "download": "Tải xuống",
-    "select_file": "Chọn file Excel",
-    "choose_file": "Chọn file...",
-    "preview": "Xem trước",
-    "confirm_import": "Xác nhận Import",
-    "importing": "Đang import...",
-    "template_download_error": "Lỗi khi tải file mẫu",
-    "preview_error": "Lỗi khi xem trước dữ liệu",
-    "import_success": "Import thành công!",
-    "import_error": "Lỗi khi import dữ liệu"
-  }
-
+      "type_title": "Nhập Loại Danh Mục",
+      "value_title": "Nhập Giá Trị Danh Mục",
+      "download_template": "Tải file mẫu",
+      "download": "Tải xuống",
+      "select_file": "Chọn file Excel",
+      "choose_file": "Chọn file...",
+      "preview": "Xem trước",
+      "confirm_import": "Xác nhận Import",
+      "importing": "Đang import...",
+      "template_download_error": "Lỗi khi tải file mẫu",
+      "preview_error": "Lỗi khi xem trước dữ liệu",
+      "import_success": "Import thành công!",
+      "import_error": "Lỗi khi import dữ liệu"
+    }
   },
   "activity_logs": {
     "title": "Nhật ký hoạt động",
