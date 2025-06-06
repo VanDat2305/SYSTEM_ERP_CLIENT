@@ -28,6 +28,15 @@ const router = createRouter({
       },
     },
     {
+      path: '/service-packages',
+      name: 'service_packages.name',
+      component: () => import('@/modules/service/views/ServicePackageView.vue'),
+      meta: { 
+          title: 'service_packages.title',
+          requiresAuth: true, permissions: ['service_packages.view'] 
+      },
+    },
+    {
       path: "/calendar",
       name: "Calendar",
       component: () => import("../views/Others/Calendar.vue"),

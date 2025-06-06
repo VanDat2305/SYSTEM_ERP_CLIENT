@@ -3,10 +3,12 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { api } from '@/utils/api';
 import { notificationService } from '@/services/notification'
+import { useCategorySystem } from '@/stores/categorySystem';
 
 export const useAuth = () => {
   const router = useRouter();
   const authStore = useAuthStore();
+  const categorySystem = useCategorySystem();
   const isLoading = ref(false);
   const error = ref(null);
 
@@ -39,6 +41,7 @@ export const useAuth = () => {
           rememberLogin : rememberLogin,
           refresh_token: data.refresh_token
         });
+        await categorySystem.fetchCategories();
         
         return router.push({ name: 'two-factor-challenge' });
       }
@@ -53,6 +56,8 @@ export const useAuth = () => {
       authStore.setRefreshToken(data.refresh_token, rememberLogin);
       
       const defaultRoute = getDefaultRoute(data.menu);
+      
+      await categorySystem.fetchCategories();
       
       const matchedRoute = router.getRoutes().find(r => r.name === defaultRoute.name);
       const nextRoute = (matchedRoute || (matchedRoute != undefined)) ? defaultRoute : '/'
@@ -70,6 +75,7 @@ export const useAuth = () => {
     try {
       await api.post('/logout');
       authStore.clear();
+      categorySystem.clearCategories();
       await router.push({ name: 'signin' });
     } catch (err) {
       console.error('Logout error:', err);

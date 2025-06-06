@@ -50,6 +50,8 @@ import SystemIcon from "./SystemIcon.vue";
 import EyeIcon from "./EyeIcon.vue";
 import PencilIcon from "./PencilIcon.vue";
 import DownloadIcon from "./DownloadIcon.vue";
+import ServiceIcon from "./ServiceIcon.vue";
+
 
 export {
   BellIcon,
@@ -103,5 +105,6 @@ export {
   DashboardIcon,
   EyeIcon,
   PencilIcon,
-  DownloadIcon
+  DownloadIcon,
+  ServiceIcon
 };

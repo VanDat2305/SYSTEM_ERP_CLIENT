@@ -20,7 +20,10 @@ export const Permission = {
     FOLDER_DELETE: 'folders.delete',
     LOG_VIEW: 'logs.view',
     LOG_DELETE: 'logs.delete',
-
+    SERVICE_PACKAGE_VIEW: 'service_packages.view',
+    SERVICE_PACKAGE_CREATE: 'service_packages.create',
+    SERVICE_PACKAGE_UPDATE: 'service_packages.update',
+    SERVICE_PACKAGE_DELETE: 'service_packages.delete'
   } as const;
 
   export interface MenuItem {

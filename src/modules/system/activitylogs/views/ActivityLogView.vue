@@ -119,7 +119,7 @@ const searchOptions = [
 const filterOptions: any[] = [
     {
         field: 'created_at',
-        label: 'Ngày tạo',
+        label: 'Thực thiện từ ngày đến ngày',
         type: 'date-range',
         fields: {
             from: 'created_at_from', // key trong activeFilters
@@ -127,18 +127,18 @@ const filterOptions: any[] = [
         },
         preventFutureDates: true, // Ngăn không cho chọn ngày trong tương lai
     },
-    {
-        field: 'log_name',
-        label: 'activity_logs.filters.type',
-        type: 'select',
-        options: [
-            { value: 'login', label: 'activity_logs.types.login' },
-            { value: 'logout', label: 'activity_logs.types.logout' },
-            // { value: 'users.created', label: 'activity_logs.types.users.created' },
-            // { value: 'users.updated', label: 'activity_logs.types.users.updated' },
-            // { value: 'users.deleted', label: 'activity_logs.types.users.deleted' }
-        ]
-    }
+    // {
+    //     field: 'log_name',
+    //     label: 'activity_logs.filters.type',
+    //     type: 'select',
+    //     options: [
+    //         { value: 'login', label: 'activity_logs.types.login' },
+    //         { value: 'logout', label: 'activity_logs.types.logout' },
+    //         // { value: 'users.created', label: 'activity_logs.types.users.created' },
+    //         // { value: 'users.updated', label: 'activity_logs.types.users.updated' },
+    //         // { value: 'users.deleted', label: 'activity_logs.types.users.deleted' }
+    //     ]
+    // }
 ]
 
 // Actions Configuration

@@ -26,8 +26,8 @@
                         class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
                         @click="showCurrentPassword = !showCurrentPassword"
                     >
-                        <EyeIcon v-if="!showCurrentPassword" class="h-5 w-5" />
-                        <EyeSlashIcon v-else class="h-5 w-5" />
+                        <!-- <EyeIcon v-if="!showCurrentPassword" class="h-5 w-5" /> -->
+                        <!-- <EyeSlashIcon v-else class="h-5 w-5" /> -->
                     </button>
                 </div>
                 <p v-if="errors.current_password" class="mt-1 text-sm text-red-600 dark:text-red-400">

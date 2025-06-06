@@ -80,7 +80,7 @@
   const currentMode = ref<'add' | 'edit' | 'view'>('add')
   const currentPermission = ref<Partial<Permission>>({
     name: '',
-    guard_name: 'web',
+    guard_name: 'api',
     description: ''
   })
   const setLoading = inject<(isLoading: boolean) => void>('setLoading')
@@ -245,7 +245,7 @@
   }
   const openAddPermissionModal = () => {
     currentMode.value = 'add'
-    currentPermission.value = { name: '', guard_name: 'web', description: '' }
+    currentPermission.value = { name: '', guard_name: 'api', description: '' }
     isModalOpen.value = true
   }
   

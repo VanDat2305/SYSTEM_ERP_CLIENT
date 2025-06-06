@@ -241,6 +241,11 @@
   }, { deep: true });
   
   watch(() => props.currentPermission, (permission) => {
+    if (!props.mode || props.mode === 'add') {
+      resetForm();
+      return;
+    }
+  
     if (permission && (isViewMode.value || isEditMode.value)) {
       formData.value = {
         id: permission.id,

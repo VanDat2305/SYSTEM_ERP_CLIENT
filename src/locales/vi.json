@@ -98,7 +98,8 @@
     "objects": "Danh mục hệ thống",
     "account_settings": "Cài đặt tài khoản",
     "logs": "Nhật ký",
-    "activity_logs": "Nhật ký hoạt động"
+    "activity_logs": "Nhật ký hoạt động",
+    "service_packages": "Gói dịch vụ"
   },
   "auth": {
     "logout_success": "Đăng xuất thành công",
@@ -634,5 +635,56 @@
       "roles.deleted": "Xóa vai trò",
       "permissions.updated": "Cập nhật quyền"
     }
+  },
+  "service_packages": {
+    "title": "Gói dịch vụ",
+    "add_title": "Thêm gói dịch vụ",
+    "edit_title": "Chỉnh sửa gói dịch vụ",
+    "delete_title": "Xóa gói dịch vụ",
+    "view_title": "Xem gói dịch vụ",
+    "basic_info": "Thông tin cơ bản",
+    "features": "Tính năng",
+    "no_packages": "Không có gói dịch vụ nào",
+    "fetch_success": "Lấy danh sách gói dịch vụ thành công",
+    "fetch_failed": "Lấy danh sách gói dịch vụ không thành công",
+    "add_feature": "Thêm tính năng",
+    "no_features": "Không có tính năng nào",
+    "feature": "Tính năng",
+    "fields": {
+      "code": "Mã",
+      "name": "Tên",
+      "price": "Giá",
+      "billing_cycle": "Chu kỳ thanh toán",
+      "status": "Trạng thái",
+      "type_service": "Loại dịch vụ",
+      "customer_type": "Loại khách hàng",
+      "description": "Mô tả",
+      "currency": "Tiền tệ",
+      "display_order": "Thứ tự hiển thị",
+
+      "feature_key": "Khóa tính năng",
+      "feature_type": "Loại",
+      "features": "Tính năng",
+      "feature_name": "Tên tính năng",
+      "limit_value": "Giá trị giới hạn",
+      "is_optional": "Tùy chọn",
+      "is_customizable": "Có thể tùy chỉnh",
+      "unit": "Đơn vị tính"
+
+    },
+    "placeholders": {
+      "code": "Nhập mã gói dịch vụ...",
+      "name": "Nhập tên gói dịch vụ...",
+      "price": "Nhập giá gói dịch vụ...",
+      "billing_cycle": "Chọn chu kỳ thanh toán...",
+      "feature_name": "Nhập tên tính năng...",
+      "limit_value": "Nhập giá trị giới hạn...",
+      "description": "Nhập mô tả gói dịch vụ..."
+    },
+    "messages": {
+        "delete_success": "xóa thành công",
+        "delete_failed": "xóa không thành công"
+    }
   }
+
 }

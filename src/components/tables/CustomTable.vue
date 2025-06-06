@@ -6,12 +6,12 @@
             <div class="flex flex-wrap items-center gap-3">
                 <!-- Bulk actions -->
                 <div v-if="hasSelection && selectedRows.length > 0 && bulkActions.length > 0" class="flex items-center gap-2">
-                    <span class="text-sm text-gray-600 dark:text-gray-400">
+                    <span class="text-xs text-gray-600 dark:text-gray-400">
                         {{ $t('selected_count', { count: selectedRows.length }) }}
                     </span>
                     <div class="relative" v-if="bulkActions.length > 0">
                         <button @click="showBulkActions = !showBulkActions"
-                            class="flex items-center gap-1 px-3 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                            class="flex items-center gap-1 px-3 py-1.5 text-xs rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                             <span>{{ $t('bulk_actions') }}</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -20,7 +20,7 @@
                         <div @mouseleave="showBulkActions = false" v-if="showBulkActions" class="absolute z-10 mt-1 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                             <div class="py-1">
                                 <button v-for="action in bulkActions" :key="action.name" @click="handleBulkAction(action)"
-                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    class="block w-full text-left px-4 py-2 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     {{ $t(action.name) }}
                                 </button>
                             </div>
@@ -30,7 +30,7 @@
                         <!-- Column visibility toggle -->
                     <div class="relative">
                     <button @click="showColumnMenu = !showColumnMenu"
-                        class="flex items-center gap-1 px-3 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        class="flex items-center gap-1 px-3 py-1.5 text-xs rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
                         <span>{{ $t('columns') }}</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -38,7 +38,7 @@
                     </button>
                     <div @mouseleave="showColumnMenu = false" v-if="showColumnMenu" class="absolute z-10 mt-1 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                         <div class="py-1">
-                            <div v-for="column in allColumns" :key="column.field" class="px-4 py-2 text-sm flex items-center">
+                            <div v-for="column in allColumns" :key="column.field" class="px-4 py-2 text-xs flex items-center">
                                 <input type="checkbox" :id="`col-${column.field}`" v-model="column.visible" 
                                     class="rounded text-blue-500 focus:ring-blue-500 mr-2">
                                 <label :for="`col-${column.field}`" class="text-gray-700 dark:text-gray-300 cursor-pointer">
@@ -59,14 +59,14 @@
                         </svg>
                     </span>
                     <input v-model="searchQuery" @input="filterData" type="text" :placeholder="$t('search')"
-                        class="w-full pl-10 pr-4 py-2 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        class="w-full pl-10 pr-4 py-2 text-xs rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div> -->
                 <!-- Phần tìm kiếm - thay thế phần search hiện tại -->
                 <div class="relative w-full sm:w-200">
                     <div class="flex rounded-md shadow-sm">
                         <!-- Dropdown chọn field search -->
                         <button v-if="searchOptions.length > 1" @click="showSearchFields = !showSearchFields"
-                            class="px-3 py-2 text-sm rounded-l-md border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            class="px-3 py-2 text-xs rounded-l-md border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
                             {{ getSearchFieldLabel(selectedSearchField) }}
                             <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -78,7 +78,7 @@
                             <div class="py-1">
                                 <button v-for="option in searchOptions" :key="option.field" 
                                     @click="selectedSearchField = option.field; showSearchFields = false"
-                                    class="block w-full  text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    class="block w-full  text-left px-4 py-2 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                                     {{ option.label }}
                                 </button>
                             </div>
@@ -92,21 +92,22 @@
                                 </svg>
                             </span>
                             <input v-model="searchQuery" @change="filterData" type="text" :placeholder="$t('search')"
-                                class="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                :class="{ 'rounded-l-md': searchOptions.length <= 1, 'rounded-r-md': (filterOptions.length <= 1 || !showRefreshButton) }" />
+                                class="w-full pl-10 pr-4 py-2 text-xs border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                :class="{ 'rounded-l-md': searchOptions.length <= 1, 'rounded-r-md': (filterOptions.length <= 1 || !showRefreshButton), 'rounded-r-none' : showRefreshButton ||  filterOptions.length > 0}" />
                         </div>
                         
                         <!-- Nút filter -->
                         <button  @click="showFilters = !showFilters"
                             v-if="filterOptions.length > 0"
-                            class="px-3 py-2 text-sm rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            :class="{'rounded-r-none': showRefreshButton}"
+                            class="px-3 py-2 text-xs rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
                             </svg>
                         </button>
                         <button @click="$emit('refresh')"
                             v-if="showRefreshButton"
-                            class="px-3 py-2 text-sm rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            class="px-3 py-2 text-xs rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
                             :title="$t('common.refresh')">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -121,7 +122,7 @@
                 class="absolute z-99999 top-10 mt-1 w-full sm:w-96 right-10 rounded-lg shadow-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4"
             >
                <div class="flex justify-end">
-                    <button @click="showFilters = false" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-sm">
+                    <button @click="showFilters = false" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-xs">
                         ✕
                     </button>
                 </div>
@@ -133,22 +134,30 @@
                             'sm:col-span-2': filter.type === 'date-range' || filter.type === 'number-range'
                         }]"
                     >
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label class="block text-xs font text-gray-700 dark:text-gray-300 mb-2">
                             {{ t(filter.label) }}
                             <span v-if="filter.required" class="text-red-500">*</span>
                         </label>
-                        
+                        <SelectSearch
+                            v-if="filter.type === 'select'" 
+                             v-model="activeFilters[filter.field]"
+                             :modelValue="activeFilters[filter.field] || null"
+                            :options="filter.options"
+                            :placeholder="$t('common.select')"
+                            :search-placeholder="$t('common.search')"
+                            clearable
+                        />
                         <!-- Select filter -->
-                        <select 
+                        <!-- <select 
                             v-if="filter.type === 'select'" 
                             v-model="activeFilters[filter.field]"
-                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs py-2 px-3"
                         >
-                            <option value="">{{ $t('common.all') }}</option>
+                            <option value="" selected>{{ $t('common.all') }}</option>
                             <option v-for="option in filter.options" :key="option.value" :value="option.value">
                                 {{ t(option.label) }}
                             </option>
-                        </select>
+                        </select> -->
                         
                         <!-- Single Date filter -->
                         <flat-pickr 
@@ -161,7 +170,7 @@
                                 maxDate: filter.maxDate || null,
                                 minDate: filter.minDate || null
                             }"
-                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs py-2 px-3"
                         />
                         
                         <!-- Date Range filter -->
@@ -170,14 +179,14 @@
                             v-model="activeFilters[filter.field].from"
                             :config="getDatePickerConfig(filter, 'from')"
                             @on-change="() => validateDateRange(filter.field)"
-                            class="w-full col-span-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                            class="w-full col-span-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs py-2 px-3"
                             placeholder='dd/mm/yyyy'
                         />
                         <flat-pickr 
                             v-model="activeFilters[filter.field].to"
                             :config="getDatePickerConfig(filter, 'to')"
                             @on-change="() => validateDateRange(filter.field)"
-                            class="w-full col-span-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                            class="w-full col-span-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs py-2 px-3"
                             placeholder='dd/mm/yyyy'
                         />
                         <p v-if="dateRangeErrors[filter.field]" class="col-span-2 text-xs text-red-500 mt-1">
@@ -192,7 +201,7 @@
                                 type="checkbox"
                                 class="h-4 w-4 rounded text-blue-500 focus:ring-blue-500 border-gray-300 dark:border-gray-600"
                             >
-                            <label class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ $t('common.enabled') }}</label>
+                            <label class="ml-2 text-xs text-gray-700 dark:text-gray-300">{{ $t('common.enabled') }}</label>
                         </div>
                         
                         <!-- Text input filter -->
@@ -201,7 +210,7 @@
                             v-model="activeFilters[filter.field]" 
                             type="text"
                             :placeholder="filter.placeholder || ''"
-                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs py-2 px-3"
                         >
                         
                         <!-- Number range filter - Improved version -->
@@ -214,7 +223,7 @@
                                     :placeholder="filter.minPlaceholder || $t('common.min')"
                                     :min="filter.minLimit"
                                     :max="filter.maxLimit"
-                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs py-2 px-3"
                                     @input="validateNumberRange(filter.field)"
                                 >
                             </div>
@@ -226,7 +235,7 @@
                                     :placeholder="filter.maxPlaceholder || $t('common.max')"
                                     :min="filter.minLimit"
                                     :max="filter.maxLimit"
-                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm py-2 px-3"
+                                    class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs py-2 px-3"
                                     @input="validateNumberRange(filter.field)"
                                 >
                             </div>
@@ -240,7 +249,7 @@
                 <div class="flex justify-between items-center mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
                     <button 
                         @click="resetFilters" 
-                        class="px-4 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                        class="px-4 py-2 text-xs rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     >
                         {{ $t('common.reset') }}
                     </button>
@@ -250,7 +259,7 @@
                     <button 
                         @click="applyFilters" 
                         :disabled="hasErrors"
-                        class="px-4 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
+                        class="px-4 py-2 text-xs rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors"
                     >
                         {{ $t('common.apply') }}
                     </button>
@@ -259,7 +268,7 @@
 
                 <!-- Add button and other actions -->
                 <button v-if="showAddButton" @click="emit('add')"
-                    class="flex items-center gap-1 px-3 py-2 text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    class="flex items-center gap-1 px-3 py-2 text-xs rounded-md bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
@@ -268,7 +277,7 @@
 
                 <!-- Export button -->
                 <button v-if="showExport" @click="exportData"
-                    class="flex items-center gap-1 px-3 py-2 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    class="flex items-center gap-1 px-3 py-2 text-xs rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                     </svg>
@@ -279,7 +288,7 @@
 
         <!-- Bảng -->
         <div class="max-w-full overflow-x-auto custom-scrollbar table-scroll-container">
-            <table class="min-w-full text-sm">
+            <table class="min-w-full text-xs">
                 <thead class="sticky top-0 bg-white dark:bg-gray-800 z-9">
                     <!-- Header row -->
                 <tr class="border-b border-gray-200 dark:border-gray-700">
@@ -381,7 +390,7 @@
                             <div class="py-1">
                             <button v-for="(action, index) in props.actions" :key="index"
                                 @click="() => { action.handler(row); closeActionMenu(); }"
-                                class="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100 dark:hover:bg-gray-600"
+                                class="flex items-center w-full px-4 py-2 text-xs text-left hover:bg-gray-100 dark:hover:bg-gray-600"
                                 :class="action.class" :title="action.tooltip">
                                 <component :is="action.icon" class="w-4 h-4 mr-2" />
                                 {{ t(action.tooltip) }}
@@ -399,9 +408,9 @@
                                 <svg class="w-10 h-10 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                <p class="text-sm">{{ $t('no_data') }}</p>
+                                <p class="text-xs">{{ $t('no_data') }}</p>
                                 <!-- <button v-if="showAddButton" @click="emit('add')"
-                                    class="mt-2 px-3 py-1.5 text-sm rounded-md bg-blue-500 text-white hover:bg-blue-600">
+                                    class="mt-2 px-3 py-1.5 text-xs rounded-md bg-blue-500 text-white hover:bg-blue-600">
                                     {{ $t('add_first_item') }}
                                 </button> -->
                             </div>
@@ -411,17 +420,17 @@
                 <tfoot>
                     <tr><td colspan="100%">
                     <!-- Phân trang -->
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-700 text-sm gap-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 py-3 border-t border-gray-200 dark:border-gray-700 text-xs gap-3">
                     <!-- Show entries -->
                     <div class="flex items-center gap-2">
-                        <span class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ $t('show') }}</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ $t('show') }}</span>
                         <div class="relative">
                             <select v-model="pageSize"
-                                class="pl-3 pr-8 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none cursor-pointer transition-colors duration-200">
+                                class="pl-3 pr-8 py-1.5 text-xs rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none cursor-pointer transition-colors duration-200">
                                 <option v-for="size in pageSizeOptions" :value="size" :key="size">{{ size }}</option>
                             </select>
                         </div>
-                        <span class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ $t('entries') }}</span>
+                        <span class="text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ $t('entries') }}</span>
                     </div>
                     <!-- Pagination controls -->
                     <div class="flex items-center gap-1">
@@ -471,14 +480,14 @@
                         </button>
                         <!-- Go to page input -->
                         <div v-if="totalPages > 10" class="flex items-center ml-2 gap-2">
-                            <span class="text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ $t('go_to') }}</span>
+                            <span class="text-xs text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ $t('go_to') }}</span>
                             <input 
                                 v-model.number="goToPage" 
                                 @keyup.enter="goToSpecificPage" 
                                 type="number" 
                                 min="1" 
                                 :max="totalPages"
-                                class="w-16 px-2 py-1.5 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 transition-colors duration-200"
+                                class="w-16 px-2 py-1.5 text-xs rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 transition-colors duration-200"
                                 aria-label="Page number input"
                                 >
                         </div>
@@ -516,6 +525,9 @@ import { ref, computed, watch, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
+import SelectSearch from '@/components/forms/SelectSearch.vue'
+import { useCategorySystem } from '@/stores/categorySystem'
+const categorySystem = useCategorySystem()
 
 const { t } = useI18n();
 
@@ -642,7 +654,8 @@ const emit = defineEmits([
     'bulk-action',
     'server-page-change',
     'server-sort',
-    'server-filter'
+    'server-filter',
+    'refresh'
 ]);
 const selectedSearchField = ref(props.defaultSearchField || (props.searchOptions.length > 0 ? props.searchOptions[0].field : ''));
 const activeFilters = ref({});
@@ -797,6 +810,16 @@ const initializeFilters = () => {
             if (!activeFilters.value[filter.field]) {
                 activeFilters.value[filter.field] = { from: null, to: null };
             }
+        } else if (filter.type === 'select' && filter.getCategory) {
+            if (!categorySystem.loaded) {
+                categorySystem.initCategories();
+            }
+            const options = categorySystem.getItemsByTypeCode(filter.categoryName);
+            filter.options = options.map(option => ({
+                label: option.name,
+                value: option.code
+            }));
+            
         } else if (!activeFilters.value[filter.field]) {
             activeFilters.value[filter.field] = null;
         }
@@ -862,7 +885,7 @@ const activeFilterCount = computed(() => {
 // Initialize on mount
 initializeFilters();
 // Initialize columns with visibility and filter options
-onMounted(() => {
+onMounted(async() => {
     allColumns.value = props.columns.map(column => ({
         field: column.field,
         label: column.label || column.field,

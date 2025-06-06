@@ -669,6 +669,10 @@ watch(() => props.errors, (newErrors) => {
 }, { deep: true });
 
 watch(() => props.currentUser, (user) => {
+  if (props.mode === 'add') {
+    resetForm();
+    return;
+  }
   if (user && (isViewMode.value || isEditMode.value)) {
     formData.value = {
       id: user.id,

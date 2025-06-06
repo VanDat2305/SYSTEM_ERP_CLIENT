@@ -385,6 +385,10 @@ watch(() => props.errors, (newErrors) => {
 }, { deep: true });
 
 watch(() => props.currentRole, (role) => {
+  if (props.mode == 'add') {
+    resetForm();
+    return;
+  }
   if (role && (isViewMode.value || isEditMode.value)) {
     formData.value = {
       id: role.id,

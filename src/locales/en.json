@@ -98,7 +98,8 @@
         "objects": "Dynamic Lists System",
         "account_settings": "Account Settings",
         "logs": "Logs",
-        "activity_logs": "Activity Logs"
+        "activity_logs": "Activity Logs",
+        "service_packages": "Service Packages"
     },
     "auth": {
         "logout_success": "Logout successful",
@@ -617,6 +618,56 @@
             "roles.updated": "Role Updated",
             "roles.deleted": "Role Deleted",
             "permissions.updated": "Permissions Updated"
+        }
+    },
+    "service_packages": {
+        "title": "Service Packages",
+        "add_title": "Add Service Package",
+        "edit_title": "Edit Service Package",
+        "delete_title": "Delete Service Package",
+        "view_title": "View Service Package",
+        "basic_info": "Basic Information",
+        "features": "Features",
+        "no_packages": "No service packages available",
+        "fetch_success": "Service packages fetched successfully",
+        "fetch_failed": "Failed to fetch service packages",
+        "add_feature": "Add Feature",
+        "no_features": "No features available",
+        "feature": "Feature",
+        "fields": {
+            "code": "Code",
+            "name": "Name",
+            "price": "Price",
+            "billing_cycle": "Billing Cycle",
+            "status": "Status",
+            "type_service": "Service Type",
+            "customer_type": "Customer Type",
+            "description": "Description",
+            "currency": "Currency",
+            "display_order": "Display Order",
+
+            "feature_key": "Feature Key",
+            "feature_type": "Feature Type",
+            "features": "Features",
+            "feature_name": "Feature Name",
+            "limit_value": "Limit Value",
+            "is_optional": "Is Optional",
+            "is_customizable": "Is Customizable",
+            "unit": "Unit"
+            
+        },
+        "placeholders": {
+            "code": "Enter service package code...",
+            "name": "Enter service package name...",
+            "price": "Enter service package price...",
+            "billing_cycle": "Select billing cycle...",
+            "feature_name": "Enter feature name...",
+            "limit_value": "Enter limit value...",
+            "description": "Enter service package description..."
+        },
+        "messages": {
+            "delete_success": "Service package deleted successfully",
+            "delete_failed": "Failed to delete service package"
         }
     }
 }
