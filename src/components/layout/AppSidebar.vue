@@ -210,6 +210,7 @@ const menuGroups = [
         name: t("menu.system"),
         subItems: [
           { name: t("menu.users"), path: "/system/users" },
+          { name: t("menu.teams"), path: "/system/teams" },
           { name: t("menu.roles"), path: "/system/roles" },
           { name: t("menu.permissions"), path: "/system/permissions" },
           // { name: t("menu.security_settings"), path: "/system/security" },

@@ -23,7 +23,11 @@ export const Permission = {
     SERVICE_PACKAGE_VIEW: 'service_packages.view',
     SERVICE_PACKAGE_CREATE: 'service_packages.create',
     SERVICE_PACKAGE_UPDATE: 'service_packages.update',
-    SERVICE_PACKAGE_DELETE: 'service_packages.delete'
+    SERVICE_PACKAGE_DELETE: 'service_packages.delete',
+    TEAM_VIEW: 'teams.view',
+    TEAM_CREATE: 'teams.create',
+    TEAM_UPDATE: 'teams.update',
+    TEAM_DELETE: 'teams.delete'
   } as const;
 
   export interface MenuItem {

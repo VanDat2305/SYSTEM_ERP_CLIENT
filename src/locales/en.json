@@ -9,6 +9,7 @@
         "en": "English",
         "vi": "Vietnamese"
     },
+    "go_to": "Go to",
     "SearchBar": {
         "placeholder": "Search or type command..."
     },
@@ -99,7 +100,8 @@
         "account_settings": "Account Settings",
         "logs": "Logs",
         "activity_logs": "Activity Logs",
-        "service_packages": "Service Packages"
+        "service_packages": "Service Packages",
+        "teams": "Teams"
     },
     "auth": {
         "logout_success": "Logout successful",
@@ -217,7 +219,11 @@
         "processing": "Processing",
         "yes_change": "Yes, Change It",
         "logout_now": "Logout Now",
-        "logout_later": "Logout Later"
+        "logout_later": "Logout Later",
+        "error": "Error",
+        "success": "Success",
+        "adding": "Adding...",
+        "not_available": "Not available"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -645,7 +651,6 @@
             "description": "Description",
             "currency": "Currency",
             "display_order": "Display Order",
-
             "feature_key": "Feature Key",
             "feature_type": "Feature Type",
             "features": "Features",
@@ -654,7 +659,6 @@
             "is_optional": "Is Optional",
             "is_customizable": "Is Customizable",
             "unit": "Unit"
-            
         },
         "placeholders": {
             "code": "Enter service package code...",
@@ -668,6 +672,47 @@
         "messages": {
             "delete_success": "Service package deleted successfully",
             "delete_failed": "Failed to delete service package"
+        }
+    },
+    "teams": {
+        "title": "Teams",
+        "add_title": "Add Team",
+        "edit_title": "Edit Team",
+        "delete_title": "Delete Team",
+        "view_title": "View Team",
+        "no_teams": "No teams available",
+        "fetch_success": "Teams fetched successfully",
+        "fetch_failed": "Failed to fetch teams",
+        "manage_members": "Manage Members",
+        "add_member": "Add Member",
+        "remove_member": "Remove Member",
+        "select_user": "Select User",
+        "current_members": "Current Members",
+        "no_members": "No members in this team",
+        "team_stats": "Team Statistics",
+        "fields": {
+            "name": "Name",
+            "description": "Description",
+            "members": "Members",
+            "created_at": "Created At",
+            "updated_at": "Updated At",
+            "members_count": "Member Count"
+        },
+        "placeholders": {
+            "name": "Enter team name...",
+            "description": "Enter team description..."
+        },
+        "messages": {
+            "delete_success": "Team deleted successfully.",
+            "delete_failed": "Failed to delete team.",
+            "member_removed_successfully": "Member removed successfully.",
+            "member_removed_failed": "Failed to remove member.",
+            "remove_member_failed": "Failed to remove member. Please try again.",
+            "member_added_successfully": "Member added successfully.",
+            "member_added_failed": "Failed to add member. Please try again.",
+            "role_updated_successfully": "Role updated successfully.",
+            "update_role_failed": "Failed to update role. Please try again.",
+            "fetch_users_failed": "Failed to fetch users for team management."
         }
     }
 }

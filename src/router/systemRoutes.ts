@@ -29,6 +29,15 @@ const systemRoutes: Array<RouteRecordRaw> = [
         },
     },
     {
+        path: '/system/teams',
+        name: 'system.teams',
+        component: () => import('@/modules/system/teams/views/TeamView.vue'),
+        meta: { 
+            title: 'menu.teams',
+            requiresAuth: true, permissions: ['teams.view'] 
+        },
+    },
+    {
         path: '/system/logs',
         name: 'system.logs',
         component: () => import('@/modules/system/activitylogs/views/ActivityLogView.vue'),
