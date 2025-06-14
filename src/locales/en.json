@@ -767,7 +767,8 @@
             "rep_email": "Representative Email",
             "rep_identity_number": "Representative ID Number",
             "rep_note": "Representative Note",
-            "rep_identity_type": "Representative ID Type"
+            "rep_identity_type": "Representative ID Type",
+            "is_primary": "Primary"
         },
         "identity_types": {
             "citizen_id": "Citizen ID",
@@ -821,11 +822,15 @@
             "rep_email": "Email...",
             "rep_identity_number": "ID number...",
             "rep_note": "Note...",
-            "identity_type": "Select ID type..."
+            "identity_type": "Select ID type...",
+            "contact_type": "Select contact type...",
+            "contact_value": "Enter phone number, email, etc.",
+            "contact_label": "Label (e.g., personal, work...)",
+            "contact_note": "Enter note..."
         },
         "validation": {
             "at_least_one_contact": "At least one contact is required.",
-            "at_least_one_representative": "At least one contact or representative is required.",
+            "at_least_one_representative": "An organization must have at least one legal representative.",
             "invalid_identity_number": "Invalid identity number format.",
             "invalid_tax_code": "Invalid tax code format.",
             "duplicate_contact": "Duplicate contact found.",
