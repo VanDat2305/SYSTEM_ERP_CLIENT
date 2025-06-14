@@ -191,7 +191,7 @@ const errors = ref<Record<string, any>>({})
 // Computed
 const isEditMode = computed(() => props.mode === 'edit')
 const isViewMode = computed(() => props.mode === 'view')
-const modalSize = computed(() => 'md')
+const modalSize = computed(() => 'lg')
 const hasErrors = computed(() => {
   return !formData.value.name || formData.value.name.trim().length === 0
 })

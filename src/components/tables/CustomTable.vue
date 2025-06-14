@@ -299,27 +299,43 @@
                     </th>
                     
                     <!-- Data columns -->
-                    <th v-for="column in visibleColumns" :key="column.field" draggable="true"
-                        @dragstart="dragStart($event, column)" @dragover.prevent @drop="drop($event, column)"
-                        @click="sort(column.field)" 
-                        class="px-5 py-3 text-left cursor-pointer select-none sm:px-6"
-                        :class="{ 'bg-gray-50 dark:bg-gray-700': sortKey === column.field }">
+                    <th
+                        v-for="column in visibleColumns"
+                        :key="column.field"
+                        draggable="true"
+                        @dragstart="dragStart($event, column)"
+                        @dragover.prevent
+                        @drop="drop($event, column)"
+                        @click="sort(column.field)"
+                        :class="[
+                            'px-5 py-3 cursor-pointer select-none sm:px-6',
+                            // class căn lề header
+                            column.headerAlign === 'center' ? 'text-center' :
+                            column.headerAlign === 'right' ? 'text-right' : 'text-left',
+                            // class sort đang active
+                            { 'bg-gray-50 dark:bg-gray-700': sortKey === column.field }
+                        ]"
+                        >
                         <div class="flex items-center justify-between">
                             <p class="text-gray-500 text-xs tracking-wider dark:text-gray-400 flex items-center gap-1">
-                                {{ $t(column.label) }}
-                                <span v-if="sortKey === column.field" class="ml-1">
-                                    {{ sortOrder === 'asc' ? '↑' : '↓' }}
-                                </span>
+                            {{ $t(column.label) }}
+                            <span v-if="sortKey === column.field" class="ml-1">
+                                {{ sortOrder === 'asc' ? '↑' : '↓' }}
+                            </span>
                             </p>
-                            <button v-if="column.filterable" @click.stop="toggleColumnFilter(column)"
-                                class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                                </svg>
+                            <button
+                            v-if="column.filterable"
+                            @click.stop="toggleColumnFilter(column)"
+                            class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+                            >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                                ></path>
+                            </svg>
                             </button>
                         </div>
                     </th>
-                    
                     <!-- Action column -->
                     <th v-if="hasActions" class="px-5 py-3 text-left cursor-pointer select-none sm:px-6 w-24">
                         <p class="text-gray-500 text-xs tracking-wider dark:text-gray-400">
@@ -358,17 +374,31 @@
                         </td>
                         
                         <!-- Data cells -->
-                        <td v-for="column in visibleColumns" :key="column.field" class="px-5 py-3 sm:px-6">
-                        <slot :name="`cell-${column.field}`" :row="row" :value="row[column.field]">
-                            <input v-if="editingCell === `${row.id}-${column.field}`" v-model="row[column.field]"
-                            @blur="saveEdit(row)" @keydown.enter="saveEdit(row)"
-                            class="font-medium w-full px-2 py-1 text-theme-xs bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white" />
-                            <span v-else @click="startEdit(row.id, column.field)" 
-                            class="cursor-pointer font-medium text-theme-xs"
-                            :class="getCellClass(row[column.field], column)">
-                            {{ formatCellValue(row[column.field], column) }}
-                            </span>
-                        </slot>
+                        <td v-for="column in visibleColumns" :key="column.field" class="px-5 py-3 sm:px-6"
+                        
+                            :class="[
+                                column.align === 'center' ? 'text-center' :
+                                column.align === 'right' ? 'text-right' : 'text-left',
+                                column.isHtml ? 'whitespace-normal' : 'whitespace-nowrap'
+                            ]">
+                            <slot :name="`cell-${column.field}`" :row="row" :value="row[column.field]">
+                                <input
+                                    v-if="editingCell === `${row.id}-${column.field}`"
+                                    v-model="row[column.field]"
+                                    @blur="saveEdit(row)"
+                                    @keydown.enter="saveEdit(row)"
+                                    class="font-medium w-full px-2 py-1 text-theme-xs bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
+                                />
+                                <span
+                                    v-else
+                                    @click="startEdit(row.id, column.field, column.editingCell)"
+                                    class="cursor-pointer font-medium text-theme-xs"
+                                    :class="getCellClass(row[column.field], column)"
+                                >
+                                    <span v-if="column.isHtml" v-html="formatCellValue(row[column.field], column, row)"></span>
+                                    <span v-else>{{ formatCellValue(row[column.field], column, row) }}</span>
+                                </span>
+                            </slot>
                         </td>
                         
                         <!-- Action cells -->
@@ -677,9 +707,9 @@ const resetFilters = () => {
     activeFilters.value = {};
     dateRangeErrors.value = {};
     numberRangeErrors.value = {};
-    activeFilters.value = {};
+    
     initializeFilters();
-    emit('filter', {});
+    emit('filter', activeFilters.value);
 };
 
 const getDatePickerConfig = (filter, rangeType = 'from') => {
@@ -896,9 +926,44 @@ onMounted(async() => {
         searchable: column.searchable !== false,
         sortable: column.sortable || false,
         formatter: column.formatter || null,
-        cellClass: column.cellClass || null
-    }));
+        isHtml: column.isHtml || null,
+        headerAlign: column.headerAlign || 'left',
+        editingCell: column.editingCell || false,
+        align: column.align || 'left',
+        cellClass: column.cellClass || null,
+        isShow: column.isShow !== false,
+    })).filter(column => {
+        // Chỉ hiển thị các cột có isShow là true
+        return column.isShow;
+    });
+    
 });
+watch(
+  () => props.columns,
+  (newColumns) => {
+    allColumns.value = newColumns.map(column => ({
+        field: column.field,
+        label: column.label || column.field,
+        visible: column.visible !== false,
+        filterable: column.filterable || false,
+        filterActive: false,
+        filterValue: '',
+        searchable: column.searchable !== false,
+        sortable: column.sortable || false,
+        formatter: column.formatter || null,
+        isHtml: column.isHtml || null,
+        headerAlign: column.headerAlign || 'left',
+        editingCell: column.editingCell || false,
+        align: column.align || 'left',
+        cellClass: column.cellClass || null,
+        isShow: column.isShow !== false,
+    })).filter(column => {
+      // Chỉ hiển thị các cột có isShow là true
+      return column.isShow;
+    });
+  },
+  { immediate: true }
+);
 watch(
   () => props.rowData,
   (newData) => {
@@ -1080,7 +1145,9 @@ const drop = (e, targetColumn) => {
 };
 
 // Editing
-const startEdit = (rowId, field) => {
+const startEdit = (rowId, field, editCell) => {
+
+    if (!editCell) return; // Chỉ cho phép chỉnh sửa một ô tại một thời điểm
     editingCell.value = `${rowId}-${field}`;
 };
 
@@ -1166,9 +1233,9 @@ const goToSpecificPage = () => {
     }
 };
 // Cell formatting
-const formatCellValue = (value, column) => {
+const formatCellValue = (value, column, row) => {
     if (column.formatter) {
-        return column.formatter(value);
+        return column.formatter(value, row);
     }
     return value;
 };

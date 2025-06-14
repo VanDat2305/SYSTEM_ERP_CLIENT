@@ -204,10 +204,10 @@ const columns = [
     label: 'service_packages.fields.price',
     filterable: false,
     sortable: true,
-    formatter: (value: number, currency: string = 'VND') => {
+    formatter: (value: number, row: { currency: any }) => {
       return new Intl.NumberFormat('vi-VN', {
         style: 'currency',
-        currency: currency
+        currency: row.currency || 'VND',
       }).format(value);
     }
   },

@@ -51,7 +51,8 @@ import EyeIcon from "./EyeIcon.vue";
 import PencilIcon from "./PencilIcon.vue";
 import DownloadIcon from "./DownloadIcon.vue";
 import ServiceIcon from "./ServiceIcon.vue";
-
+import CustomerIcon from "./CustomerIcon.vue";
+import StoreIcon from "./StoreIcon.vue";
 
 export {
   BellIcon,
@@ -106,5 +107,7 @@ export {
   EyeIcon,
   PencilIcon,
   DownloadIcon,
-  ServiceIcon
+  ServiceIcon,
+  CustomerIcon,
+  StoreIcon
 };

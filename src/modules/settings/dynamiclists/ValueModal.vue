@@ -462,6 +462,10 @@ const handleSubmit = async () => {
 
 // Watchers
 watch(() => props.currentValue, (value) => {
+  if (props.mode === 'add') {
+    resetForm();
+    return;
+  }
   if (value && (isViewMode.value || isEditMode.value)) {
     formData.value = {
       id: value.id,

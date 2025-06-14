@@ -261,6 +261,10 @@ watch(() => props.errors, (newErrors) => {
 }, { deep: true });
 
 watch(() => props.currentType, (type) => {
+  if (props.mode === 'add') {
+    resetForm();
+    return;
+  }
   if (type && (isViewMode.value || isEditMode.value)) {
     formData.value = {
       id: type.id,

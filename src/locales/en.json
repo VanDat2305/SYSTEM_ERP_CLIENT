@@ -223,7 +223,10 @@
         "error": "Error",
         "success": "Success",
         "adding": "Adding...",
-        "not_available": "Not available"
+        "not_available": "Not available",
+        "required": "Trường này là bắt buộc",
+        "invalid_email": "Email không hợp lệ",
+        "invalid_phone": "Số điện thoại không hợp lệ"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -713,6 +716,123 @@
             "role_updated_successfully": "Role updated successfully.",
             "update_role_failed": "Failed to update role. Please try again.",
             "fetch_users_failed": "Failed to fetch users for team management."
+        }
+    },
+    "customers": {
+        "basic_info": "Basic Information",
+        "view_title": "View Customer Information",
+        "edit_title": "Edit Customer",
+        "add_title": "Add New Customer",
+        "group_main": "Main Information",
+        "group_identity": "Identity & Industry",
+        "group_contact": "Contact & Address",
+        "group_representative": "Legal Representative",
+        "add_contact": "Add contact",
+        "add_representative": "Add representative",
+        "status": {
+            "all": "All",
+            "new": "New",
+            "in_progress": "In Progress",
+            "converted": "Converted",
+            "unqualified": "Unqualified",
+            "inactive": "Inactive",
+            "active": "Active"
+        },
+        "fields": {
+            "customer_code": "Customer Code",
+            "full_name": "Full Name",
+            "short_name": "Short Name",
+            "tax_code": "Tax Code",
+            "identity_number": "Identity Number",
+            "customer_type": "Customer Type",
+            "primary_contact": "Primary Contact",
+            "status": "Status",
+            "created_at": "Created At",
+            "address": "Address",
+            "province": "Province/City",
+            "assigned_to": "Assigned To",
+            "team": "Team",
+            "identity_type": "ID Type",
+            "industry": "Industry",
+            "website": "Website",
+            "contacts": "Contact",
+            "representative": "Representative",
+            "contact_type": "Contact Type",
+            "contact_value": "Contact Value",
+            "contact_label": "Contact Label",
+            "contact_note": "Contact Note",
+            "rep_full_name": "Representative Full Name",
+            "rep_position": "Representative Position",
+            "rep_phone": "Representative Phone",
+            "rep_email": "Representative Email",
+            "rep_identity_number": "Representative ID Number",
+            "rep_note": "Representative Note",
+            "rep_identity_type": "Representative ID Type"
+        },
+        "identity_types": {
+            "citizen_id": "Citizen ID",
+            "passport": "Passport",
+            "business_license": "Business License",
+            "other": "Other",
+            "cccd": "Citizen ID",
+            "cmnd": "Citizen ID",
+            "pp": "Passport"
+        },
+        "contact_types": {
+            "phone": "Phone",
+            "email": "Email",
+            "address": "Address"
+        },
+        "types": {
+            "individual": "Individual",
+            "organization": "Organization"
+        },
+        "stats": {
+            "total": "Total Customers",
+            "new_this_month": "New This Month",
+            "converted": "Converted",
+            "in_progress": "In Progress"
+        },
+        "fetch_failed": "Failed to fetch customers data.",
+        "create_failed": "Failed to create customer.",
+        "update_failed": "Failed to update customer.",
+        "operation_failed": "Operation failed.",
+        "status_changed_success": "Customer status updated successfully.",
+        "status_change_failed": "Failed to change status.",
+        "delete_success": "Customer deleted successfully.",
+        "delete_failed": "Failed to delete customer.",
+        "change_status": "Change Status",
+        "change_status_bulk": "Change Status (Bulk)",
+        "bulk_status_change_coming_soon": "Bulk status change coming soon.",
+        "delete_selected_confirmation": "Are you sure you want to delete {count} selected customers?",
+        "delete_selected": "Delete Selected",
+        "placeholders": {
+            "full_name_in": "Enter full name ...",
+            "full_name_org": "Enter full name ...",
+            "short_name": "Enter short name...",
+            "address": "Enter address...",
+            "identity_number": "Enter identity number...",
+            "industry": "Enter industry...",
+            "tax_code": "Enter tax code...",
+            "website": "Website...",
+            "rep_full_name": "Representative name...",
+            "rep_position": "Position...",
+            "rep_phone": "Phone number...",
+            "rep_email": "Email...",
+            "rep_identity_number": "ID number...",
+            "rep_note": "Note...",
+            "identity_type": "Select ID type..."
+        },
+        "validation": {
+            "at_least_one_contact": "At least one contact is required.",
+            "at_least_one_representative": "At least one contact or representative is required.",
+            "invalid_identity_number": "Invalid identity number format.",
+            "invalid_tax_code": "Invalid tax code format.",
+            "duplicate_contact": "Duplicate contact found.",
+            "must_have_primary_contact": "At least one primary contact is required.",
+            "label_required_for_org": "Label is required for organization contacts.",
+            "max_contacts": "Maximum {count} contacts allowed.",
+            "duplicate_with_representative": "Contact cannot be the same as the representative."
         }
     }
 }

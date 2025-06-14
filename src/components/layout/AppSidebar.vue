@@ -161,6 +161,8 @@ import {
   TableIcon,
   ListIcon,
   PlugInIcon,
+  StoreIcon,
+  CustomerIcon,
   DashboardIcon,
   SystemIcon,
   SettingsIcon,
@@ -185,7 +187,7 @@ const menuGroups = [
         path: "/",
       },
       {
-        icon: GridIcon,
+        icon: StoreIcon,
         name: t("menu.sales"),
         subItems: [
           { name: t("menu.customers"), path: "/sales/customers" },
@@ -193,6 +195,11 @@ const menuGroups = [
           { name: t("menu.orders"), path: "/sales/orders" },
           { name: t("menu.contracts"), path: "/sales/contracts" },
         ],
+      },
+      {
+        icon: CustomerIcon,
+        name: t("menu.customers"),
+        path: "/customers",
       },
       {
         icon: ServiceIcon,
