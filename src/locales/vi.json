@@ -226,7 +226,8 @@
     "not_available": "Không có sẵn",
     "required": "Trường này là bắt buộc",
     "invalid_email": "Email không hợp lệ",
-    "invalid_phone": "Số điện thoại không hợp lệ"
+    "invalid_phone": "Số điện thoại không hợp lệ",
+    "validation_failed": "Kiểm tra dữ liệu không thành công"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -677,7 +678,9 @@
       "limit_value": "Giá trị giới hạn",
       "is_optional": "Tùy chọn",
       "is_customizable": "Có thể tùy chỉnh",
-      "unit": "Đơn vị tính"
+      "unit": "Đơn vị tính",
+      "tax_rate": "Tỷ lệ thuế",
+      "tax_included": "Đã bao gồm thuế"
     },
     "placeholders": {
       "code": "Nhập mã gói dịch vụ...",
@@ -691,6 +694,29 @@
     "messages": {
       "delete_success": "xóa thành công",
       "delete_failed": "xóa không thành công"
+    },
+    "errors": {
+      "package_code_required": "Vui lòng nhập mã gói dịch vụ.",
+      "package_code_min_length": "Mã gói dịch vụ phải có ít nhất 3 ký tự.",
+      "package_name_required": "Vui lòng nhập tên gói dịch vụ.",
+      "package_name_min_length": "Tên gói dịch vụ phải có ít nhất 5 ký tự.",
+      "type_service_required": "Vui lòng chọn loại dịch vụ.",
+      "customer_type_required": "Vui lòng chọn loại khách hàng.",
+      "base_price_invalid": "Giá cơ bản phải từ 1.000 trở lên.",
+      "tax_rate_invalid": "Thuế suất phải nằm trong khoảng từ 0 đến 100.",
+      "display_order_invalid": "Thứ tự hiển thị phải lớn hơn hoặc bằng 1.",
+      "display_order_duplicate": "Thứ tự hiển thị đã bị trùng.",
+      "description_required": "Vui lòng nhập mô tả gói dịch vụ.",
+      "feature_key_required": "Vui lòng nhập mã tính năng.",
+      "feature_key_duplicate": "Mã tính năng bị trùng.",
+      "feature_name_required": "Vui lòng nhập tên tính năng.",
+      "feature_type_required": "Vui lòng chọn loại tính năng.",
+      "feature_display_order_invalid": "Thứ tự hiển thị của tính năng phải lớn hơn hoặc bằng 1.",
+      "limit_value_required": "Giá trị giới hạn là bắt buộc cho loại tính năng số lượng.",
+      "limit_value_not_required_for_boolean": "Không được nhập giá trị giới hạn cho tính năng dạng boolean.",
+      "unit_required": "Đơn vị là bắt buộc với tính năng dạng số lượng.",
+      "features_required": "Vui lòng thêm ít nhất một tính năng cho gói dịch vụ.",
+      "limit_value_boolean_must_be_0_or_1": "Giá trị giới hạn cho tính năng dạng boolean phải là 0 hoặc 1."
     }
   },
   "teams": {
@@ -736,6 +762,7 @@
   },
   "customers": {
     "basic_info": "Thông tin cơ bản",
+    "contact_info": "Thông tin liên hệ",
     "view_title": "Xem thông tin khách hàng",
     "edit_title": "Chỉnh sửa khách hàng",
     "add_title": "Thêm khách hàng mới",
@@ -842,7 +869,8 @@
       "contact_label": "Nhãn (cơ quan/cá nhân...)",
       "contact_note": "Ghi chú",
       "website": "Nhập địa chỉ website...",
-      "identity_type": "Chọn loại giấy tờ"
+      "identity_type": "Chọn loại giấy tờ",
+      "customer_code": "Nhập mã khách hàng..."
     },
     "validation": {
       "at_least_one_contact": "Cần ít nhất một liên hệ",
@@ -854,6 +882,116 @@
       "label_required_for_org": "Nhãn liên hệ là bắt buộc đối với tổ chức",
       "max_contacts": "Tối đa {count} liên hệ",
       "duplicate_with_representative": "Liên hệ đã tồn tại với đại diện"
+    }
+  },
+  "orders": {
+    "view_title": "Xem đơn hàng",
+    "edit_title": "Chỉnh sửa đơn hàng",
+    "add_title": "Tạo mới đơn hàng",
+    "group_customer": "Khách hàng",
+    "group_order": "Thông tin đơn hàng",
+    "group_details": "Chi tiết đơn hàng",
+    "add_customer": "Thêm khách hàng",
+    "add_service_package": "Thêm gói dịch vụ",
+    "select_opportunity": "Chọn cơ hội...",
+    "select_contract": "Chọn hợp đồng...",
+    "select_service_package": "Chọn gói dịch vụ...",
+    "auto_generated": "Tự động sinh",
+    "auto_calculated": "Tự động tính toán",
+    "auto_calculated_note": "Thành tiền sẽ được tính tự động từ chi tiết dịch vụ.",
+    "summary": "Tóm tắt đơn hàng",
+    "subtotal": "Tạm tính",
+    "total_tax": "Tổng thuế",
+    "total_amount": "Tổng tiền",
+    "items_count": "Số dòng",
+    "fields": {
+      "order_code": "Mã đơn hàng",
+      "created_at": "Ngày tạo",
+      "order_date": "Ngày đặt hàng",
+      "customer": "Khách hàng",
+      "customer_code": "Mã khách hàng",
+      "customer_full_name": "Tên khách hàng",
+      "customer_email": "Email khách hàng",
+      "customer_phone": "SĐT khách hàng",
+      "order_status": "Trạng thái",
+      "currency": "Đơn vị tiền",
+      "opportunity": "Cơ hội",
+      "team": "Nhóm phụ trách",
+      "billing_cycle": "Chu kỳ thanh toán",
+      "contract": "Hợp đồng",
+      "total_amount": "Tổng tiền",
+      "service_package": "Gói dịch vụ",
+      "package_code": "Mã gói",
+      "package_name": "Tên gói",
+      "base_price": "Giá cơ bản",
+      "quantity": "Số lượng",
+      "total_price": "Thành tiền",
+      "start_date": "Ngày bắt đầu",
+      "end_date": "Ngày kết thúc",
+      "tax_rate": "Thuế suất",
+      "tax_included": "Đã bao gồm thuế",
+      "tax_amount": "Tiền thuế",
+      "total_with_tax": "Tổng cộng (đã gồm thuế)",
+      "is_active": "Kích hoạt",
+      "date_from": "Từ ngày",
+      "date_to": "Đến ngày"
+    },
+    "status": {
+      "all": "Tất cả",
+      "draft": "Nháp",
+      "pending": "Chờ xử lý",
+      "approved": "Đã phê duyệt",
+      "processing": "Đang xử lý",
+      "completed": "Đã hoàn tất",
+      "cancelled": "Đã hủy"
+    },
+    "billing_cycle": {
+      "monthly": "Hàng tháng",
+      "quarterly": "Hàng quý",
+      "yearly": "Hàng năm",
+      "one_time": "Một lần"
+    },
+    "status_change_success": "Cập nhật trạng thái đơn hàng {orderCode} sang {status} thành công.",
+    "status_change_failed": "Cập nhật trạng thái đơn hàng thất bại.",
+    "fetch_failed": "Không thể lấy danh sách đơn hàng.",
+    "create_success": "Tạo đơn hàng thành công.",
+    "update_success": "Cập nhật đơn hàng thành công.",
+    "save_failed": "Lưu đơn hàng thất bại.",
+    "delete_success": "Xóa đơn hàng thành công.",
+    "bulk_delete_success": "Đã xóa {count} đơn hàng thành công.",
+    "delete_failed": "Xóa đơn hàng thất bại.",
+    "bulk_delete_failed": "Xóa các đơn hàng đã chọn thất bại.",
+    "export_success": "Xuất đơn hàng thành công.",
+    "export_failed": "Xuất đơn hàng thất bại.",
+    "delete_confirmation": "Bạn có chắc muốn xóa các đơn hàng này không?",
+    "single_delete_confirmation": "Bạn có chắc muốn xóa đơn hàng {orderCode} không?",
+    "delete_selected_confirmation": "Bạn có chắc muốn xóa {count} đơn hàng đã chọn không?",
+    "bulk_delete_confirmation": "Bạn có chắc muốn xóa {count} đơn hàng đã chọn không?",
+    "approve_selected": "Duyệt các đơn hàng đã chọn",
+    "approve_selected_confirmation": "Bạn có chắc muốn duyệt {count} đơn hàng đã chọn không?",
+    "approve_success": "Đã duyệt {count} đơn hàng thành công.",
+    "approve_failed": "Duyệt đơn hàng thất bại.",
+    "process_selected": "Chuyển xử lý các đơn hàng đã chọn",
+    "process_selected_confirmation": "Bạn có chắc muốn chuyển xử lý {count} đơn hàng đã chọn không?",
+    "process_success": "Đã chuyển {count} đơn hàng sang trạng thái Đang xử lý.",
+    "process_failed": "Chuyển trạng thái Đang xử lý thất bại.",
+    "complete_selected": "Hoàn tất các đơn hàng đã chọn",
+    "complete_selected_confirmation": "Bạn có chắc muốn hoàn tất {count} đơn hàng đã chọn không?",
+    "complete_success": "Đã hoàn tất {count} đơn hàng thành công.",
+    "complete_failed": "Hoàn tất đơn hàng thất bại.",
+    "cancel_selected": "Hủy các đơn hàng đã chọn",
+    "cancel_selected_confirmation": "Bạn có chắc muốn hủy {count} đơn hàng đã chọn không?",
+    "cancel_success": "Đã hủy {count} đơn hàng thành công.",
+    "cancel_failed": "Hủy đơn hàng thất bại.",
+    "export_selected": "Xuất các đơn hàng đã chọn",
+    "errors": {
+      "customer_required": "Thông tin khách hàng không được để trống.",
+      "customer_not_found": "Không tìm thấy khách hàng với mã này.",
+      "customer_search_failed": "Không thể tìm kiếm khách hàng."
+    },
+    "validation": {
+      "at_least_one_detail": "Cần ít nhất một dòng chi tiết đơn hàng.",
+      "end_date_after_start": "Ngày kết thúc phải sau ngày bắt đầu."
     }
   }
 }

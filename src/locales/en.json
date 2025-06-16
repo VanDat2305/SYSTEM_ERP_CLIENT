@@ -226,7 +226,8 @@
         "not_available": "Not available",
         "required": "Trường này là bắt buộc",
         "invalid_email": "Email không hợp lệ",
-        "invalid_phone": "Số điện thoại không hợp lệ"
+        "invalid_phone": "Số điện thoại không hợp lệ",
+        "validation_failed": "Validation failed"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -661,7 +662,9 @@
             "limit_value": "Limit Value",
             "is_optional": "Is Optional",
             "is_customizable": "Is Customizable",
-            "unit": "Unit"
+            "unit": "Unit",
+            "tax_rate": "Tax Rate",
+            "tax_included": "Tax Included"
         },
         "placeholders": {
             "code": "Enter service package code...",
@@ -675,6 +678,29 @@
         "messages": {
             "delete_success": "Service package deleted successfully",
             "delete_failed": "Failed to delete service package"
+        },
+        "errors": {
+            "package_code_required": "Package code is required.",
+            "package_code_min_length": "Package code must be at least 3 characters long.",
+            "package_name_required": "Package name is required.",
+            "package_name_min_length": "Package name must be at least 5 characters long.",
+            "type_service_required": "Service type is required.",
+            "customer_type_required": "Customer type is required.",
+            "base_price_invalid": "Base price must be at least 1,000.",
+            "tax_rate_invalid": "Tax rate must be between 0 and 100.",
+            "display_order_invalid": "Display order must be 1 or higher.",
+            "display_order_duplicate": "Duplicate display order is not allowed.",
+            "description_required": "Description is required.",
+            "feature_key_required": "Feature key is required.",
+            "feature_key_duplicate": "Duplicate feature key is not allowed.",
+            "feature_name_required": "Feature name is required.",
+            "feature_type_required": "Feature type is required.",
+            "feature_display_order_invalid": "Feature display order must be 1 or higher.",
+            "limit_value_required": "Limit value is required for quantity type.",
+            "limit_value_not_required_for_boolean": "Limit value must not be set for boolean type.",
+            "unit_required": "Unit is required for quantity type.",
+            "features_required": "At least one feature is required for the service package.",
+            "limit_value_boolean_must_be_0_or_1": "Limit value for boolean type must be 0 or 1."
         }
     },
     "teams": {
@@ -720,6 +746,7 @@
     },
     "customers": {
         "basic_info": "Basic Information",
+        "contact_info": "Contact Information",
         "view_title": "View Customer Information",
         "edit_title": "Edit Customer",
         "add_title": "Add New Customer",
@@ -826,7 +853,8 @@
             "contact_type": "Select contact type...",
             "contact_value": "Enter phone number, email, etc.",
             "contact_label": "Label (e.g., personal, work...)",
-            "contact_note": "Enter note..."
+            "contact_note": "Enter note...",
+            "customer_code": "Enter customer code..."
         },
         "validation": {
             "at_least_one_contact": "At least one contact is required.",
@@ -838,6 +866,115 @@
             "label_required_for_org": "Label is required for organization contacts.",
             "max_contacts": "Maximum {count} contacts allowed.",
             "duplicate_with_representative": "Contact cannot be the same as the representative."
+        }
+    },
+    "orders": {
+        "status": {
+            "all": "All",
+            "draft": "Draft",
+            "pending": "Pending",
+            "approved": "Approved",
+            "processing": "Processing",
+            "completed": "Completed",
+            "cancelled": "Cancelled"
+        },
+        "fields": {
+            "order_code": "Order Code",
+            "created_at": "Order Date",
+            "order_date": "Order Date",
+            "customer": "Customer",
+            "customer_full_name": "Customer Full Name",
+            "customer_email": "Customer Email",
+            "customer_phone": "Customer Phone",
+            "customer_code": "Customer Code",
+            "order_status": "Order Status",
+            "currency": "Currency",
+            "opportunity": "Opportunity",
+            "team": "Team",
+            "billing_cycle": "Billing Cycle",
+            "contract": "Contract",
+            "total_amount": "Total Amount",
+            "service_package": "Service Package",
+            "package_code": "Package Code",
+            "package_name": "Package Name",
+            "base_price": "Base Price",
+            "quantity": "Quantity",
+            "total_price": "Total Price",
+            "start_date": "Start Date",
+            "end_date": "End Date",
+            "tax_rate": "Tax Rate",
+            "tax_included": "Tax Included",
+            "tax_amount": "Tax Amount",
+            "total_with_tax": "Total (with tax)",
+            "is_active": "Active",
+            "date_from": "From Date",
+            "date_to": "To Date"
+        },
+        "view_title": "View Order",
+        "edit_title": "Edit Order",
+        "add_title": "Create New Order",
+        "group_customer": "Customer",
+        "group_order": "Order Information",
+        "group_details": "Order Details",
+        "add_customer": "Add Customer",
+        "status_change_success": "Order {orderCode} status updated to {status} successfully.",
+        "status_change_failed": "Failed to update order status.",
+        "fetch_failed": "Failed to fetch orders.",
+        "create_success": "Order created successfully.",
+        "update_success": "Order updated successfully.",
+        "save_failed": "Failed to save order.",
+        "delete_success": "Order deleted successfully.",
+        "bulk_delete_success": "{count} orders deleted successfully.",
+        "delete_failed": "Failed to delete order.",
+        "bulk_delete_failed": "Failed to delete selected orders.",
+        "export_success": "Export orders successfully.",
+        "export_failed": "Failed to export orders.",
+        "delete_confirmation": "Are you sure you want to delete these orders?",
+        "single_delete_confirmation": "Are you sure you want to delete order {orderCode}?",
+        "delete_selected_confirmation": "Are you sure you want to delete {count} selected orders?",
+        "bulk_delete_confirmation": "Are you sure you want to delete {count} selected orders?",
+        "approve_selected": "Approve Selected",
+        "approve_selected_confirmation": "Are you sure you want to approve {count} selected orders?",
+        "approve_success": "{count} orders approved successfully.",
+        "approve_failed": "Failed to approve orders.",
+        "process_selected": "Process Selected",
+        "process_selected_confirmation": "Are you sure you want to process {count} selected orders?",
+        "process_success": "{count} orders set to processing.",
+        "process_failed": "Failed to set orders to processing.",
+        "complete_selected": "Complete Selected",
+        "complete_selected_confirmation": "Are you sure you want to complete {count} selected orders?",
+        "complete_success": "{count} orders completed successfully.",
+        "complete_failed": "Failed to complete orders.",
+        "cancel_selected": "Cancel Selected",
+        "cancel_selected_confirmation": "Are you sure you want to cancel {count} selected orders?",
+        "cancel_success": "{count} orders cancelled successfully.",
+        "cancel_failed": "Failed to cancel orders.",
+        "export_selected": "Export Selected",
+        "billing_cycle": {
+            "monthly": "Monthly",
+            "quarterly": "Quarterly",
+            "yearly": "Yearly",
+            "one_time": "One-time"
+        },
+        "select_opportunity": "Select opportunity...",
+        "select_contract": "Select contract...",
+        "select_service_package": "Select service package...",
+        "add_service_package": "Add Service Package",
+        "auto_generated": "Auto-generated",
+        "auto_calculated": "Auto-calculated",
+        "auto_calculated_note": "Total will be calculated automatically from order details.",
+        "summary": "Order Summary",
+        "subtotal": "Subtotal",
+        "total_tax": "Total Tax",
+        "items_count": "Items Count",
+        "errors": {
+            "customer_required": "Please select a customer.",
+            "customer_not_found": "Customer not found with this code.",
+            "customer_search_failed": "Failed to search customer."
+        },
+        "validation": {
+            "at_least_one_detail": "At least one order detail is required.",
+            "end_date_after_start": "End date must be after start date."
         }
     }
 }

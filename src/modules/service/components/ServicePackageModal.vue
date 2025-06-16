@@ -24,7 +24,7 @@
         </nav>
       </div>
 
-      <form @submit.prevent="handleSubmit" class="space-y-6 mx-4">
+      <form @submit.prevent="" class="space-y-6 mx-4">
         <!-- Basic Info Tab -->
         <!-- Basic Info Tab -->
         <div v-show="currentTab === 'basic'" class="space-y-4 mt-4 mb-4">
@@ -106,11 +106,44 @@
                     ]" :placeholder="t('service_packages.placeholders.price')" />
                 </div>
                 <div class="w-30">
-                  <SelectSearch v-model="formData.currency" :options="currencyOptions" :placeholder="$t('common.select')"
-                :search-placeholder="$t('common.search')" :disabled="isViewMode" size="xs" />
+                  <SelectSearch v-model="formData.currency" :options="currencyOptions"
+                    :placeholder="$t('common.select')" :search-placeholder="$t('common.search')" :disabled="isViewMode"
+                    size="xs" />
                 </div>
               </div>
               <p v-if="errors.base_price" class="mt-1 text-xs text-red-500">{{ errors.base_price[0] }}</p>
+            </div>
+            <div class="flex items-center justify-between pt-2 pl-5 border-gray-200 dark:border-gray-700">
+              <button type="button" @click="!isViewMode && toggleTaxIncluded()" :disabled="isViewMode" :class="[
+                ' relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
+                formData.tax_included ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-600',
+                isViewMode ? 'cursor-not-allowed opacity-50' : 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500'
+              ]">
+                <span :class="[
+                  'inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition',
+                  formData.tax_included ? 'translate-x-6' : 'translate-x-0'
+                ]" />
+              </button>
+              <div class="flex items-center">
+                <span class="text-xs font-medium text-gray-700 dark:text-gray-300 mr-3">
+                  {{ t('service_packages.fields.tax_included') }}
+                </span>
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('service_packages.fields.tax_rate') }}
+                <span v-if="!isViewMode" class="text-red-500 ml-1">*</span>
+              </label>
+              <div class="relative">
+                <input type="number" v-model.number="formData.tax_rate" :readonly="isViewMode" :required="!isViewMode"
+                  :class="[
+                    'w-full text-xs px-3 py-2 rounded-lg border dark:text-white transition-colors',
+                    isViewMode ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed' : 'bg-white dark:bg-gray-800 hover:border-blue-300',
+                    errors.tax_rate ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                  ]" />
+              </div>
+              <p v-if="errors.tax_rate" class="mt-1 text-xs text-red-500">{{ errors.tax_rate[0] }}</p>
             </div>
             <!-- <div class="mb-4">
               <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -337,11 +370,14 @@
         <div v-if="submitError" class="rounded-md bg-red-50 dark:bg-red-900/30 p-4">
           <div class="flex">
             <div class="ml-3">
-              <h3 class=" font-medium text-red-800 dark:text-red-200">
+              <h3 class="text-xs font-medium text-red-800 dark:text-red-200">
                 {{ t('common.submission_error') }}
               </h3>
-              <div class="mt-2  text-red-700 dark:text-red-300">
-                <p>{{ submitError }}</p>
+              <div class="text-xs mt-2  text-red-700 dark:text-red-300">
+                <p v-if="errors && errors.features">{{ errors.features[0] }}</p>
+                <p v-else>{{ submitError }}</p>
+                <!-- <p v-if="errors &&  errors['features'][0]">{{ errors['features'][0] }}</p>
+                <p v-else>{{ submitError }}</p> -->
               </div>
             </div>
           </div>
@@ -365,14 +401,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BaseModal from '@/components/modals/BaseModal.vue'
 import TrashIcon from '@/icons/TrashIcon.vue'
 import SelectSearch from '@/components/forms/SelectSearch.vue'
+import { notificationService } from '@/services/notification'
 
 const { t } = useI18n()
-
+const isFormActive = ref(false)
 const props = defineProps({
   isModalOpen: Boolean,
   errors: {
@@ -414,6 +451,8 @@ const formData = ref({
   currency: 'VND',
   billing_cycle: 'one-time',
   display_order: 0,
+  tax_rate: 0,
+  tax_included: false,
   is_active: true,
   features: [] as Array<{
     feature_key: string
@@ -442,28 +481,36 @@ const serviceTypeOptions = ref<{ label: string; value: string }[]>([]);
 const isEditMode = computed(() => props.mode === 'edit')
 const isViewMode = computed(() => props.mode === 'view')
 const modalSize = computed(() => 'xl')
-const hasErrors = computed(() => {
-  return !formData.value.package_name ||
-    !formData.value.package_code ||
-    formData.value.base_price <= 0 ||
-    formData.value.features.some(f => !f.feature_name || f.limit_value === undefined)
-})
+// const hasErrors = computed(() => {
+//   return !formData.value.package_name ||
+//     !formData.value.package_code ||
+//     formData.value.base_price <= 0 ||
+//     formData.value.features.some(f => !f.feature_name || f.limit_value === undefined)
+// })
 
 // Methods
 const toggleStatus = () => {
   formData.value.is_active = !formData.value.is_active
 }
+const toggleTaxIncluded = () => {
+  formData.value.tax_included = !formData.value.tax_included
+}
 
 const addFeature = () => {
+  const previousState = isFormActive.value
+  isFormActive.value = false  // Tắt validate tạm thời
   formData.value.features.push({
     feature_key: '',
     feature_name: '',
-    feature_type: 'number',
+    feature_type: 'quantity',
     unit: '',
     limit_value: 0,
     is_optional: false,
     is_customizable: false,
     display_order: formData.value.features.length + 1
+  })
+  nextTick(() => {
+    isFormActive.value = previousState // Khôi phục lại sau push
   })
 }
 
@@ -482,6 +529,8 @@ const resetForm = () => {
     description: '',
     currency: 'VND',
     display_order: 0,
+    tax_rate: 0,
+    tax_included: false,
     billing_cycle: 'monthly',
     is_active: true,
     features: []
@@ -495,9 +544,125 @@ const closeModal = () => {
   resetForm()
   emit('close')
 }
+const validateForm = () => {
+  const newErrors = { ...errors.value }
 
+  if (formData.value.features.length === 0) {
+    newErrors.features = [t('service_packages.errors.features_required')]
+    notificationService.error(t('service_packages.errors.features_required'))
+  } else {
+    delete newErrors.features
+  }
+  // Basic fields
+  if (!formData.value.package_code?.trim()) {
+    newErrors.package_code = [t('service_packages.errors.package_code_required')]
+  } else if (formData.value.package_code.length < 3) {
+    newErrors.package_code = [t('service_packages.errors.package_code_min_length')]
+  }
+
+  if (!formData.value.package_name?.trim()) {
+    newErrors.package_name = [t('service_packages.errors.package_name_required')]
+  } else if (formData.value.package_name.length < 5) {
+    newErrors.package_name = [t('service_packages.errors.package_name_min_length')]
+  }
+
+  if (!formData.value.type_service) {
+    newErrors.type_service = [t('service_packages.errors.type_service_required')]
+  }
+
+  if (!formData.value.customer_type) {
+    newErrors.customer_type = [t('service_packages.errors.customer_type_required')]
+  }
+
+  if (!formData.value.base_price || formData.value.base_price < 1000) {
+    newErrors.base_price = [t('service_packages.errors.base_price_invalid')]
+  }
+
+  if (formData.value.tax_rate < 0 || formData.value.tax_rate > 100) {
+    newErrors.tax_rate = [t('service_packages.errors.tax_rate_invalid')]
+  }
+
+  if (!formData.value.display_order || formData.value.display_order < 1) {
+    newErrors.display_order = [t('service_packages.errors.display_order_invalid')]
+  }
+
+  if (!formData.value.description?.trim()) {
+    newErrors.description = [t('service_packages.errors.description_required')]
+  }
+
+  // Validate features
+  const keyMap = new Map()
+  const orderSet = new Set()
+
+  formData.value.features.forEach((feature, index) => {
+    const path = (field: string) => `features.${index}.${field}`
+
+    // Required fields
+    if (!feature.feature_key?.trim()) {
+      newErrors[path('feature_key')] = [t('service_packages.errors.feature_key_required')]
+    }
+
+    if (!feature.feature_name?.trim()) {
+      newErrors[path('feature_name')] = [t('service_packages.errors.feature_name_required')]
+    }
+
+    if (!feature.feature_type) {
+      newErrors[path('feature_type')] = [t('service_packages.errors.feature_type_required')]
+    }
+
+    if (!feature.display_order || feature.display_order < 1) {
+      newErrors[path('display_order')] = [t('service_packages.errors.feature_display_order_invalid')]
+    }
+
+    // Conditional logic
+    if (feature.feature_type === 'quantity') {
+      if (!feature.limit_value || feature.limit_value < 1) {
+        newErrors[path('limit_value')] = [t('service_packages.errors.limit_value_required')]
+      }
+      if (!feature.unit || feature.unit.trim() === '') {
+        newErrors[path('unit')] = [t('service_packages.errors.unit_required')]
+      }
+    } else if (feature.feature_type === 'boolean' && feature.limit_value !== undefined) {
+      if (feature.limit_value !== 0 && feature.limit_value !== 1) {
+        newErrors[path('limit_value')] = [t('service_packages.errors.limit_value_boolean_must_be_0_or_1')]
+      }
+    }
+
+    // Duplicate key
+    const key = feature.feature_key?.trim()
+    if (key) {
+      if (keyMap.has(key)) {
+        newErrors[path('feature_key')] = [t('service_packages.errors.feature_key_duplicate')]
+      } else {
+        keyMap.set(key, true)
+      }
+    }
+
+    // Duplicate display_order
+    const order = feature.display_order
+    if (order && orderSet.has(order)) {
+      newErrors[path('display_order')] = [t('service_packages.errors.display_order_duplicate')]
+    } else {
+      orderSet.add(order)
+    }
+  })
+
+  errors.value = newErrors
+  return Object.keys(newErrors).length === 0
+}
+
+// Update hasErrors computed
+const hasErrors = computed(() => {
+  submitError.value !== null || Object.keys(errors.value).length > 0 || isSubmitting.value
+  return Object.keys(errors.value).length > 0 || isSubmitting.value
+})
+
+// Update handleSubmit method
 const handleSubmit = () => {
-  if (hasErrors.value) return
+  if (!validateForm()) {
+    submitError.value = t('common.validation_failed')
+    return
+  }
 
   isSubmitting.value = true
   submitError.value = null
@@ -505,10 +670,12 @@ const handleSubmit = () => {
   try {
     emit('submit', {
       ...formData.value,
-      package_name: formData.value.package_name.trim(),
       package_code: formData.value.package_code.trim(),
+      package_name: formData.value.package_name.trim(),
+      description: formData.value.description.trim(),
       features: formData.value.features.map(f => ({
         ...f,
+        feature_key: f.feature_key.trim(),
         feature_name: f.feature_name.trim()
       }))
     })
@@ -518,6 +685,194 @@ const handleSubmit = () => {
     isSubmitting.value = false
   }
 }
+
+
+// Real-time validation for specific fields
+const validateField = (fieldName: string) => {
+  const newErrors = { ...errors.value }
+
+  const clearError = (key: string) => delete newErrors[key]
+
+  if (fieldName.startsWith('features.')) {
+    const [_, indexStr, prop] = fieldName.split('.')
+    const i = parseInt(indexStr)
+    const f = formData.value.features[i]
+    const path = (p: string) => `features.${i}.${p}`
+
+    clearError(path(prop))
+
+    switch (prop) {
+      case 'feature_key':
+        if (!f.feature_key?.trim()) {
+          newErrors[path('feature_key')] = [t('service_packages.errors.feature_key_required')]
+        } else {
+          const dup = formData.value.features.some((x, idx) => x.feature_key === f.feature_key && idx !== i)
+          if (dup) newErrors[path('feature_key')] = [t('service_packages.errors.feature_key_duplicate')]
+        }
+        break
+
+      case 'feature_name':
+        if (!f.feature_name?.trim()) {
+          newErrors[path('feature_name')] = [t('service_packages.errors.feature_name_required')]
+        }
+        break
+
+      case 'feature_type':
+        if (!f.feature_type) {
+          newErrors[path('feature_type')] = [t('service_packages.errors.feature_type_required')]
+        }
+        break
+
+      case 'display_order':
+        if (!f.display_order || f.display_order < 1) {
+          newErrors[path('display_order')] = [t('service_packages.errors.feature_display_order_invalid')]
+        } else {
+          const dup = formData.value.features.some((x, idx) => x.display_order === f.display_order && idx !== i)
+          if (dup) newErrors[path('display_order')] = [t('service_packages.errors.display_order_duplicate')]
+        }
+        break
+
+      case 'limit_value':
+        if (f.feature_type === 'quantity' && (!f.limit_value || f.limit_value < 1)) {
+          newErrors[path('limit_value')] = [t('service_packages.errors.limit_value_required')]
+        } else if (f.feature_type === 'boolean') {
+          if (f.limit_value !== 0 && f.limit_value !== 1) {
+            newErrors[path('limit_value')] = [t('service_packages.errors.limit_value_boolean_must_be_0_or_1')]
+          }
+        }
+        break
+
+      case 'unit':
+        if (f.feature_type === 'quantity' && (!f.unit || f.unit.trim() === '')) {
+          newErrors[path('unit')] = [t('service_packages.errors.unit_required')]
+        }
+        break
+    }
+
+  } else {
+    clearError(fieldName)
+
+    switch (fieldName) {
+      case 'package_code':
+        if (!formData.value.package_code?.trim()) {
+          newErrors.package_code = [t('service_packages.errors.package_code_required')]
+        } else if (formData.value.package_code.length < 3) {
+          newErrors.package_code = [t('service_packages.errors.package_code_min_length')]
+        }
+        break
+
+      case 'package_name':
+        if (!formData.value.package_name?.trim()) {
+          newErrors.package_name = [t('service_packages.errors.package_name_required')]
+        } else if (formData.value.package_name.length < 5) {
+          newErrors.package_name = [t('service_packages.errors.package_name_min_length')]
+        }
+        break
+
+      case 'base_price':
+        if (!formData.value.base_price || formData.value.base_price < 1000) {
+          newErrors.base_price = [t('service_packages.errors.base_price_invalid')]
+        }
+        break
+
+      case 'type_service':
+        if (!formData.value.type_service) {
+          newErrors.type_service = [t('service_packages.errors.type_service_required')]
+        }
+        break
+
+      case 'display_order':
+        if (!formData.value.display_order || formData.value.display_order < 1) {
+          newErrors.display_order = [t('service_packages.errors.display_order_invalid')]
+        }
+        break
+
+      case 'description':
+        if (!formData.value.description?.trim()) {
+          newErrors.description = [t('service_packages.errors.description_required')]
+        }
+        break
+
+      case 'tax_rate':
+        if (formData.value.tax_rate < 0 || formData.value.tax_rate > 100) {
+          newErrors.tax_rate = [t('service_packages.errors.tax_rate_invalid')]
+        }
+        break
+    }
+  }
+
+  errors.value = newErrors
+}
+
+
+// Add watchers for real-time validation
+watch(() => formData.value.package_code, () => {
+  if (!isFormActive.value) return
+  validateField('package_code')
+})
+watch(() => formData.value.package_name, () => {
+  if (!isFormActive.value) return
+  validateField('package_name')
+})
+watch(() => formData.value.base_price, () => {
+  if (!isFormActive.value) return
+  validateField('base_price')
+})
+watch(() => formData.value.type_service, () => {
+  if (!isFormActive.value) return
+  validateField('type_service')
+})
+watch(() => formData.value.display_order, () => {
+  if (!isFormActive.value) return
+  validateField('display_order')
+})
+watch(() => formData.value.description, () => {
+  if (!isFormActive.value) return
+  validateField('description')
+})
+watch(() => formData.value.tax_rate, () => {
+  if (!isFormActive.value) return
+  validateField('tax_rate')
+})
+
+watch(() => formData.value.features, (features) => {
+  console.log(isFormActive.value);
+
+  if (!isFormActive.value) return
+  features.forEach((_, i) => {
+    validateField(`features.${i}.feature_key`)
+    validateField(`features.${i}.feature_name`)
+    validateField(`features.${i}.feature_type`)
+    validateField(`features.${i}.display_order`)
+    validateField(`features.${i}.limit_value`)
+    validateField(`features.${i}.unit`)
+  })
+}, { deep: true })
+
+
+
+// const handleSubmit = () => {
+//   if (hasErrors.value) return
+
+//   isSubmitting.value = true
+//   submitError.value = null
+
+//   try {
+//     emit('submit', {
+//       ...formData.value,
+//       package_name: formData.value.package_name.trim(),
+//       package_code: formData.value.package_code.trim(),
+//       features: formData.value.features.map(f => ({
+//         ...f,
+//         feature_name: f.feature_name.trim()
+//       }))
+//     })
+//   } catch (error: any) {
+//     submitError.value = error.message || t('common.submission_error')
+//   } finally {
+//     isSubmitting.value = false
+//   }
+// }
 
 // Watchers
 watch(() => props.categorySystem, (newSystem) => {
@@ -553,12 +908,10 @@ watch(() => props.errors, (newErrors) => {
 }, { deep: true })
 
 watch(() => props.currentPackage, (pkg) => {
+  isFormActive.value = false
   if (!props.mode || props.mode === 'add') {
     resetForm()
-    return
-  }
-
-  if (pkg && (isViewMode.value || isEditMode.value)) {
+  } else if (pkg && (isViewMode.value || isEditMode.value)) {
     formData.value = {
       id: pkg.id,
       type_service: pkg.type_service || 'SER_IHD',
@@ -570,9 +923,14 @@ watch(() => props.currentPackage, (pkg) => {
       display_order: pkg.display_order || 0,
       base_price: pkg.base_price,
       billing_cycle: pkg.billing_cycle || 'monthly',
+      tax_rate: pkg.tax_rate || 0,
+      tax_included: pkg.tax_included !== undefined ? pkg.tax_included : false,
       is_active: pkg.is_active !== undefined ? pkg.is_active : true,
       features: pkg.features ? [...pkg.features] : []
     }
   }
+  nextTick(() => {
+    isFormActive.value = true
+  })
 }, { immediate: true })
 </script>

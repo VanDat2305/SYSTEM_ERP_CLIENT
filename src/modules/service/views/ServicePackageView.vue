@@ -300,7 +300,7 @@ async function handleSubmit(packageData: Partial<ServicePackage>) {
     const isEdit = !!packageData.id
     const method = isEdit ? 'put' : 'post'
     const url = isEdit ? `/service-packages/${packageData.id}` : '/service-packages'
-    
+    setLoading?.(true)
     const response = await api[method](url, packageData)
 
     if (response.data.status) {
@@ -317,6 +317,8 @@ async function handleSubmit(packageData: Partial<ServicePackage>) {
       notificationService.error(error.response?.data?.message || 
         t('service_packages.operation_failed'))
     }
+  } finally {
+    setLoading?.(false)
   }
 }
 
