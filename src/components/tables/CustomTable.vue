@@ -306,7 +306,7 @@
                         @dragstart="dragStart($event, column)"
                         @dragover.prevent
                         @drop="drop($event, column)"
-                        @click="sort(column.field)"
+                        @click="sort(column.field, column.sortable)"
                         :class="[
                             'px-5 py-3 cursor-pointer select-none sm:px-6',
                             // class căn lề header
@@ -962,7 +962,7 @@ watch(
       return column.isShow;
     });
   },
-  { immediate: true }
+  { immediate: true, deep: true }
 );
 watch(
   () => props.rowData,
@@ -1102,7 +1102,8 @@ const filterData = () => {
     currentPage.value = 1;
 };
 
-const sort = (field) => {
+const sort = (field, sortable) => {
+    if (!sortable) return; // Không cho phép sắp xếp nếu cột không sortable
     if (sortKey.value === field) {
         sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
     } else {

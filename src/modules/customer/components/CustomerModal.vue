@@ -376,7 +376,7 @@
                         <div class="space-y-4">
                             <transition-group name="fade" tag="div" class="space-y-4">
                                 <div v-for="(contact, index) in formData.contacts" :key="index"
-                                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 bg-white dark:bg-gray-800/70 rounded-xl px-4 py-3 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 transition">
+                                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-7 gap-4 bg-white dark:bg-gray-800/70 rounded-xl px-4 py-3 shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 transition">
                                     <!-- Loại liên hệ -->
                                     <div class="col-span-1">
                                         <label
@@ -402,7 +402,7 @@
                                     </div>
 
                                     <!-- Giá trị (phone/email) -->
-                                    <div class="col-span-1">
+                                    <div class="col-span-2">
                                         <label
                                             class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
                                             {{ t('customers.fields.contact_value') }}
@@ -470,15 +470,14 @@
                                     <!-- Liên hệ chính -->
                                     <div class="flex items-center">
                                         <label
-                                            class="flex items-center gap-1 text-xs font-semibold text-gray-700 dark:text-gray-300">
+                                            class="pl-4 flex items-center gap-1 text-xs font-semibold text-gray-700 dark:text-gray-300">
                                             <input type="checkbox" v-model="contact.is_primary" :disabled="isViewMode"
                                                 class="accent-blue-500 rounded-md mr-2" />
                                             {{ t('customers.fields.is_primary') }}
                                         </label>
                                     </div>
-
                                     <!-- Xóa -->
-                                    <div class="flex items-center justify-center pt-3">
+                                    <div class="flex items-center justify-center pt-3 col-span-1" v-if="index !== 0">
                                         <button v-if="!isViewMode" type="button"
                                             class="rounded-full p-2 bg-red-100 dark:bg-red-900/40 text-red-600 hover:bg-red-200 dark:hover:bg-red-800/60 transition"
                                             title="Xóa liên hệ" @click="removeContact(index)">

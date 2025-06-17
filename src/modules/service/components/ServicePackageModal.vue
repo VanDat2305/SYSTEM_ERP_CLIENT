@@ -365,7 +365,6 @@
             {{ t('service_packages.no_features') }}
           </div>
         </div>
-
         <!-- Error Message -->
         <div v-if="submitError" class="rounded-md bg-red-50 dark:bg-red-900/30 p-4">
           <div class="flex">
@@ -391,7 +390,7 @@
           class="px-4 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
           {{ isViewMode ? t('common.close') : t('common.cancel') }}
         </button>
-        <button v-if="!isViewMode" type="submit" @click="handleSubmit" :disabled="hasErrors"
+        <button v-if="!isViewMode" type="submit" @click="handleSubmit" :disabled="isSubmitting"
           class="px-4 py-2 text-xs font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
           {{ isEditMode ? t('common.update') : t('common.save') }}
         </button>

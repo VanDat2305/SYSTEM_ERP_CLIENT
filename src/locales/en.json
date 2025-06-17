@@ -894,6 +894,7 @@
             "billing_cycle": "Billing Cycle",
             "contract": "Contract",
             "total_amount": "Total Amount",
+            "service_type": "Service Type",
             "service_package": "Service Package",
             "package_code": "Package Code",
             "package_name": "Package Name",
@@ -908,7 +909,8 @@
             "total_with_tax": "Total (with tax)",
             "is_active": "Active",
             "date_from": "From Date",
-            "date_to": "To Date"
+            "date_to": "To Date",
+            "features": "Package Features"
         },
         "view_title": "View Order",
         "edit_title": "Edit Order",
@@ -958,6 +960,7 @@
         },
         "select_opportunity": "Select opportunity...",
         "select_contract": "Select contract...",
+        "select_service_type": "Select service type...",
         "select_service_package": "Select service package...",
         "add_service_package": "Add Service Package",
         "auto_generated": "Auto-generated",
@@ -967,14 +970,54 @@
         "subtotal": "Subtotal",
         "total_tax": "Total Tax",
         "items_count": "Items Count",
+        "limit_value": "Limit Value",
+        "enabled_status": "Enabled Status",
+        "value": "Value",
+        "confirm_reset_features": "Are you sure you want to reset all feature values to default?",
+        "service_package_not_available": "The selected service package is no longer available.",
+        "reset_features": "Reset Features",
+        "optional": "Optional",
+        "feature_type": "Feature Type",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "customization": "Customization",
+        "customizable": "Customizable",
+        "fixed": "Fixed",
+        "modified": "Modified",
+        "original_value": "Original Value",
+        "feature_disabled": "This feature is disabled",
+        "no_features": "No features available",
+        "select_package_to_see_features": "Select a package to see features",
+        "feature_limit_min_zero": "Feature limit must be greater than or equal to 0.",
+        "max_users_limit": "Max users limit exceeded. Please enter a number less than 10000.",
+        "storage_limit": "Storage size limit exceeded. Please enter a number less than 1000 GB.",
+        "feature_name": "Feature Name",
+        "actions": "Actions",
+        "display_order": "Or",
+        "unit": "Unit",
         "errors": {
             "customer_required": "Please select a customer.",
             "customer_not_found": "Customer not found with this code.",
-            "customer_search_failed": "Failed to search customer."
+            "customer_search_failed": "Failed to search customer.",
+            "load_service_packages": "Failed to load service packages."
         },
+        "no_service_packages_found": "No service packages found for this service type.",
         "validation": {
             "at_least_one_detail": "At least one order detail is required.",
-            "end_date_after_start": "End date must be after start date."
+            "end_date_after_start": "End date must be after start date.",
+            "feature_limit_min_zero": "Feature limit must be greater than or equal to 0.",
+            "max_users_limit": "Max users limit exceeded. Please enter a number less than 10000.",
+            "storage_limit": "Storage size limit exceeded. Please enter a number less than 1000 GB.",
+            "min": "Value must be at least {min}",
+            "max": "Value must be at most {max}"
+        }
+    },
+    "feature": {
+        "max_users": {
+            "description": "Maximum number of users allowed."
+        },
+        "storage_size": {
+            "description": "Maximum storage size in GB."
         }
     }
 }

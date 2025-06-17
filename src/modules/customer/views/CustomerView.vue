@@ -330,7 +330,7 @@ const availableStatuses = computed(() => [
 ])
 
 // Table Configuration
-const columns = [
+const columns = ref([
     {
         field: 'customer_code',
         label: 'customers.fields.customer_code',
@@ -372,7 +372,8 @@ const columns = [
           <div class="font-medium text-gray-900 dark:text-gray-100">${primary.value}</div>
         </div>`;
         },
-        isHtml: true
+        isHtml: true,
+        
     },
     {
         field: 'status',
@@ -391,7 +392,7 @@ const columns = [
         formatter: (value: string) => t(`customers.status.${value}`),
         headerAlign: 'right',
         align: 'left',
-        isShow: true
+        isShow: activeTab.value === 'all'
     },
     {
         field: 'created_at',
@@ -406,7 +407,7 @@ const columns = [
         },
         isHtml: true
     }
-]
+])
 
 
 // Actions Configuration
@@ -466,15 +467,12 @@ const changeStatusTab = (status: string) => {
     activeTab.value = status
     filters.value.status = status === 'all' ? '' : status
     pagination.value.current_page = 1
-    console.log(columns);
-    
-    columns.forEach(col => {
-        if (col.field === 'status') {
-            col.isShow = status === 'all'
-        }
+    columns.value = columns.value.map(col => {
+    if (col.field === 'status' && col.isShow !== undefined) {
+        return { ...col, isShow: status == 'all' }
+    }
+    return { ...col } // Giữ nguyên nhưng tạo object mới để Vue reactivity hoạt động
     })
-    console.log(columns);
-
     fetchCustomers()
 }
 

@@ -190,10 +190,10 @@ const menuGroups = [
         icon: StoreIcon,
         name: t("menu.sales"),
         subItems: [
-          { name: t("menu.customers"), path: "/sales/customers" },
-          { name: t("menu.quotes"), path: "/sales/quotes" },
-          { name: t("menu.orders"), path: "/sales/orders" },
-          { name: t("menu.contracts"), path: "/sales/contracts" },
+          // { name: t("menu.customers"), path: "/sales/customers" },
+          // { name: t("menu.quotes"), path: "/sales/quotes" },
+          { name: t("menu.orders"), path: "/orders" },
+          // { name: t("menu.contracts"), path: "/sales/contracts" },
         ],
       },
       {
