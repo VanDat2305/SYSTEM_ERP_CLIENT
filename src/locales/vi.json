@@ -572,21 +572,6 @@
       },
       "messages": {
         "confirm_delete": "Bạn có chắc muốn xóa thông tin bổ sung này không?"
-      },
-      "import": {
-        "type_title": "Import Loại Danh Mục",
-        "value_title": "Import Giá Trị Danh Mục",
-        "download_template": "Tải file mẫu",
-        "download": "Tải xuống",
-        "select_file": "Chọn file Excel",
-        "choose_file": "Chọn file...",
-        "preview": "Xem trước",
-        "confirm_import": "Xác nhận Import",
-        "importing": "Đang import...",
-        "template_download_error": "Lỗi khi tải file mẫu",
-        "preview_error": "Lỗi khi xem trước dữ liệu",
-        "import_success": "Import thành công!",
-        "import_error": "Lỗi khi import dữ liệu"
       }
     },
     "import": {
@@ -987,6 +972,45 @@
       "storage_limit": "Giới hạn dung lượng lưu trữ vượt quá. Vui lòng nhập một số nhỏ hơn 1000 GB.",
       "min": "Giá trị tối thiểu là {min}",
       "max": "Giá trị tối đa là {max}"
+    },
+    "status_change_success": "Cập nhật trạng thái đơn hàng thành công.",
+    "status_change_failed": "Cập nhật trạng thái đơn hàng thất bại.",
+    "fetch_failed": "Lấy dữ liệu đơn hàng thất bại.",
+    "create_success": "Đơn hàng đã được tạo thành công.",
+    "update_success": "Đơn hàng đã được cập nhật thành công.",
+    "save_failed": "Lưu đơn hàng thất bại.",
+    "delete_success": "Đơn hàng đã được xóa thành công.",
+    "bulk_delete_success": "{count} đơn hàng đã được xóa thành công.",
+    "delete_failed": "Xóa đơn hàng thất bại.",
+    "bulk_delete_failed": "Xóa các đơn hàng đã chọn thất bại.",
+    "export_success": "Xuất đơn hàng thành công.",
+    "export_failed": "Xuất đơn hàng thất bại.",
+    "delete_confirmation": "Bạn có chắc chắn muốn xóa đơn hàng này?",
+    "single_delete_confirmation": "Bạn có chắc chắn muốn xóa đơn hàng này?",
+    "delete_selected_confirmation": "Bạn có chắc chắn muốn xóa {count} đơn hàng đã chọn?",
+    "bulk_delete_confirmation": "Bạn có chắc chắn muốn xóa {count} đơn hàng đã chọn?",
+    "approve_selected": "Duyệt Đã Chọn",
+    "approve_selected_confirmation": "Bạn có chắc chắn muốn duyệt {count} đơn hàng đã chọn?",
+    "approve_success": "{count} đơn hàng đã được duyệt thành công.",
+    "approve_failed": "Duyệt đơn hàng thất bại.",
+    "process_selected": "Xử lý Đã Chọn",
+    "process_selected_confirmation": "Bạn có chắc chắn muốn xử lý {count} đơn hàng đã chọn?",
+    "process_success": "{count} đơn hàng đã được chuyển sang trạng thái xử lý.",
+    "process_failed": "Xử lý đơn hàng thất bại.",
+    "complete_selected": "Hoàn tất Đã Chọn",
+    "complete_selected_confirmation": "Bạn có chắc chắn muốn hoàn tất {count} đơn hàng đã chọn?",
+    "complete_success": "{count} đơn hàng đã được hoàn tất thành công.",
+    "complete_failed": "Hoàn tất đơn hàng thất bại.",
+    "cancel_selected": "Hủy Đã Chọn",
+    "cancel_selected_confirmation": "Bạn có chắc chắn muốn hủy {count} đơn hàng đã chọn?",
+    "cancel_success": "{count} đơn hàng đã được hủy thành công.",
+    "cancel_failed": "Hủy đơn hàng thất bại.",
+    "export_selected": "Xuất Đã Chọn",
+    "billing_cycle": {
+      "monthly": "Hàng tháng",
+      "quarterly": "Hàng quý",
+      "yearly": "Hàng năm",
+      "one_time": "Một lần"
     }
   },
   "feature": {

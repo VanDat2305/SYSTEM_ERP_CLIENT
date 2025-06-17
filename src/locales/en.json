@@ -254,6 +254,7 @@
         "delete_permission": "Delete Permission",
         "view_permission": "View Permission",
         "placeholders": {
+            "name_code": "Enter role code",
             "name": "Enter permission name",
             "description": "Enter permission description"
         },
@@ -527,6 +528,7 @@
             "messages": {
                 "confirm_delete": "Are you sure you want to delete this type? All values under this type will also be deleted."
             }
+            
         },
         "catalog-values": {
             "title": "Category Values",
