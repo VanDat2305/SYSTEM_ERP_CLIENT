@@ -227,7 +227,8 @@
     "required": "Trường này là bắt buộc",
     "invalid_email": "Email không hợp lệ",
     "invalid_phone": "Số điện thoại không hợp lệ",
-    "validation_failed": "Kiểm tra dữ liệu không thành công"
+    "validation_failed": "Kiểm tra dữ liệu không thành công",
+    "create_order": "Tạo đơn hàng"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -957,6 +958,7 @@
     "actions": "Hành động",
     "display_order": "STT",
     "unit": "Đơn vị",
+    "total_amount": "Tổng tiền",
     "errors": {
       "customer_required": "Thông tin khách hàng không được để trống.",
       "customer_not_found": "Không tìm thấy khách hàng với mã này.",
@@ -971,7 +973,8 @@
       "max_users_limit": "Giới hạn người dùng vượt quá. Vui lòng nhập một số nhỏ hơn 10000.",
       "storage_limit": "Giới hạn dung lượng lưu trữ vượt quá. Vui lòng nhập một số nhỏ hơn 1000 GB.",
       "min": "Giá trị tối thiểu là {min}",
-      "max": "Giá trị tối đa là {max}"
+      "max": "Giá trị tối đa là {max}",
+      "customer_type_mismatch": "Loại khách hàng không khớp với loại dịch vụ đã chọn."
     },
     "status_change_success": "Cập nhật trạng thái đơn hàng thành công.",
     "status_change_failed": "Cập nhật trạng thái đơn hàng thất bại.",
@@ -989,19 +992,21 @@
     "single_delete_confirmation": "Bạn có chắc chắn muốn xóa đơn hàng này?",
     "delete_selected_confirmation": "Bạn có chắc chắn muốn xóa {count} đơn hàng đã chọn?",
     "bulk_delete_confirmation": "Bạn có chắc chắn muốn xóa {count} đơn hàng đã chọn?",
-    "approve_selected": "Duyệt Đã Chọn",
+    "send_approved": "Gửi phê duyệt",
+    "send_approved_confirmation": "Bạn có chắc chắn muốn gửi phê duyệt cho {count} đơn hàng đã chọn?",
+    "approve_selected": "Duyệt đơn",
     "approve_selected_confirmation": "Bạn có chắc chắn muốn duyệt {count} đơn hàng đã chọn?",
     "approve_success": "{count} đơn hàng đã được duyệt thành công.",
     "approve_failed": "Duyệt đơn hàng thất bại.",
-    "process_selected": "Xử lý Đã Chọn",
+    "process_selected": "Chuyển xử lý",
     "process_selected_confirmation": "Bạn có chắc chắn muốn xử lý {count} đơn hàng đã chọn?",
     "process_success": "{count} đơn hàng đã được chuyển sang trạng thái xử lý.",
     "process_failed": "Xử lý đơn hàng thất bại.",
-    "complete_selected": "Hoàn tất Đã Chọn",
+    "complete_selected": "Hoàn tất đơn",
     "complete_selected_confirmation": "Bạn có chắc chắn muốn hoàn tất {count} đơn hàng đã chọn?",
     "complete_success": "{count} đơn hàng đã được hoàn tất thành công.",
     "complete_failed": "Hoàn tất đơn hàng thất bại.",
-    "cancel_selected": "Hủy Đã Chọn",
+    "cancel_selected": "Hủy đơn",
     "cancel_selected_confirmation": "Bạn có chắc chắn muốn hủy {count} đơn hàng đã chọn?",
     "cancel_success": "{count} đơn hàng đã được hủy thành công.",
     "cancel_failed": "Hủy đơn hàng thất bại.",

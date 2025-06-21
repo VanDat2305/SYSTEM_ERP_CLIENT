@@ -78,6 +78,10 @@
         <ConfirmModal :show="showDeleteModal" :close="closeDeleteModal" :onConfirm="confirmDelete" type="danger"
             :closeOnClickOutside="false" :title="t('common.confirm')" :message="t('common.confirm_delete')"
             :confirmText="t('common.yes')" :cancelText="t('common.no')" />
+        <!-- Order Modal -->
+        <OrderModal :errors="formOrderError" :isModalOpen="isOrderModalOpen" mode="add" :currentOrder="{}"
+            @close="closeOrderModal" @submit="handleSubmitOrder" :categorySystem="categorySystem"
+            :customerCode="customerCode" />
 
         <!-- Status Change Modal -->
         <!-- <StatusChangeModal :show="showStatusModal" :customer="customerToChangeStatus"
@@ -98,6 +102,7 @@ import {
     EyeIcon,
     PencilIcon,
     TrashIcon,
+    PageIcon
     //   UserIcon,
     //   ClockIcon,
     //   CheckCircleIcon,
@@ -113,10 +118,11 @@ import { notificationService } from '@/services/notification'
 import { usePermissions } from '@/auth/usePermissions'
 import { useCategorySystem } from '@/stores/categorySystem'
 import type { PermissionValues } from '@/types/permissions'
-
+import OrderModal from "@/modules/order/components/OrderModal.vue"
 const { t } = useI18n()
 const { hasPermission } = usePermissions()
 const categorySystem = useCategorySystem()
+
 
 interface CustomerContact {
     id?: number
@@ -170,6 +176,8 @@ const currentPageTitle = ref('customers')
 const customers = ref<Customer[]>([])
 const selectedRows = ref<Customer[]>([])
 const formErrors = ref({})
+const formOrderError = ref({})
+const isOrderModalOpen = ref(false)
 const currentMode = ref<'add' | 'edit' | 'view'>('add')
 const currentCustomer = ref<Partial<Customer>>({
     customer_type: '',
@@ -328,6 +336,11 @@ const availableStatuses = computed(() => [
     { value: 'unqualified', label: t('customers.status.unqualified'), color: 'bg-red-100 text-red-800' },
     { value: 'inactive', label: t('customers.status.inactive'), color: 'bg-gray-100 text-gray-800' }
 ])
+const customerCode = ref<string | null>(null);
+const openAddOrderModal = (customer: Customer) => {
+    isOrderModalOpen.value = true
+    customerCode.value = customer.customer_code || null
+}
 
 // Table Configuration
 const columns = ref([
@@ -373,7 +386,7 @@ const columns = ref([
         </div>`;
         },
         isHtml: true,
-        
+
     },
     {
         field: 'status',
@@ -412,6 +425,13 @@ const columns = ref([
 
 // Actions Configuration
 const tableActions = [
+    {
+        icon: PageIcon,
+        tooltip: 'common.create_order',
+        permission: 'orders.create' as PermissionValues,
+        handler: (row: Customer) => openAddOrderModal(row),
+        class: 'text-gray-400 hover:text-blue-500'
+    },
     {
         icon: EyeIcon,
         tooltip: 'common.view',
@@ -468,10 +488,10 @@ const changeStatusTab = (status: string) => {
     filters.value.status = status === 'all' ? '' : status
     pagination.value.current_page = 1
     columns.value = columns.value.map(col => {
-    if (col.field === 'status' && col.isShow !== undefined) {
-        return { ...col, isShow: status == 'all' }
-    }
-    return { ...col } // Giữ nguyên nhưng tạo object mới để Vue reactivity hoạt động
+        if (col.field === 'status' && col.isShow !== undefined) {
+            return { ...col, isShow: status == 'all' }
+        }
+        return { ...col } // Giữ nguyên nhưng tạo object mới để Vue reactivity hoạt động
     })
     fetchCustomers()
 }
@@ -490,6 +510,45 @@ async function fetchCustomers() {
         pagination.value = response.data.data.pagination
     } catch (error) {
         notificationService.error(t('customers.fetch_failed'))
+    } finally {
+        setLoading?.(false)
+    }
+}
+
+const handleSubmitOrder = async (orderData: any) => {
+
+    formErrors.value = {}
+    const data = orderData.submitData;
+    const isEdit = !!data.id
+    setLoading?.(true)
+    try {
+        const method = 'post'
+        const url = '/orders'   
+
+        const response = await api[method](url, data)
+
+        if (response.data.status || response.status === 201) {
+            notificationService.success(
+                response.data.message ||
+                (isEdit ? t('orders.update_success') : t('orders.create_success'))
+            )
+            await fetchCustomers()
+            closeOrderModal()
+        } else {
+            throw new Error(response.data.message || t('orders.save_failed'))
+        }
+    } catch (error: any) {
+        console.error('Submit error:', error)
+
+        if (error.response?.status === 422 && error.response?.data?.errors) {
+            formErrors.value = error.response.data.errors
+        }
+
+        notificationService.error(
+            error.response?.data?.message ||
+            error.message ||
+            t('orders.save_failed')
+        )
     } finally {
         setLoading?.(false)
     }
@@ -564,6 +623,10 @@ function viewCustomer(customer: Customer) {
 function closeModal() {
     isModalOpen.value = false
     formErrors.value = {}
+}
+function closeOrderModal() {
+    isOrderModalOpen.value = false
+    formOrderError.value = {}
 }
 
 // Status change handlers

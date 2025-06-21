@@ -227,7 +227,8 @@
         "required": "Trường này là bắt buộc",
         "invalid_email": "Email không hợp lệ",
         "invalid_phone": "Số điện thoại không hợp lệ",
-        "validation_failed": "Validation failed"
+        "validation_failed": "Validation failed",
+        "create_order": "Create Order"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -937,6 +938,8 @@
         "single_delete_confirmation": "Are you sure you want to delete order {orderCode}?",
         "delete_selected_confirmation": "Are you sure you want to delete {count} selected orders?",
         "bulk_delete_confirmation": "Are you sure you want to delete {count} selected orders?",
+        "send_approved": "Send Approved Orders",
+        "send_approved_confirmation": "Are you sure you want to send {count} approved orders?",
         "approve_selected": "Approve Selected",
         "approve_selected_confirmation": "Are you sure you want to approve {count} selected orders?",
         "approve_success": "{count} orders approved successfully.",
@@ -997,6 +1000,7 @@
         "actions": "Actions",
         "display_order": "Or",
         "unit": "Unit",
+        "total_amount": "Total Amount",
         "errors": {
             "customer_required": "Please select a customer.",
             "customer_not_found": "Customer not found with this code.",
@@ -1011,7 +1015,8 @@
             "max_users_limit": "Max users limit exceeded. Please enter a number less than 10000.",
             "storage_limit": "Storage size limit exceeded. Please enter a number less than 1000 GB.",
             "min": "Value must be at least {min}",
-            "max": "Value must be at most {max}"
+            "max": "Value must be at most {max}",
+            "customer_type_mismatch": "Customer type mismatch. Please select a customer of the same type as the order."
         }
     },
     "feature": {

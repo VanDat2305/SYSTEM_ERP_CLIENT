@@ -53,6 +53,11 @@ import DownloadIcon from "./DownloadIcon.vue";
 import ServiceIcon from "./ServiceIcon.vue";
 import CustomerIcon from "./CustomerIcon.vue";
 import StoreIcon from "./StoreIcon.vue";
+import CancelIcon from "./CancelIcon.vue";
+import ApproveIcon from "./ApproveIcon.vue";
+import TimeIcon from "./TimeIcon.vue";
+import DoneIcon from "./DoneIcon.vue";
+
 
 export {
   BellIcon,
@@ -109,5 +114,9 @@ export {
   DownloadIcon,
   ServiceIcon,
   CustomerIcon,
-  StoreIcon
+  StoreIcon,
+  CancelIcon,
+  ApproveIcon,
+  TimeIcon,
+  DoneIcon
 };

@@ -25,7 +25,7 @@
                 :showAddButton="hasPermission('orders.create' as PermissionValues)" hasSelection
                 :server-pagination="true" :server-total-items="pagination.total"
                 :server-current-page="pagination.current_page" :server-per-page="pagination.per_page"
-                :server-last-page="pagination.last_page" :loading="isLoading" @add="openAddModal"
+                :server-last-page="pagination.last_page" @add="openAddModal"
                 @update:selectedRows="handleSelectionChange" @refresh="fetchOrders"
                 @server-page-change="handleServerPageChange" @server-sort="handleServerSort"
                 @filter="handleServerFilter" :show-refresh-button="true" :searchOptions="searchOptions"
@@ -36,16 +36,25 @@
         <OrderModal :errors="formErrors" :isModalOpen="isModalOpen" :mode="currentMode" :currentOrder="currentOrder"
             :loading="isModalLoading" @close="closeModal" @submit="handleSubmit" :categorySystem="categorySystem" />
 
+        <!-- confirm change status -->
+        <ConfirmModal :show="showConfirmChangeStatusModal" :close="() => showConfirmChangeStatusModal = false"
+            :onConfirm="handleConfirmChangeStatus" :type="typeConfirmModal" :closeOnClickOutside="false"
+            :title="t('common.confirm')" :message="confirmMessage" :confirmText="t('common.yes')"
+            :cancelText="t('common.no')" />
+
         <!-- Delete Confirmation Modal -->
         <ConfirmModal :show="showDeleteModal" :close="closeDeleteModal" :onConfirm="confirmDelete" type="danger"
             :closeOnClickOutside="false" :title="t('common.confirm')" :message="deleteConfirmMessage"
-            :confirmText="t('common.yes')" :cancelText="t('common.no')" :loading="isDeleteLoading" />
+            :confirmText="t('common.yes')" :cancelText="t('common.no')" />
 
         <!-- Bulk Actions Modal -->
         <ConfirmModal :show="showBulkDeleteModal" :close="closeBulkDeleteModal" :onConfirm="confirmBulkDelete"
             type="danger" :closeOnClickOutside="false" :title="t('common.confirm')"
             :message="t('orders.bulk_delete_confirmation', { count: selectedRows.length })"
-            :confirmText="t('common.yes')" :cancelText="t('common.no')" :loading="isBulkDeleteLoading" />
+            :confirmText="t('common.yes')" :cancelText="t('common.no')" />
+        <InputModal :show="showInputModal" :close="() => showInputModal = false" :onConfirm="handleCancelConfirm"
+            :title="titleModal" :message="confirmMessage" :inputLabel="labelInputModal"
+            :inputPlaceholder="placeholderInputModal" inputRequired :inputValidator="inputValidator" />
     </AdminLayout>
 </template>
 
@@ -57,7 +66,8 @@ import PageBreadcrumb from "@/components/common/PageBreadcrumb.vue"
 import CustomTable from "@/components/tables/CustomTable.vue"
 import OrderModal from "@/modules/order/components/OrderModal.vue"
 import ConfirmModal from '@/components/modals/ConfirmModal.vue'
-import { EyeIcon, PencilIcon, TrashIcon } from '@/icons'
+import InputModal from '@/components/modals/InputModal.vue'
+import { EyeIcon, PencilIcon, TrashIcon, SendIcon, CancelIcon, ApproveIcon, TimeIcon, DoneIcon } from '@/icons'
 import { api } from '@/utils/api'
 import { notificationService } from '@/services/notification'
 import { usePermissions } from '@/auth/usePermissions'
@@ -155,6 +165,14 @@ const isBulkDeleteLoading = ref(false)
 const isLoading = ref(false)
 const activeTab = ref('all')
 const statusCounts = ref<Record<string, number>>({})
+const showInputModal = ref(false)
+const titleModal = ref('')
+const labelInputModal = ref('')
+const placeholderInputModal = ref('')
+const inputValidator = ref<((value: string) => boolean) | null>(null);
+const showConfirmChangeStatusModal = ref(false)
+const typeConfirmModal = ref<'danger' | 'warning' | 'info' | 'success'>('warning')
+
 
 // ===== COMPUTED =====
 const statusTabs = computed<StatusTab[]>(() => [
@@ -204,6 +222,8 @@ const deleteConfirmMessage = computed(() => {
     return t('orders.delete_confirmation')
 })
 
+const confirmMessage = ref('')
+
 // ===== REACTIVE REFS =====
 const pagination = ref<Pagination>({
     current_page: 1,
@@ -222,8 +242,8 @@ const filters = ref<Filters>({
 // ===== CONFIGURATION =====
 const searchOptions = computed(() => [
     { field: 'order_code', label: t('orders.fields.order_code') },
-    { field: 'customers.full_name', label: t('orders.fields.customer_full_name') },
-    { field: 'customers.customer_code', label: t('customers.fields.customer_code') },
+    { field: 'customer.full_name', label: t('orders.fields.customer_full_name') },
+    { field: 'customer.customer_code', label: t('customers.fields.customer_code') },
 ])
 
 const filterOptions = computed(() => [
@@ -320,7 +340,8 @@ const columns = ref([
             }
             return `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colorMap[value] || 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'}`
         },
-        align: 'center',
+        align: 'left',
+        headerAlign: 'left',
         isShow: activeTab.value === 'all'
     }
 ])
@@ -339,55 +360,65 @@ const tableActions = computed(() => {
             tooltip: 'common.edit',
             permission: 'orders.update' as PermissionValues,
             handler: (row: Order) => editOrder(row),
-            class: 'text-gray-400 hover:text-blue-500 transition-colors duration-200'
+            class: 'text-gray-400 hover:text-blue-500 transition-colors duration-200',
+            conditionShow: (row: Order) => row.order_status == 'draft' || row.order_status === 'pending'
         }
     ]
 
     // Dynamic status actions based on current status
     const statusActions: any[] = []
 
+    statusActions.push({
+        icon: SendIcon,
+        tooltip: 'orders.send_approved',
+        permission: 'orders.draft_to_pending' as PermissionValues,
+        handler: (row: Order) => confirmChangeStatus(row, 'pending'),
+        class: 'text-gray-400 hover:text-blue-500 transition-colors duration-200',
+        conditionShow: (row: Order) => row.order_status === 'draft',
+
+    })
+
     // Approve action (for draft, pending)
     statusActions.push({
-        icon: '✓',
-        tooltip: 'orders.approve',
-        permission: 'orders.approve' as PermissionValues,
-        handler: (row: Order) => changeOrderStatus(row, 'approved'),
+        icon: ApproveIcon,
+        tooltip: 'orders.approve_selected',
+        permission: 'orders.pending_to_approved' as PermissionValues,
+        handler: (row: Order) => confirmChangeStatus(row, 'approved'),
         class: 'text-gray-400 hover:text-blue-500 transition-colors duration-200',
-        condition: (row: Order) => ['draft', 'pending'].includes(row.order_status),
-        isText: true
+        conditionShow: (row: Order) => ['draft', 'pending'].includes(row.order_status),
+
     })
 
     // Process action (for approved)
     statusActions.push({
-        icon: '⚡',
-        tooltip: 'orders.process',
-        permission: 'orders.process' as PermissionValues,
-        handler: (row: Order) => changeOrderStatus(row, 'processing'),
+        icon: TimeIcon,
+        tooltip: 'orders.process_selected',
+        permission: 'orders.approved_to_processing' as PermissionValues,
+        handler: (row: Order) => confirmChangeStatus(row, 'processing'),
         class: 'text-gray-400 hover:text-purple-500 transition-colors duration-200',
-        condition: (row: Order) => row.order_status === 'approved',
-        isText: true
+        conditionShow: (row: Order) => row.order_status === 'approved',
+
     })
 
     // Complete action (for processing)
     statusActions.push({
-        icon: '✅',
-        tooltip: 'orders.complete',
-        permission: 'orders.complete' as PermissionValues,
-        handler: (row: Order) => changeOrderStatus(row, 'completed'),
+        icon: DoneIcon,
+        tooltip: 'orders.complete_selected',
+        permission: 'orders.processing_to_completed' as PermissionValues,
+        handler: (row: Order) => confirmChangeStatus(row, 'completed'),
         class: 'text-gray-400 hover:text-green-500 transition-colors duration-200',
-        condition: (row: Order) => row.order_status === 'processing',
-        isText: true
+        conditionShow: (row: Order) => row.order_status === 'processing',
+
     })
 
     // Cancel action (for non-completed, non-cancelled)
     statusActions.push({
-        icon: '❌',
-        tooltip: 'orders.cancel',
-        permission: 'orders.cancel' as PermissionValues,
-        handler: (row: Order) => changeOrderStatus(row, 'cancelled'),
+        icon: CancelIcon,
+        tooltip: 'orders.cancel_selected',
+        permission: 'orders.any_to_cancelled' as PermissionValues,
+        handler: (row: Order) => confirmCancelOrder(row, 'cancelled'),
         class: 'text-gray-400 hover:text-red-500 transition-colors duration-200',
-        condition: (row: Order) => !['completed', 'cancelled'].includes(row.order_status),
-        isText: true
+        conditionShow: (row: Order) => !['completed', 'cancelled'].includes(row.order_status),
     })
 
     const deleteAction = {
@@ -399,7 +430,7 @@ const tableActions = computed(() => {
     }
 
     return [...baseActions, ...statusActions, deleteAction]
-        .filter(action => !action.permission || hasPermission(action.permission))
+        .filter(action => (!action.permission || hasPermission(action.permission) && (!action.condition || action.condition(selectedRows.value[0]))))
 })
 
 const bulkActions = computed(() => [
@@ -407,48 +438,61 @@ const bulkActions = computed(() => [
         name: 'delete_selected',
         label: 'common.delete_selected',
         handler: deleteSelected,
-        confirm: true,
+        requireConfirm: true,
         confirmMessage: (selectedCount: number) => t('orders.delete_selected_confirmation', { count: selectedCount }),
         permission: 'orders.delete' as PermissionValues,
         class: 'text-red-600 hover:text-red-700'
     },
     {
-        name: 'approve_selected',
+        name: 'orders.send_approved',
+        label: 'orders.send_approved',
+        handler: sendApproveSelected,
+        requireConfirm: true,
+        confirmMessage: (selectedCount: number) => t('orders.send_approved_confirmation', { count: selectedCount }),
+        permission: 'orders.draft_to_pending' as PermissionValues,
+        class: 'text-blue-600 hover:text-blue-700',
+        condition: () => selectedRows.value.some(order => ['draft'].includes(order.order_status))
+    },
+    {
+        name: 'orders.approve_selected',
         label: 'orders.approve_selected',
         handler: approveSelected,
-        confirm: true,
+        requireConfirm: true,
         confirmMessage: (selectedCount: number) => t('orders.approve_selected_confirmation', { count: selectedCount }),
-        permission: 'orders.approve' as PermissionValues,
+        permission: 'orders.pending_to_approved' as PermissionValues,
         class: 'text-blue-600 hover:text-blue-700',
         condition: () => selectedRows.value.some(order => ['draft', 'pending'].includes(order.order_status))
     },
     {
-        name: 'process_selected',
+        name: 'orders.process_selected',
         label: 'orders.process_selected',
         handler: processSelected,
-        confirm: true,
+        requireConfirm: true,
         confirmMessage: (selectedCount: number) => t('orders.process_selected_confirmation', { count: selectedCount }),
-        permission: 'orders.process' as PermissionValues,
+        permission: 'orders.approved_to_processing' as PermissionValues,
         class: 'text-purple-600 hover:text-purple-700',
         condition: () => selectedRows.value.some(order => order.order_status === 'approved')
     },
     {
-        name: 'complete_selected',
+        name: 'orders.complete_selected',
         label: 'orders.complete_selected',
         handler: completeSelected,
-        confirm: true,
+        requireConfirm: true,
         confirmMessage: (selectedCount: number) => t('orders.complete_selected_confirmation', { count: selectedCount }),
-        permission: 'orders.complete' as PermissionValues,
+        permission: 'orders.processing_to_completed' as PermissionValues,
         class: 'text-green-600 hover:text-green-700',
         condition: () => selectedRows.value.some(order => order.order_status === 'processing')
     },
     {
-        name: 'cancel_selected',
+        name: 'orders.cancel_selected',
         label: 'orders.cancel_selected',
         handler: cancelSelected,
-        confirm: true,
+        requireInput: true,
+        requireConfirm: false,
+        inputLabel: '',
+        inputPlaceholder: 'Nhập lý do hủy đơn hàng...',
         confirmMessage: (selectedCount: number) => t('orders.cancel_selected_confirmation', { count: selectedCount }),
-        permission: 'orders.cancel' as PermissionValues,
+        permission: 'orders.any_to_cancelled' as PermissionValues,
         class: 'text-red-600 hover:text-red-700',
         condition: () => selectedRows.value.some(order => !['completed', 'cancelled'].includes(order.order_status))
     },
@@ -523,7 +567,7 @@ const editOrder = (order: Order) => {
     currentOrder.value = { ...order }
     formErrors.value = {}
     isModalOpen.value = true
-    
+
 }
 
 const viewOrder = (order: Order) => {
@@ -607,6 +651,65 @@ const closeBulkDeleteModal = () => {
     showBulkDeleteModal.value = false
     selectedRows.value = []
 }
+const orderToCancel = ref<Order | null>(null);
+const cancelReason = ref('');
+const newStatusSelect = ref('');
+
+
+const confirmChangeStatus = (order: Order, newStatus: string) => {
+    if (!order || !newStatus) return;
+
+    showConfirmChangeStatusModal.value = true;
+    typeConfirmModal.value = 'warning';
+    titleModal.value = "Xác nhận";
+
+    if (newStatus === 'approved') {
+        confirmMessage.value = `Bạn có chắc chắn muốn phê duyệt đơn hàng ${order.order_code}?`;
+    } else if (newStatus === 'pending') {
+        confirmMessage.value = `Bạn có chắc chắn muốn gửi phê duyệt đơn hàng ${order.order_code}?`;
+    } else if (newStatus === 'processing') {
+        confirmMessage.value = `Bạn có chắc chắn muốn chuyển trạng thái đơn hàng ${order.order_code} sang đang xử lý?`;
+    } else if (newStatus === 'completed') {
+        confirmMessage.value = `Bạn có chắc chắn muốn hoàn thành đơn hàng ${order.order_code}?`;
+    } else if (newStatus === 'cancelled') {
+        confirmMessage.value = `Bạn có chắc chắn muốn hủy đơn hàng ${order.order_code}?`;
+    } else {
+        confirmMessage.value = `Bạn có chắc chắn muốn chuyển trạng thái đơn hàng ${order.order_code} sang ${t(`orders.status.${newStatus}`)}?`;
+    }
+    orderToCancel.value = order;
+    newStatusSelect.value = newStatus;
+};
+const handleConfirmChangeStatus = () => {
+    if (!orderToCancel.value || !newStatusSelect.value) return;
+    changeOrderStatus(orderToCancel.value, newStatusSelect.value, cancelReason.value);
+    resetCancelData();
+    showConfirmChangeStatusModal.value = false;
+};
+// xác nhận hủy đơn 1
+const handleCancelConfirm = (reason: string) => {
+    if (!orderToCancel.value || !newStatusSelect.value) return;
+    changeOrderStatus(orderToCancel.value, newStatusSelect.value, reason);
+};
+
+const resetCancelData = () => {
+    orderToCancel.value = null;
+    newStatusSelect.value = '';
+    cancelReason.value = '';
+};
+
+const confirmCancelOrder = (order: Order, newStatus: string) => {
+    showInputModal.value = true
+    titleModal.value = 'Xác nhận'
+    confirmMessage.value = `Bạn có chắc chắn muốn hủy đơn hàng ${order.order_code}?`
+    labelInputModal.value = ''
+    placeholderInputModal.value = 'Nhập lý do hủy đơn hàng...'
+    inputValidator.value = (value: string) => {
+        return true
+    }
+    orderToCancel.value = order;
+    newStatusSelect.value = newStatus;
+
+}
 
 const exportSelected = async () => {
     if (!selectedRows.value.length) return
@@ -632,21 +735,49 @@ const exportSelected = async () => {
         notificationService.error(error.response?.data?.message || t('orders.export_failed'))
     }
 }
+type OrderStatus = 'draft' | 'pending' | 'approved' | 'processing' | 'cancelled' | 'completed';
 
-const updateOrdersStatus = async (status: string, actionName: string) => {
+const updateOrdersStatus = async (status: string, actionName: string, status_old: OrderStatus[], reason = "") => {
     if (!selectedRows.value.length) return
+    if (selectedRows.value.some(order => order.order_status === status)) {
+        // notificationService.warning(t(`orders.${actionName}_already`))
+        notificationService.warning("Vui lòng kiểm tra lại trạng thái đơn hàng");
+        return
+    }
 
+    if (status_old?.length &&
+        selectedRows.value.some((order: Order) =>
+            !(status_old as Array<Order['order_status']>).includes(order.order_status)
+        )) {
+        // notificationService.warning(
+        //     t(`orders.${actionName}_not_allowed`, {
+        //         status: t(`orders.status.${status_old.join(', ')}`)
+        //     })
+        // )
+        notificationService.warning("Vui lòng kiểm tra lại trạng thái đơn hàng");
+        return
+    }
+
+    if (status === 'cancelled' && !reason) {
+        notificationService.warning('Vui lòng cung cấp lý do hủy đơn hàng');
+        return
+
+    }
+    setLoading?.(true)
     try {
         const orderIds = selectedRows.value.map(order => order.id)
-        const response = await api.patch('/orders/bulk-status-update', {
+        const response = await api.patch('/orders-update-status', {
             order_ids: orderIds,
-            status: status
+            status: status,
+            reason: reason
         })
 
         if (response.data.status) {
             notificationService.success(
-                t(`orders.${actionName}_success`, { count: selectedRows.value.length })
+                'Cập nhật thành công'
+                // t(`orders.${actionName}_success`, { count: selectedRows.value.length })
             )
+            resetCancelData()
             await fetchOrders()
             selectedRows.value = []
         } else {
@@ -655,40 +786,68 @@ const updateOrdersStatus = async (status: string, actionName: string) => {
     } catch (error: any) {
         console.error(`${actionName} error:`, error)
         notificationService.error(
-            error.response?.data?.message || t(`orders.${actionName}_failed`)
+            error.response?.data?.message || 'Cập nhật thất bại'//t(`orders.${actionName}_failed`)
         )
+    } finally {
+        setLoading?.(false)
     }
 }
 
+// ===== BULK ACTIONS =====
+// chuyen phe duyet
+const sendApproveSelected = async () => {
+    await updateOrdersStatus('pending', 'send_approve', ['draft'])
+}
+
 const approveSelected = async () => {
-    await updateOrdersStatus('approved', 'approve')
+    await updateOrdersStatus('approved', 'approve', ['draft', 'pending'])
 }
 
 const processSelected = async () => {
-    await updateOrdersStatus('processing', 'process')
+    await updateOrdersStatus('processing', 'process', ['approved'])
 }
 
 const completeSelected = async () => {
-    await updateOrdersStatus('completed', 'complete')
+    await updateOrdersStatus('completed', 'complete', ['processing'])
 }
 
-const cancelSelected = async () => {
-    await updateOrdersStatus('cancelled', 'cancel')
+const cancelSelected = async (reason: string) => {
+    await updateOrdersStatus('cancelled', 'cancel', ['draft', 'pending', 'approved', 'processing'], reason)
 }
 
-const changeOrderStatus = async (order: Order, newStatus: string) => {
+const changeOrderStatus = async (order: Order, newStatus: string, reason = "") => {
+    if (!order.id) {
+        notificationService.error("Không tìm thấy đơn hàng để cập nhật trạng thái")
+        return
+    }
+    if (order.order_status === newStatus) {
+        notificationService.warning("Vui lòng kiểm tra lại trạng thái đơn hàng");
+        return
+    }
+    if (newStatus === 'cancelled' && !reason) {
+        notificationService.warning('Vui lòng cung cấp lý do hủy đơn hàng');
+        return
+    }
+    setLoading?.(true)
     try {
         const response = await api.patch(`/orders/${order.id}/status`, {
-            status: newStatus
+            status: newStatus,
+            reason: reason
         })
 
         if (response.data.status) {
-            notificationService.success(
-                t('orders.status_change_success', {
-                    orderCode: order.order_code,
-                    status: t(`orders.status.${newStatus}`)
-                })
-            )
+            if (status == 'cancelled') {
+                notificationService.success('Hủy đơn hàng thành công')
+            } else {
+                notificationService.success(
+                    `Cập nhật trạng thái đơn hàng ${order.order_code} thành công`
+                    // t('orders.status_change_success', {
+                    //     orderCode: order.order_code,
+                    //     status: t(`orders.status.${newStatus}`)
+                    // })
+                )
+                
+            }
             await fetchOrders()
         } else {
             throw new Error(response.data.message)
@@ -698,6 +857,8 @@ const changeOrderStatus = async (order: Order, newStatus: string) => {
         notificationService.error(
             error.response?.data?.message || t('orders.status_change_failed')
         )
+    } finally {
+        setLoading?.(false)
     }
 }
 

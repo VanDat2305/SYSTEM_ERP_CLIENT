@@ -622,7 +622,7 @@ const validateForm = () => {
         newErrors[path('unit')] = [t('service_packages.errors.unit_required')]
       }
     } else if (feature.feature_type === 'boolean' && feature.limit_value !== undefined) {
-      if (feature.limit_value !== 0 && feature.limit_value !== 1) {
+      if (Number(feature.limit_value) !== 0 && Number(feature.limit_value) !== 1) {
         newErrors[path('limit_value')] = [t('service_packages.errors.limit_value_boolean_must_be_0_or_1')]
       }
     }

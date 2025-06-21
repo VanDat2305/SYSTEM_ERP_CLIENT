@@ -34,7 +34,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
               <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.order_code')
-              }}</label>
+                }}</label>
               <input type="text" v-model="formData.order_code" :disabled="true"
                 :placeholder="t('orders.auto_generated')" class="input-form mt-2" />
               <p v-if="errors.order_code" class="text-xs text-red-500 mt-1">{{ errors.order_code[0] }}</p>
@@ -42,7 +42,7 @@
             <div>
               <div>
                 <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.created_at')
-                }}</label>
+                  }}</label>
                 <input type="text" :value="formatDatetime(formData.created_at)" :disabled="true"
                   :placeholder="t('orders.auto_generated')" class="input-form mt-2" />
               </div>
@@ -94,7 +94,7 @@
             </div>
             <div>
               <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.total_amount')
-              }}</label>
+                }}</label>
               <div class="relative mt-2">
                 <input type="number" step="0.01" v-model="formData.total_amount" :disabled="true"
                   class="input-form pr-12 bg-gray-50 dark:bg-gray-700" :placeholder="t('orders.auto_calculated')" />
@@ -238,7 +238,7 @@
             <div v-for="(detail, index) in formData.order_details" :key="detail.temp_id || detail.id || index"
               class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
               <div class="flex justify-between items-start mb-3">
-                <h4 class="text-sm font-medium text-gray-900 dark:text-white">
+                <h4 class="text-xs font-medium text-gray-900 dark:text-white">
                   {{ t('orders.fields.service_package') }} #{{ index + 1 }}
                 </h4>
                 <button v-if="!isViewMode" type="button" @click="removeOrderDetail(index)"
@@ -273,11 +273,11 @@
                     {{ errors[`order_details.${index}.service_package_id`][0] }}
                   </p>
                 </div>
-
+                <input type="hidden" v-model="detail.customer_type" />
                 <!-- Package Code (readonly, populated from selection) -->
                 <div>
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.package_code')
-                  }}</label>
+                    }}</label>
                   <input type="text" v-model="detail.package_code" :disabled="true"
                     class="input-form mt-2 bg-gray-100 dark:bg-gray-700" />
                 </div>
@@ -285,22 +285,22 @@
                 <!-- Package Name (readonly, populated from selection) -->
                 <div>
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.package_name')
-                  }}</label>
+                    }}</label>
                   <input type="text" v-model="detail.package_name" :disabled="true"
                     class="input-form mt-2 bg-gray-100 dark:bg-gray-700" />
                 </div>
-                                <!-- Tax Included -->
+                <!-- Tax Included -->
                 <div class="flex items-center mt-6">
-                  <input type="checkbox" v-model="detail.tax_included" :disabled="isViewMode"
+                  <input type="checkbox" v-model="detail.tax_included" :disabled="true"
                     @change="calculateDetailTotals(index)" class="mr-2" />
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_included')
-                  }}</label>
+                    }}</label>
                 </div>
                 <div class="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4">
                   <!-- Base Price (readonly, populated from selection) -->
                   <div class="lg:col-span-2">
                     <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.base_price')
-                    }}</label>
+                      }}</label>
                     <div class="relative mt-2">
                       <input type="number" step="0.01" v-model="detail.base_price" :disabled="true"
                         @input="calculateDetailTotals(index)" class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
@@ -320,53 +320,54 @@
                       {{ errors[`order_details.${index}.quantity`][0] }}
                     </p>
                   </div>
-                                  <!-- Total Price (calculated) -->
-                <div class="lg:col-span-2">
-                  <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.total_price')
-                  }}</label>
-                  <div class="relative mt-2">
-                    <input type="number" step="0.01" v-model="detail.total_price" :disabled="true"
-                      class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
-                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-                      {{ detail.currency || formData.currency || 'VND' }}
-                    </span>
+                  <!-- Total Price (calculated) -->
+                  <div class="lg:col-span-2">
+                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.total_price')
+                      }}</label>
+                    <div class="relative mt-2">
+                      <input type="number" step="0.01" v-model="detail.total_price" :disabled="true"
+                        class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
+                      <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+                        {{ detail.currency || formData.currency || 'VND' }}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                 <!-- Tax Rate -->
-                <div>
-                  <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_rate')
-                  }}</label>
-                  <div class="relative mt-2">
-                    <input type="number" step="0.01" min="0" max="100" v-model.number="detail.tax_rate"
-                      :disabled="isViewMode" @input="calculateDetailTotals(index)" class="input-form pr-8" />
-                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">%</span>
+                  <!-- Tax Rate -->
+                  <div>
+                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_rate')
+                      }}</label>
+                    <div class="relative mt-2">
+                      <input type="number" step="0.01" min="0" max="100" v-model.number="detail.tax_rate"
+                        :disabled="true" @input="calculateDetailTotals(index)" class="input-form pr-8" />
+                      <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">%</span>
+                    </div>
                   </div>
-                </div>
-                 <!-- Tax Amount (calculated) -->
-                <div class="lg:col-span-3">
-                  <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_amount')
-                  }}</label>
-                  <div class="relative mt-2">
-                    <input type="number" step="0.01" v-model="detail.tax_amount" :disabled="true"
-                      class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
-                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-                      {{ detail.currency || formData.currency || 'VND' }}
-                    </span>
+                  <!-- Tax Amount (calculated) -->
+                  <div class="lg:col-span-3">
+                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_amount')
+                      }}</label>
+                    <div class="relative mt-2">
+                      <input type="number" step="0.01" v-model="detail.tax_amount" :disabled="true"
+                        class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
+                      <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+                        {{ detail.currency || formData.currency || 'VND' }}
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                <!-- Total with Tax (calculated) -->
-                <div class="lg:col-span-3">
-                  <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.total_with_tax')
-                  }}</label>
-                  <div class="relative mt-2">
-                    <input type="number" step="0.01" v-model="detail.total_with_tax" :disabled="true"
-                      class="input-form pr-12 bg-gray-100 dark:bg-gray-700 font-medium" />
-                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-                      {{ detail.currency || formData.currency || 'VND' }}
-                    </span>
+                  <!-- Total with Tax (calculated) -->
+                  <div class="lg:col-span-3">
+                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{
+                      t('orders.fields.total_with_tax')
+                      }}</label>
+                    <div class="relative mt-2">
+                      <input type="number" step="0.01" v-model="detail.total_with_tax" :disabled="true"
+                        class="input-form pr-12 bg-gray-100 dark:bg-gray-700 font-medium" />
+                      <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+                        {{ detail.currency || formData.currency || 'VND' }}
+                      </span>
+                    </div>
                   </div>
-                </div>
                 </div>
 
 
@@ -396,7 +397,7 @@
                   </p>
                 </div> -->
 
-               
+
 
 
 
@@ -406,12 +407,16 @@
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.is_active') }}</label>
                 </div> -->
 
-               
+
                 <!-- Enhanced Package Features Section - Full Width -->
                 <div class="lg:col-span-3">
                   <div class="flex items-center justify-between mb-2">
-                    <label class="text-sm font-bold text-gray-900 dark:text-white">
+                    <label class="text-xs font-bold text-gray-900 dark:text-white">
                       {{ t('orders.fields.features') }}
+                      <button type="button" class="text-xs text-blue-600 hover:underline dark:text-blue-400 pl-4"
+                        @click="detail.showDetails = !detail.showDetails">
+                        {{ detail.showDetails ? t('common.hide_details') : t('common.show_details') }}
+                      </button>
                     </label>
                     <!-- <div v-if="!isViewMode" class="flex gap-2">
                       <button type="button" @click="resetFeaturesToDefault(index)"
@@ -426,145 +431,146 @@
                   </div>
 
                   <!-- Compact Features List -->
-                  <div v-if="detail.features && detail.features.length > 0"
+                  <div v-if="detail.features && detail.features.length"
                     class="max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900">
-
-                    <!-- Table Header -->
-                    <div
-                      class="grid grid-cols-12 gap-2 p-2 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-600 sticky top-0">
-                      <div class="col-span-1 text-center">{{ t('orders.display_order') }}</div>
-                      <div class="col-span-3">{{ t('orders.feature_name') }}</div>
-                      <div class="col-span-2">{{ t('orders.feature_type') }}</div>
-                      <div class="col-span-2">{{ t('orders.limit_value') }}</div>
-                      <div class="col-span-2">{{ t('orders.unit') }}</div>
-                      <div class="col-span-1 text-center">{{ t('orders.actions') }}</div>
-                    </div>
-
-                    <!-- Feature Rows -->
-                    <div v-for="(feature, featureIndex) in detail.features"
-                      :key="feature.id || feature.temp_id || featureIndex"
-                      class="grid grid-cols-12 gap-2 p-2 text-xs border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                      :class="{ 'opacity-60': feature.is_active === false }">
-
-                      <!-- Display Order -->
-                      <div class="col-span-1 text-center">{{ feature.display_order }}</div>
-
-                      <!-- Feature Name & Key -->
-                      <div class="col-span-3">
-                        <div class="font-medium text-gray-900 dark:text-white truncate" :title="feature.feature_name">
-                          {{ feature.feature_name }}
-                        </div>
-                        <div class="text-gray-500 dark:text-gray-400 truncate text-xs" :title="feature.feature_key">
-                          {{ feature.feature_key }}
-                        </div>
+                    <div v-if="detail.showDetails">
+                      <!-- Table Header -->
+                      <div
+                        class="grid grid-cols-12 gap-2 p-2 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-600 sticky top-0">
+                        <div class="col-span-1 text-center">{{ t('orders.display_order') }}</div>
+                        <div class="col-span-3">{{ t('orders.feature_name') }}</div>
+                        <div class="col-span-2">{{ t('orders.feature_type') }}</div>
+                        <div class="col-span-2">{{ t('orders.limit_value') }}</div>
+                        <div class="col-span-2">{{ t('orders.unit') }}</div>
+                        <div class="col-span-1 text-center">{{ t('orders.actions') }}</div>
                       </div>
 
-                      <!-- Feature Type & Unit -->
-                      <div class="col-span-2">
-                        <div class="text-gray-800 dark:text-gray-200">
-                          {{ formatOptionLabel(featureTypeOption, feature.feature_type) }}
-                        </div>
-                      </div>
+                      <!-- Feature Rows -->
+                      <div v-for="(feature, featureIndex) in detail.features"
+                        :key="feature.id || feature.temp_id || featureIndex"
+                        class="grid grid-cols-12 gap-2 p-2 text-xs border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                        :class="{ 'opacity-60': feature.is_active === false }">
 
-                      <!-- Limit Value -->
-                      <div class="col-span-2">
-                        <div v-if="feature.is_active !== false">
-                          <!-- Boolean Type -->
-                          <div v-if="feature.feature_type === 'boolean'" class="flex items-center">
-                            <input type="checkbox" v-model="feature.limit_value_boolean"
-                              :disabled="isViewMode || !feature.is_customizable"
-                              @change="onFeatureLimitChange(index, featureIndex)"
+                        <!-- Display Order -->
+                        <div class="col-span-1 text-center">{{ feature.display_order }}</div>
+
+                        <!-- Feature Name & Key -->
+                        <div class="col-span-3">
+                          <div class="font-medium text-gray-900 dark:text-white truncate" :title="feature.feature_name">
+                            {{ feature.feature_name }}
+                          </div>
+                          <div class="text-gray-500 dark:text-gray-400 truncate text-xs" :title="feature.feature_key">
+                            {{ feature.feature_key }}
+                          </div>
+                        </div>
+
+                        <!-- Feature Type & Unit -->
+                        <div class="col-span-2">
+                          <div class="text-gray-800 dark:text-gray-200">
+                            {{ formatOptionLabel(featureTypeOption, feature.feature_type) }}
+                          </div>
+                        </div>
+
+                        <!-- Limit Value -->
+                        <div class="col-span-2">
+                          <div v-if="feature.is_active !== false">
+                            <!-- Boolean Type -->
+                            <div v-if="feature.feature_type === 'boolean'" class="flex items-center">
+                              <input type="checkbox" v-model="feature.limit_value_boolean"
+                                :disabled="isViewMode || !feature.is_customizable"
+                                @change="onFeatureLimitChange(index, featureIndex)"
+                                class="form-checkbox h-3 w-3 text-indigo-600 rounded"
+                                :class="{ 'cursor-not-allowed': !feature.is_customizable }" />
+                              <span class="ml-1 text-xs">
+                                <!-- {{ Number(feature.limit_value_boolean) ? t('orders.enabled') : t('orders.disabled') }} -->
+                              </span>
+                              <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
+                                <svg class="w-3 h-3 inline" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fill-rule="evenodd"
+                                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                    clip-rule="evenodd" />
+                                </svg>
+                              </span>
+                            </div>
+
+                            <!-- Quantity Type -->
+                            <div v-else-if="feature.feature_type === 'quantity'" class="flex items-center">
+                              <input type="number" step="0.01" min="0" v-model.number="feature.limit_value"
+                                :disabled="isViewMode || !feature.is_customizable"
+                                @input="onFeatureLimitChange(index, featureIndex)"
+                                class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+                                :class="{
+                                  'bg-gray-100 dark:bg-gray-600 cursor-not-allowed': !feature.is_customizable,
+                                  'border-blue-300 dark:border-blue-500': feature.is_customizable
+                                }" />
+                              <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fill-rule="evenodd"
+                                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                    clip-rule="evenodd" />
+                                </svg>
+                              </span>
+                            </div>
+
+                            <!-- Other Types -->
+                            <div v-else class="flex items-center">
+                              <span class="text-gray-800 dark:text-gray-200">
+                                {{ feature.limit_value }} {{ feature.unit || '' }}
+                              </span>
+                              <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fill-rule="evenodd"
+                                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                    clip-rule="evenodd" />
+                                </svg>
+                              </span>
+                            </div>
+                          </div>
+                          <div v-else class="text-gray-500 dark:text-gray-400 italic">
+
+                            {{ Number(feature.limit_value) }}
+                          </div>
+                        </div>
+                        <div class="col-span-2 text-left">
+                          <div v-if="feature.unit" class="text-gray-500 dark:text-gray-400">
+                            {{ formatOptionLabel(unitTypeOptions, feature.unit) }}
+                          </div>
+                        </div>
+
+                        <!-- Status Badges -->
+
+                        <!-- Actions -->
+                        <div class="col-span-1 text-center">
+                          <div v-if="!isViewMode" class="flex items-center justify-center gap-1">
+                            <!-- Delete Feature (for optional features) -->
+                            <div v-if="feature.is_optional && feature.is_active">
+                              <button type="button" @click="removeOptionalFeature(index, featureIndex)"
+                                class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 ml-1"
+                                title="Xóa feature">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd" />
+                                  <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                    clip-rule="evenodd" />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Expandable Original Value (if modified) -->
+                        <div v-if="feature.is_modified && feature.original_limit_value !== undefined"
+                          class="col-span-12 mt-1 text-xs text-gray-500 dark:text-gray-400 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded border-l-2 border-yellow-400">
+                          <strong>{{ t('orders.original_value') }} : </strong>
+                          <span v-if="feature.feature_type === 'boolean'">
+                            <input type="checkbox" v-model="feature.original_limit_value" :disabled="true"
                               class="form-checkbox h-3 w-3 text-indigo-600 rounded"
-                              :class="{ 'cursor-not-allowed': !feature.is_customizable }" />
-                            <span class="ml-1 text-xs">
-                              <!-- {{ Number(feature.limit_value_boolean) ? t('orders.enabled') : t('orders.disabled') }} -->
-                            </span>
-                            <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
-                              <svg class="w-3 h-3 inline" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                  clip-rule="evenodd" />
-                              </svg>
-                            </span>
-                          </div>
-
-                          <!-- Quantity Type -->
-                          <div v-else-if="feature.feature_type === 'quantity'" class="flex items-center">
-                            <input type="number" step="0.01" min="0" v-model.number="feature.limit_value"
-                              :disabled="isViewMode || !feature.is_customizable"
-                              @input="onFeatureLimitChange(index, featureIndex)"
-                              class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
-                              :class="{
-                                'bg-gray-100 dark:bg-gray-600 cursor-not-allowed': !feature.is_customizable,
-                                'border-blue-300 dark:border-blue-500': feature.is_customizable
-                              }" />
-                            <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
-                              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                  clip-rule="evenodd" />
-                              </svg>
-                            </span>
-                          </div>
-
-                          <!-- Other Types -->
-                          <div v-else class="flex items-center">
-                            <span class="text-gray-800 dark:text-gray-200">
-                              {{ feature.limit_value }} {{ feature.unit || '' }}
-                            </span>
-                            <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
-                              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                  clip-rule="evenodd" />
-                              </svg>
-                            </span>
-                          </div>
+                              :class="{ 'cursor-not-allowed': true }" />
+                          </span>
+                          <span v-else>
+                            {{ feature.original_limit_value }}
+                          </span>
                         </div>
-                        <div v-else class="text-gray-500 dark:text-gray-400 italic">
-
-                          {{ Number(feature.limit_value) }}
-                        </div>
-                      </div>
-                      <div class="col-span-2 text-left">
-                        <div v-if="feature.unit" class="text-gray-500 dark:text-gray-400">
-                          {{ formatOptionLabel(unitTypeOptions, feature.unit) }}
-                        </div>
-                      </div>
-
-                      <!-- Status Badges -->
-
-                      <!-- Actions -->
-                      <div class="col-span-1 text-center">
-                        <div v-if="!isViewMode" class="flex items-center justify-center gap-1">
-                          <!-- Delete Feature (for optional features) -->
-                          <div v-if="feature.is_optional && feature.is_active">
-                            <button type="button" @click="removeOptionalFeature(index, featureIndex)"
-                              class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 ml-1"
-                              title="Xóa feature">
-                              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd" />
-                                <path fill-rule="evenodd"
-                                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                  clip-rule="evenodd" />
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Expandable Original Value (if modified) -->
-                      <div v-if="feature.is_modified && feature.original_limit_value !== undefined"
-                        class="col-span-12 mt-1 text-xs text-gray-500 dark:text-gray-400 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded border-l-2 border-yellow-400">
-                        <strong>{{ t('orders.original_value') }} : </strong>
-                        <span v-if="feature.feature_type === 'boolean'">
-                          <input type="checkbox" v-model="feature.original_limit_value" :disabled="true"
-                            class="form-checkbox h-3 w-3 text-indigo-600 rounded"
-                            :class="{ 'cursor-not-allowed': true }" />
-                        </span>
-                        <span v-else>
-                          {{ feature.original_limit_value }}
-                        </span>
                       </div>
                     </div>
                   </div>
@@ -592,7 +598,7 @@
           <!-- Order Details Summary -->
           <div v-if="formData.order_details.length > 0"
             class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <h4 class="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">{{ t('orders.summary') }}</h4>
+            <h4 class="text-xs font-medium text-blue-900 dark:text-blue-100 mb-2">{{ t('orders.summary') }}</h4>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
               <div>
                 <span class="text-gray-600 dark:text-gray-400">{{ t('orders.subtotal') }}:</span>
@@ -666,7 +672,11 @@ const props = defineProps({
   },
   categorySystem: {
     type: Object
-  }
+  },
+  customerCode: {
+    type: String,
+    default: null
+  },
 })
 
 const emit = defineEmits(['close', 'submit', 'openAddCustomer'])
@@ -693,7 +703,7 @@ const errors = ref({})
 const isSubmitting = ref(false)
 
 // Customer state
-const customerSearchCode = ref('')
+const customerSearchCode = ref('21321')
 const selectedCustomer = ref(null)
 
 // Options state
@@ -746,7 +756,13 @@ const searchServicePackage = async (query) => {
 
 // ==================== FORM MANAGEMENT ====================
 const resetForm = () => {
-  customerSearchCode.value = ''
+  if (props.customerCode) {
+    customerSearchCode.value = props.customerCode || ''
+    searchCustomerByCode()
+  } else {
+    customerSearchCode.value = ''
+  }
+
   selectedCustomer.value = null
 
   formData.value = {
@@ -784,6 +800,14 @@ const initializeForm = async () => {
         ...props.currentOrder,
         order_details: props.currentOrder.details || props.currentOrder.order_details || []
       }
+      if (props.customerCode !== null || props.customerCode !== undefined) {
+        selectedCustomer.value = props.customerCode
+        customerSearchCode.value = props.customerCode
+        searchCustomerByCode()
+      } else {
+        customerSearchCode.value = props.currentOrder.customer_code || ''
+      }
+
 
       if (props.currentOrder.customer) {
         selectedCustomer.value = props.currentOrder.customer
@@ -843,7 +867,7 @@ const validateForm = () => {
     newErrors.order_details = [t('orders.validation.at_least_one_detail')]
     notificationService.error(newErrors.order_details[0])
   }
-
+  const customerType = selectedCustomer.value?.customer_type || props.categorySystem?.customer_type || 'INDIVIDUAL'
   // Validate each order detail
   formData.value.order_details.forEach((detail, index) => {
     if (!detail.service_type) {
@@ -858,6 +882,12 @@ const validateForm = () => {
     // Date validation
     if (detail.start_date && detail.end_date && detail.start_date > detail.end_date) {
       newErrors[`order_details.${index}.end_date`] = [t('orders.validation.end_date_after_start')]
+    }
+    console.log(detail.customer_type  ,  customerType);
+    
+    if (detail.customer_type !==  customerType) {
+      // newErrors[`order_details.${index}.customer_type`] = [t('orders.validation.customer_type_mismatch')]
+      notificationService.error(t('orders.validation.customer_type_mismatch'))
     }
   })
 
@@ -1048,6 +1078,7 @@ const onServicePackageChange = async (detailIndex, packageId) => {
       detail.tax_rate = selectedPackage.package.tax_rate || 0
       detail.tax_included = selectedPackage.package.tax_included || false
       detail.service_type = selectedPackage.package.type_service
+      detail.customer_type = selectedPackage.package.customer_type
 
       calculateDetailTotals(detailIndex)
     }
@@ -1161,10 +1192,10 @@ const calculateDetailTotals = (detailIndex) => {
   // Calculate tax
   const taxRate = parseFloat(detail.tax_rate) || 0
   if (detail.tax_included) {
-    detail.tax_amount = detail.total_price * (taxRate / (100 + taxRate))
+    detail.tax_amount = parseFloat(detail.total_price * (taxRate / (100 + taxRate))).toFixed(2) || 0
     detail.total_with_tax = detail.total_price
   } else {
-    detail.tax_amount = detail.total_price * (taxRate / 100)
+    detail.tax_amount = parseFloat(detail.total_price * (taxRate / 100)).toFixed(0) || 0
     detail.total_with_tax = detail.total_price + detail.tax_amount
   }
 

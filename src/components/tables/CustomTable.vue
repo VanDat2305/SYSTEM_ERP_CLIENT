@@ -418,7 +418,7 @@
                              :class="['absolute right-0 z-20 w-max rounded-md shadow-lg', dropdownDirection === 'up' ? 'bottom-full mb-2' : 'top-full mt-2',
                             'bg-white dark:bg-gray-700']">
                             <div class="py-1">
-                            <button v-for="(action, index) in props.actions" :key="index"
+                            <button v-for="(action, index) in filteredActions(row)" :key="index"
                                 @click="() => { action.handler(row); closeActionMenu(); }"
                                 class="flex items-center w-full px-4 py-2 text-xs text-left hover:bg-gray-100 dark:hover:bg-gray-600"
                                 :class="action.class" :title="action.tooltip">
@@ -548,6 +548,20 @@
             </table>
         </div>
     </div>
+    <ConfirmModal :show="showRequireConfirmModal" :close="closeBulkModal" :onConfirm="confirmBulkModal" type="danger"
+            :closeOnClickOutside="false" :title="t('common.confirm')" :message="confirmMessage"
+            :confirmText="t('common.yes')" :cancelText="t('common.no')" />
+    <InputModal
+        :show="showInputModal"
+        :close="() => showInputModal = false"
+        :onConfirm="handleInputConfirm"
+        :title="titleModal"
+        :message="confirmMessage"
+        :inputLabel="labelInputModal"
+        :inputPlaceholder="placeholderInputModal"
+        inputRequired
+        :inputValidator="inputValidator"
+    />
 </template>
 
 <script setup>
@@ -557,6 +571,8 @@ import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import SelectSearch from '@/components/forms/SelectSearch.vue'
 import { useCategorySystem } from '@/stores/categorySystem'
+import ConfirmModal from '@/components/modals/ConfirmModal.vue'
+import InputModal from '@/components/modals/InputModal.vue'
 const categorySystem = useCategorySystem()
 
 const { t } = useI18n();
@@ -587,6 +603,10 @@ const props = defineProps({
                     typeof action.handler === 'function' &&
                     typeof action.class === 'string'
             ),
+        conditionShow: {
+            type: Function,
+            default: () => true,
+        }
     },
     bulkActions: {
         type: Array,
@@ -691,6 +711,17 @@ const selectedSearchField = ref(props.defaultSearchField || (props.searchOptions
 const activeFilters = ref({});
 const showFilters = ref(false);
 const showSearchFields = ref(false);
+const showRequireConfirmModal = ref(false);
+const confirmMessage = ref('');
+const currentAction = ref(null);
+
+const showInputModal = ref(false);
+const inputValue = ref('');
+const titleModal = ref('');
+const labelInputModal = ref('');
+const placeholderInputModal = ref('');
+const inputValidator = ref(null);
+
 
 const getSearchFieldLabel = (field) => {
     const option = props.searchOptions.find(opt => opt.field === field);
@@ -1173,8 +1204,73 @@ const isRowSelected = (row) => {
 
 // Bulk actions
 const handleBulkAction = (action) => {
-    action.handler(selectedRows.value);
     showBulkActions.value = false;
+    // Nếu action yêu cầu xác nhận
+    if (action.requireInput) {
+        showInputModal.value = true;
+        currentAction.value = action;
+        titleModal.value = action.title || t('common.confirm');
+        labelInputModal.value = action.inputLabel || '';
+        placeholderInputModal.value = action.inputPlaceholder || 'Nhập giá trị';
+        inputValidator.value = action.inputValidator || null;
+        const message = typeof action.confirmMessage === 'function' 
+            ? action.confirmMessage(selectedRows.value.length)
+            : action.confirmMessage;
+        confirmMessage.value = message || 'Bạn có chắc chắn muốn thực hiện hành động này?';
+    } else if (action.requireConfirm) {
+        // Lưu action hiện tại và thông tin cần thiết
+        currentAction.value = action;
+        const message = typeof action.confirmMessage === 'function' 
+        ? action.confirmMessage(selectedRows.value.length)
+        : action.confirmMessage;
+        
+        confirmMessage.value = message || 'Bạn có chắc chắn muốn thực hiện hành động này?';
+        showRequireConfirmModal.value = true;
+    } else {
+        // Thực hiện ngay nếu không cần xác nhận
+        executeAction(action);
+    }
+};
+
+// Hàm thực thi action
+const executeAction = (action, input = '') => {
+    try {
+        action.handler(selectedRows.value, input);
+    } catch (error) {
+        console.error('Error handling bulk action:', error);
+    }
+};
+
+// Hàm xác nhận từ modal
+const confirmBulkModal = () => {
+    if (currentAction.value) {
+        executeAction(currentAction.value);
+    }
+    closeBulkModal();
+};
+
+const handleInputConfirm = (value) => {
+    if (currentAction.value) {
+    executeAction(currentAction.value, value);
+    }
+    closeBulkModal();
+};
+
+// Hàm đóng modal
+const closeBulkModal = () => {
+    showInputModal.value = false;
+    showRequireConfirmModal.value = false;
+    currentAction.value = null;
+};
+const filteredActions = (row) => {
+    return props.actions.filter(action => {
+        // Kiểm tra cả điều kiện hiển thị và permission nếu có
+        const showByCondition = typeof action.conditionShow === 'function' 
+            ? action.conditionShow(row) 
+            : true;
+            
+        return showByCondition;
+    });
 };
 
 // Column filtering
