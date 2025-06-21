@@ -26,18 +26,18 @@ const router = createRouter({
       path: '/filemanager',
       name: 'filemanager.name',
       component: () => import('@/modules/filemanager/views/FileManager.vue'),
-      meta: { 
-          title: 'file_manager.title',
-          requiresAuth: true, permissions: ['files.list'] 
+      meta: {
+        title: 'file_manager.title',
+        requiresAuth: true, permissions: ['files.list']
       },
     },
     {
       path: '/service-packages',
       name: 'service_packages.name',
       component: () => import('@/modules/service/views/ServicePackageView.vue'),
-      meta: { 
-          title: 'service_packages.title',
-          requiresAuth: true, permissions: ['service_packages.view'] 
+      meta: {
+        title: 'service_packages.title',
+        requiresAuth: true, permissions: ['service_packages.view']
       },
     },
     {
@@ -70,6 +70,19 @@ const router = createRouter({
       component: () => import("../views/Errors/FourZeroFour.vue"),
       meta: { title: "404 Error" },
     },
+    {
+      path: "/payment",
+      name: "Payment",
+      component: () => import('@/modules/order/views/Payment.vue'),
+      meta: { title: "Payment" },
+    },
+    {
+      path: "/payment/vnpay-result",
+      name: "PaymentVnpayResult",
+      component: () => import('@/modules/order/views/PaymentVnpayResult.vue'),
+      meta: { title: "Kết quả thanh toán VNPay" },
+    },
+
     // {
     //   path: "/login",
     //   name: "Login",
