@@ -10,7 +10,7 @@ const BASIC_AUTH_PASS = import.meta.env.VITE_BASIC_AUTH_PASS || 'apipassword'
 
 
 const api = axios.create({
-  baseURL: config.api_be || "http://localhost:8000/api",
+  baseURL: config.api_be || "http://localhost:8000",
   // Axios tự sinh header Authorization cho bạn:
   auth: {
     username: BASIC_AUTH_USER,

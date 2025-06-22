@@ -34,7 +34,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
               <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.order_code')
-                }}</label>
+              }}</label>
               <input type="text" v-model="formData.order_code" :disabled="true"
                 :placeholder="t('orders.auto_generated')" class="input-form mt-2" />
               <p v-if="errors.order_code" class="text-xs text-red-500 mt-1">{{ errors.order_code[0] }}</p>
@@ -42,7 +42,7 @@
             <div>
               <div>
                 <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.created_at')
-                  }}</label>
+                }}</label>
                 <input type="text" :value="formatDatetime(formData.created_at)" :disabled="true"
                   :placeholder="t('orders.auto_generated')" class="input-form mt-2" />
               </div>
@@ -53,11 +53,10 @@
               <SelectSearch v-model="formData.order_status" :options="statusOptions" :disabled="true" class="mt-2" />
               <p v-if="errors.order_status" class="text-xs text-red-500 mt-1">{{ errors.order_status[0] }}</p>
             </div>
-
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-            <!-- <div>
+          <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"> -->
+          <!-- <div>
               <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.opportunity') }}</label>
               <SelectSearch v-model="formData.opportunity_id" :options="opportunityOptions" :searchable="true"
                 :disabled="isViewMode" :placeholder="t('orders.select_opportunity')" @search="searchOpportunity"
@@ -75,26 +74,31 @@
                 class="mt-2" />
               <p v-if="errors.billing_cycle" class="text-xs text-red-500 mt-1">{{ errors.billing_cycle[0] }}</p>
             </div> -->
-          </div>
+          <!-- </div> -->
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-0">
+            <!-- check isset creator  -->
+            <div v-if="formData.order_code && formData.creator && formData.creator.name">
+              <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.created_by') }}
+                <span class="text-red-500">*</span></label>
+                <input type="text" v-model="formData.creator.name" :disabled="true"
+                  class="input-form mt-2 bg-gray-100 dark:bg-gray-700" />
+            </div>
             <div>
               <!-- <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.contract') }}</label>
               <SelectSearch v-model="formData.contract_id" :options="contractOptions" :searchable="true"
                 :disabled="isViewMode" :placeholder="t('orders.select_contract')" @search="searchContract"
                 class="mt-2" />
               <p v-if="errors.contract_id" class="text-xs text-red-500 mt-1">{{ errors.contract_id[0] }}</p> -->
-              <div>
-                <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.currency') }}
-                  <span class="text-red-500">*</span></label>
-                <SelectSearch v-model="formData.currency" :options="currencyOptions" :disabled="isViewMode"
-                  class="mt-2" />
-                <p v-if="errors.currency" class="text-xs text-red-500 mt-1">{{ errors.currency[0] }}</p>
-              </div>
+              <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.currency') }}
+                <span class="text-red-500">*</span></label>
+              <SelectSearch v-model="formData.currency" :options="currencyOptions" :disabled="isViewMode"
+                class="mt-2" />
+              <p v-if="errors.currency" class="text-xs text-red-500 mt-1">{{ errors.currency[0] }}</p>
             </div>
             <div>
               <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.total_amount')
-                }}</label>
+              }}</label>
               <div class="relative mt-2">
                 <input type="number" step="0.01" v-model="formData.total_amount" :disabled="true"
                   class="input-form pr-12 bg-gray-50 dark:bg-gray-700" :placeholder="t('orders.auto_calculated')" />
@@ -277,7 +281,7 @@
                 <!-- Package Code (readonly, populated from selection) -->
                 <div>
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.package_code')
-                    }}</label>
+                  }}</label>
                   <input type="text" v-model="detail.package_code" :disabled="true"
                     class="input-form mt-2 bg-gray-100 dark:bg-gray-700" />
                 </div>
@@ -285,7 +289,7 @@
                 <!-- Package Name (readonly, populated from selection) -->
                 <div>
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.package_name')
-                    }}</label>
+                  }}</label>
                   <input type="text" v-model="detail.package_name" :disabled="true"
                     class="input-form mt-2 bg-gray-100 dark:bg-gray-700" />
                 </div>
@@ -294,13 +298,13 @@
                   <input type="checkbox" v-model="detail.tax_included" :disabled="true"
                     @change="calculateDetailTotals(index)" class="mr-2" />
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_included')
-                    }}</label>
+                  }}</label>
                 </div>
                 <div class="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4">
                   <!-- Base Price (readonly, populated from selection) -->
                   <div class="lg:col-span-2">
                     <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.base_price')
-                      }}</label>
+                    }}</label>
                     <div class="relative mt-2">
                       <input type="number" step="0.01" v-model="detail.base_price" :disabled="true"
                         @input="calculateDetailTotals(index)" class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
@@ -323,7 +327,7 @@
                   <!-- Total Price (calculated) -->
                   <div class="lg:col-span-2">
                     <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.total_price')
-                      }}</label>
+                    }}</label>
                     <div class="relative mt-2">
                       <input type="number" step="0.01" v-model="detail.total_price" :disabled="true"
                         class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
@@ -335,7 +339,7 @@
                   <!-- Tax Rate -->
                   <div>
                     <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_rate')
-                      }}</label>
+                    }}</label>
                     <div class="relative mt-2">
                       <input type="number" step="0.01" min="0" max="100" v-model.number="detail.tax_rate"
                         :disabled="true" @input="calculateDetailTotals(index)" class="input-form pr-8" />
@@ -345,7 +349,7 @@
                   <!-- Tax Amount (calculated) -->
                   <div class="lg:col-span-3">
                     <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_amount')
-                      }}</label>
+                    }}</label>
                     <div class="relative mt-2">
                       <input type="number" step="0.01" v-model="detail.tax_amount" :disabled="true"
                         class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
@@ -359,7 +363,7 @@
                   <div class="lg:col-span-3">
                     <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{
                       t('orders.fields.total_with_tax')
-                      }}</label>
+                    }}</label>
                     <div class="relative mt-2">
                       <input type="number" step="0.01" v-model="detail.total_with_tax" :disabled="true"
                         class="input-form pr-12 bg-gray-100 dark:bg-gray-700 font-medium" />
@@ -824,14 +828,25 @@ const initializeForm = async () => {
           }
         }
       })
+      // Gọi hàm này trong initializeForm
+      await loadServiceTypesForDetails();
+      // // Load only new service types
+      // for (const serviceType of serviceTypesToLoad) {
+      //   const firstDetailIndex = formData.value.order_details.findIndex(d => d.service_type === serviceType)
+      //   if (firstDetailIndex !== -1) {
+      //     await onServiceTypeChange(firstDetailIndex, serviceType)
+      //   }
+      // }
 
-      // Load only new service types
-      for (const serviceType of serviceTypesToLoad) {
-        const firstDetailIndex = formData.value.order_details.findIndex(d => d.service_type === serviceType)
-        if (firstDetailIndex !== -1) {
-          await onServiceTypeChange(firstDetailIndex, serviceType)
-        }
-      }
+      //       // Load ALL service types for existing order details when updating
+      // const loadPromises = []
+      // formData.value.order_details.forEach((detail, index) => {
+      //   if (detail.service_type) {
+      //     loadPromises.push(onServiceTypeChange(index, detail.service_type))
+      //   }
+      // })
+      
+      // await Promise.all(loadPromises)
     } else {
       resetForm()
     }
@@ -841,6 +856,48 @@ const initializeForm = async () => {
     isInitializing.value = false
   }
 }
+// Thay thế cả 2 đoạn code trên bằng phiên bản tối ưu này
+const loadServiceTypesForDetails = async () => {
+  if (!formData.value?.order_details?.length) return;
+
+  // Tạo map để tránh trùng lặp service types
+  const serviceTypeMap = new Map();
+  
+  formData.value.order_details.forEach((detail, index) => {
+    if (detail.service_type) {
+      // Nhóm các details có cùng service type
+      const cacheKey = `${detail.service_type}_${selectedCustomer.value?.customer_type || props.categorySystem?.customer_type || 'INDIVIDUAL'}`;
+      
+      if (!serviceTypeMap.has(cacheKey)) {
+        serviceTypeMap.set(cacheKey, []);
+      }
+      serviceTypeMap.get(cacheKey).push(index);
+    }
+  });
+
+  // Tạo promises để load song song
+  const loadPromises = [];
+  
+  for (const [cacheKey, detailIndexes] of serviceTypeMap) {
+    // Chỉ cần load 1 lần cho mỗi service type
+    loadPromises.push(
+      onServiceTypeChange(detailIndexes[0], formData.value.order_details[detailIndexes[0]].service_type)
+        .then(() => {
+          // Áp dụng kết quả cache cho các details cùng service type
+          if (servicePackageCache.value.has(cacheKey)) {
+            const cachedOptions = servicePackageCache.value.get(cacheKey);
+            detailIndexes.slice(1).forEach(index => {
+              formData.value.order_details[index].servicePackageOptions = cachedOptions;
+            });
+          }
+        })
+    );
+  }
+
+  await Promise.all(loadPromises);
+};
+
+
 
 // ==================== VALIDATION ====================
 const validateForm = () => {
@@ -883,12 +940,12 @@ const validateForm = () => {
     if (detail.start_date && detail.end_date && detail.start_date > detail.end_date) {
       newErrors[`order_details.${index}.end_date`] = [t('orders.validation.end_date_after_start')]
     }
-    console.log(detail.customer_type  ,  customerType);
-    
-    if (detail.customer_type !==  customerType) {
-      // newErrors[`order_details.${index}.customer_type`] = [t('orders.validation.customer_type_mismatch')]
-      notificationService.error(t('orders.validation.customer_type_mismatch'))
-    }
+    // console.log(detail.customer_type, customerType);
+
+    // if (detail.customer_type !== customerType) {
+    //   // newErrors[`order_details.${index}.customer_type`] = [t('orders.validation.customer_type_mismatch')]
+    //   notificationService.error(t('orders.validation.customer_type_mismatch'))
+    // }
   })
 
   errors.value = newErrors
@@ -1191,11 +1248,12 @@ const calculateDetailTotals = (detailIndex) => {
 
   // Calculate tax
   const taxRate = parseFloat(detail.tax_rate) || 0
+  
   if (detail.tax_included) {
     detail.tax_amount = parseFloat(detail.total_price * (taxRate / (100 + taxRate))).toFixed(2) || 0
     detail.total_with_tax = detail.total_price
   } else {
-    detail.tax_amount = parseFloat(detail.total_price * (taxRate / 100)).toFixed(0) || 0
+    detail.tax_amount = detail.total_price * (taxRate / 100) || 0
     detail.total_with_tax = detail.total_price + detail.tax_amount
   }
 
@@ -1486,7 +1544,6 @@ watch(() => props.currentOrder, async (newOrder, oldOrder) => {
 
           if (servicePackageCache.value.has(cacheKey)) {
             detail.servicePackageOptions = servicePackageCache.value.get(cacheKey)
-
             if (detail.service_package_id) {
               const selectedPackage = detail.servicePackageOptions.find(pkg => pkg.value === detail.service_package_id)
               if (selectedPackage) {

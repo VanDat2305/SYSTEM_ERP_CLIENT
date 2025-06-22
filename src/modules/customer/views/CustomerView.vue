@@ -394,11 +394,11 @@ const columns = ref([
         cellClass: (value: string) => {
             const base = 'px-2 py-1 rounded-full text-xs font-medium';
             const colorMap: Record<string, string> = {
-                new: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200',
-                in_progress: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-                converted: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-                unqualified: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-                inactive: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+                new: 'bg-blue-50 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
+                in_progress: 'bg-amber-50 text-amber-800 dark:bg-amber-900 dark:text-amber-100',
+                converted: 'bg-emerald-50 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100',
+                unqualified: 'bg-rose-50 text-rose-800 dark:bg-rose-900 dark:text-rose-100',
+                inactive: 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200'
             };
             return `${base} ${colorMap[value] || colorMap.new}`;
         },

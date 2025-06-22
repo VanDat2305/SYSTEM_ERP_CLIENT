@@ -343,7 +343,14 @@ const columns = ref([
         align: 'left',
         headerAlign: 'left',
         isShow: activeTab.value === 'all'
-    }
+    },
+    {
+        field: 'reason_cancel',
+        label: 'orders.fields.reason_cancel',
+        sortable: false,
+        width: '250px',
+        isShow: activeTab.value === 'cancelled',
+    },
 ])
 
 const tableActions = computed(() => {
@@ -517,6 +524,9 @@ const changeStatusTab = (status: string) => {
     columns.value = columns.value.map(col => {
         if (col.field === 'order_status' && col.isShow !== undefined) {
             return { ...col, isShow: status === 'all' }
+        }
+        if (col.field === 'reason_cancel' && col.isShow !== undefined) {
+            return { ...col, isShow: status === 'cancelled' }
         }
         return { ...col } // Giữ nguyên nhưng tạo object mới để Vue reactivity hoạt động
     })

@@ -912,7 +912,9 @@
       "is_active": "Kích hoạt",
       "date_from": "Từ ngày",
       "date_to": "Đến ngày",
-      "features": "Tính năng"
+      "features": "Tính năng",
+      "reason_cancel": "Lý do hủy",
+      "created_by": "Người tạo"
     },
     "view_title": "Xem đơn hàng",
     "edit_title": "Chỉnh sửa đơn hàng",
