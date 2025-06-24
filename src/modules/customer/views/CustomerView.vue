@@ -82,6 +82,13 @@
         <OrderModal :errors="formOrderError" :isModalOpen="isOrderModalOpen" mode="add" :currentOrder="{}"
             @close="closeOrderModal" @submit="handleSubmitOrder" :categorySystem="categorySystem"
             :customerCode="customerCode" />
+        <ConfirmModal :show="showConfirmChangeStatusModal" :close="() => showConfirmChangeStatusModal = false"
+            :onConfirm="handleConfirmChangeStatus" type="danger" :closeOnClickOutside="false"
+            :title="t('common.confirm')" :message="confirmMessage" :confirmText="t('common.yes')"
+            :cancelText="t('common.no')" />
+        <InputModal :show="showInputModal" :close="() => showInputModal = false" :onConfirm="handleMarkConfirm"
+            :title="titleModal" :message="confirmMessage" :inputLabel="labelInputModal"
+            :inputPlaceholder="placeholderInputModal" inputRequired :inputValidator="inputValidator" />
 
         <!-- Status Change Modal -->
         <!-- <StatusChangeModal :show="showStatusModal" :customer="customerToChangeStatus"
@@ -98,6 +105,7 @@ import CustomTable from "@/components/tables/CustomTable.vue"
 import CustomerModal from "@/modules/customer/components/CustomerModal.vue"
 // import StatusChangeModal from "@/modules/customer/components/StatusChangeModal.vue"  
 import ConfirmModal from '@/components/modals/ConfirmModal.vue'
+import InputModal from '@/components/modals/InputModal.vue'
 import {
     EyeIcon,
     PencilIcon,
@@ -119,6 +127,7 @@ import { usePermissions } from '@/auth/usePermissions'
 import { useCategorySystem } from '@/stores/categorySystem'
 import type { PermissionValues } from '@/types/permissions'
 import OrderModal from "@/modules/order/components/OrderModal.vue"
+import { UnqualifiedIcon, InactiveIcon, RestoreIcon } from '@/icons'
 const { t } = useI18n()
 const { hasPermission } = usePermissions()
 const categorySystem = useCategorySystem()
@@ -446,6 +455,30 @@ const tableActions = [
         handler: (row: Customer) => editCustomer(row),
         class: 'text-gray-400 hover:text-blue-500'
     },
+    {
+        icon: UnqualifiedIcon,
+        tooltip: 'common.mark_unqualified',
+        // permission: 'customers.mark_unqualified' as PermissionValues,
+        handler: (row: Customer) => confirmMarkUnqualified(row),
+        class: 'text-gray-400 hover:text-blue-500',
+        conditionShow: (row: Customer) => ['new'].includes(row.status),
+    },
+    {
+        icon: InactiveIcon,
+        tooltip: 'common.mark_inactive',
+        // permission: 'customers.mark_inactive' as PermissionValues,
+        handler: (row: Customer) => confirmMarkInactive(row),
+        class: 'text-gray-400 hover:text-blue-500',
+        conditionShow: (row: Customer) => ['in_progress', 'converted'].includes(row.status),
+    },
+    {
+        icon: RestoreIcon,
+        tooltip: 'common.restore',
+        // permission: 'customers.restore' as PermissionValues,
+        handler: (row: Customer) => confirmRestore(row),
+        class: 'text-gray-400 hover:text-blue-500',
+        conditionShow: (row: Customer) => ['inactive', 'unqualified'].includes(row.status),
+    },
     //   {
     //     // icon: ArrowTrendingUpIcon,
     //     tooltip: 'customers.change_status',
@@ -461,15 +494,128 @@ const tableActions = [
         class: 'text-gray-400 hover:text-red-500'
     }
 ].filter(action => !action.permission || hasPermission(action.permission))
+const markUnqualifiedSelected = async (reason: string) => {
+    if (selectedRows.value.length === 0) {
+        notificationService.error(t('customers.no_selected'))
+        return
+    }
+
+    if (!reason) {
+        notificationService.error("Lý do đánh dấu không tiềm năng là bắt buộc")
+        return
+    }
+
+    setLoading?.(true)
+    try {
+        const ids = selectedRows.value.map(customer => customer.id)
+        const response = await api.post('/customers/mark-unqualified', { ids, reason })
+
+        if (response.data.status) {
+            notificationService.success("Khách hàng đã được cập nhật là không tiềm năng")
+            fetchCustomers()
+        } else {
+            notificationService.error(response.data.message || "Không thể cập nhật khách hàng là không tiềm năng")
+        }
+    } catch (error: any) {
+        console.error('Mark unqualified error:', error)
+        notificationService.error(error.response?.data?.message || "Không thể cập nhật khách hàng là không tiềm năng")
+    } finally {
+        setLoading?.(false)
+    }
+};
+const markInactiveSelected = async (reason: string) => {
+    if (selectedRows.value.length === 0) {
+        notificationService.error(t('customers.no_selected'))
+        return
+    }
+
+    if (!reason) {
+        notificationService.error("Lý do đánh dấu ngưng hoạt động là bắt buộc")
+        return
+    }
+
+    setLoading?.(true)
+    try {
+        const ids = selectedRows.value.map(customer => customer.id)
+        const response = await api.post('/customers/mark-inactive', { ids, reason })
+        console.log(response);
+
+        if (response.data.status) {
+            notificationService.success("Khách hàng đã được cập nhật thành ngưng hoạt động")
+            fetchCustomers()
+        } else {
+            notificationService.error(response.data.message || "Không thể cập nhật khách hàng thành ngưng hoạt động")
+        }
+    } catch (error: any) {
+        console.error('Mark inactive error:', error)
+        notificationService.error(error.response?.data?.message || "Không thể cập nhật khách hàng thành ngưng hoạt động")
+    } finally {
+        setLoading?.(false)
+    }
+};
+const restoreSelected = async () => {
+    if (selectedRows.value.length === 0) {
+        notificationService.error(t('customers.no_selected'))
+        return
+    }
+
+    const ids = selectedRows.value.map(customer => customer.id)
+    setLoading?.(true)
+    try {
+        const response = await api.post('/customers/restore', { ids })
+
+        if (response.data.status) {
+            notificationService.success("Khách hàng đã được khôi phục thành công")
+            fetchCustomers()
+        } else {
+            notificationService.error(response.data.message || "Không thể khôi phục khách hàng")
+        }
+    } catch (error: any) {
+        console.error('Restore error:', error)
+        notificationService.error(error.response?.data?.message || "Không thể khôi phục khách hàng")
+    } finally {
+        setLoading?.(false)
+    }
+};
 
 const bulkActions = [
-    //   {
-    //     name: 'change_status',
-    //     label: 'customers.change_status_bulk',
-    //     // icon: ArrowTrendingUpIcon,
-    //     handler: changeStatusBulk,
-    //     permission: 'customers.update' as PermissionValues,
-    //   },
+
+    {
+        name: 'common.mark_unqualified',
+        label: 'common.mark_unqualified',
+        handler: markUnqualifiedSelected,
+        requireInput: true,
+        requireConfirm: false,
+        inputLabel: '',
+        inputPlaceholder: 'Nhập lý do đánh dấu không tiềm năng',
+        confirmMessage: (selectedCount: number) => "Bạn có chắc chắn muốn cập nhật không tiềm năng các khách hàng đã chọn?",
+        // permission: 'customers.mark_unqualified' as PermissionValues,
+        class: 'text-red-600 hover:text-red-700',
+        condition: () => selectedRows.value.some(customer => ['new'].includes(customer.status))
+    },
+    {
+        name: 'common.mark_inactive',
+        label: 'common.mark_inactive',
+        handler: markInactiveSelected,
+        requireInput: true,
+        requireConfirm: false,
+        inputLabel: '',
+        inputPlaceholder: 'Nhập lý do đánh dấu ngưng hoạt động',
+        confirmMessage: (selectedCount: number) => "Bạn có chắc chắn muốn cập nhật ngưng hoạt động', các khách hàng đã chọn?",
+        // permission: 'customers.mark_inactive', as PermissionValues,
+        class: 'text-red-600 hover:text-red-700',
+        condition: () => selectedRows.value.some(customer => ['converted', 'in_progress'].includes(customer.status))
+    },
+    {
+        name: 'common.restore',
+        label: 'common.restore',
+        handler: restoreSelected,
+        requireConfirm: true,
+        confirmMessage: (selectedCount: number) => t('orders.complete_selected_confirmation', { count: selectedCount }),
+        // permission: 'customer.restore' as PermissionValues,
+        class: 'text-green-600 hover:text-green-700',
+        condition: () => selectedRows.value.some(customer => customer.status === 'processing')
+    },
     {
         name: 'delete_selected',
         label: 'common.delete_selected',
@@ -483,6 +629,145 @@ const bulkActions = [
 ].filter(action => !action.permission || hasPermission(action.permission))
 
 // Methods
+const showInputModal = ref(false)
+const labelInputModal = ref('')
+const placeholderInputModal = ref('')
+const inputValidator = ref<((value: string) => boolean) | null>(null);
+const showConfirmChangeStatusModal = ref(false)
+const titleModal = ref('')
+const confirmMessage = ref('')
+const selectStatusCustomer = ref('')
+
+
+const handleMarkConfirm = (inputValue: string) => {
+    if (!customerToChangeStatus.value || !selectStatusCustomer.value) return
+    if (selectStatusCustomer.value === 'inactive') {
+        markInactive(customerToChangeStatus.value, inputValue)
+    } else if (selectStatusCustomer.value === 'unqualified') {
+        markUnqualified(customerToChangeStatus.value, inputValue)
+    }
+    showInputModal.value = false
+    selectStatusCustomer.value = ''
+};
+const confirmRestore = (customer: Customer) => {
+    if (!customer || !selectStatusCustomer) return;
+
+    showConfirmChangeStatusModal.value = true;
+    titleModal.value = "Xác nhận";
+    confirmMessage.value = `Bạn có chắc chắn muốn khôi phục khách hàng ${customer.customer_code}?`;
+    selectStatusCustomer.value = 'restore';
+    customerToChangeStatus.value = customer;
+};
+const confirmMarkInactive = (customer: Customer) => {
+    if (!customer || !selectStatusCustomer) return;
+
+    showInputModal.value = true;
+    titleModal.value = "Xác nhận";
+    confirmMessage.value = `Bạn có chắc chắn muốn đánh dấu khách hàng ${customer.customer_code} là ngưng hoạt động?`;
+    // labelInputModal.value = "Lý do đánh dấu ngưng hoạt động";
+    placeholderInputModal.value = "Nhập lý do đánh dấu ngưng hoạt động";
+    selectStatusCustomer.value = 'inactive';
+    customerToChangeStatus.value = customer;
+};
+const confirmMarkUnqualified = (customer: Customer) => {
+    if (!customer || !selectStatusCustomer) return;
+
+    showInputModal.value = true;
+    titleModal.value = "Xác nhận";
+    confirmMessage.value = `Bạn có chắc chắn muốn chuyển trạng thái khách hàng ${customer.customer_code} sang không tiềm năng?`;
+    placeholderInputModal.value = "Nhập lý do đánh dấu không tiềm năng";
+    selectStatusCustomer.value = 'unqualified';
+    customerToChangeStatus.value = customer;
+};
+const restoreCustomer = (customer: Customer) => {
+    if (customer.status !== 'inactive' && customer.status !== 'unqualified') {
+        notificationService.error("Khách hàng chỉ có thể cập nhật khi ở trạng thái 'Không tiềm năng' hoặc 'ngưng hoạt động'")
+        return
+    }
+
+    setLoading?.(true)
+    api.post(`/customers/restore`, { ids: [customer.id] })
+        .then(response => {
+            if (response.data.status) {
+                notificationService.success("Khách hàng đã được khôi phục thành công")
+                fetchCustomers()
+
+            } else {
+                notificationService.error(response.data.message || "Không thể khôi phục khách hàng")
+            }
+        })
+        .catch(error => {
+            console.error('Restore error:', error)
+            if (error.response?.data?.message) {
+                notificationService.error(error.response.data.message)
+            } else {
+                notificationService.error("Không thể khôi phục khách hàng")
+            }
+        })
+        .finally(() => {
+            setLoading?.(false)
+            showConfirmChangeStatusModal.value = false;
+        }
+        )
+}
+const markInactive = (customer: Customer, reason: string) => {
+    if (customer.status !== 'in_progress' && customer.status !== 'converted') {
+        notificationService.error("Khách hàng chỉ có thể cập nhật khi ở trạng thái 'Đang xử lý' hoặc 'Đã chuyển đổi'")
+        return
+    }
+
+    setLoading?.(true)
+    api.post(`/customers/mark-inactive`, { ids: [customer.id], reason })
+        .then(response => {
+            if (response.data.status) {
+                notificationService.success("Khách hàng đã được cập nhật thành ngưng hoạt động")
+                fetchCustomers()
+            } else {
+                notificationService.error(response.data.message || "Không thể cập nhật khách hàng thành ngưng hoạt động")
+            }
+        })
+        .catch(error => {
+            console.error('Mark inactive error:', error)
+            if (error.response?.data?.message) {
+                notificationService.error(error.response.data.message)
+            } else {
+                notificationService.error("Không thể cập nhật khách hàng thành ngưng hoạt động")
+            }
+        })
+        .finally(() => setLoading?.(false))
+}
+const markUnqualified = (customer: Customer, reason: string) => {
+    if (customer.status !== 'new') {
+        notificationService.error("Khách hàng chỉ có thể cập nhật khi ở trạng thái 'Đăng ký mới'")
+        return
+    }
+
+    setLoading?.(true)
+    api.post(`/customers/mark-unqualified`, { ids: [customer.id], reason })
+        .then(response => {
+            if (response.data.status) {
+                notificationService.success("Khách hàng đã được cập nhật là không tiềm năng")
+                fetchCustomers()
+            } else {
+                notificationService.error(response.data.message || "Không thể cập nhật khách hàng là không tiềm năng")
+            }
+        })
+        .catch(error => {
+            console.error('Mark unqualified error:', error)
+            if (error.response?.data?.message) {
+                notificationService.error(error.response.data.message)
+            } else {
+                notificationService.error("Không thể cập nhật khách hàng là không tiềm năng")
+            }
+        })
+        .finally(() => setLoading?.(false))
+}
+const handleConfirmChangeStatus = () => {
+    if (!customerToChangeStatus.value || !selectStatusCustomer.value) return
+    if (selectStatusCustomer.value === 'restore') {
+        restoreCustomer(customerToChangeStatus.value)
+    }
+}
 const changeStatusTab = (status: string) => {
     activeTab.value = status
     filters.value.status = status === 'all' ? '' : status
@@ -523,7 +808,7 @@ const handleSubmitOrder = async (orderData: any) => {
     setLoading?.(true)
     try {
         const method = 'post'
-        const url = '/orders'   
+        const url = '/orders'
 
         const response = await api[method](url, data)
 

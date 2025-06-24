@@ -228,7 +228,10 @@
     "invalid_email": "Email không hợp lệ",
     "invalid_phone": "Số điện thoại không hợp lệ",
     "validation_failed": "Kiểm tra dữ liệu không thành công",
-    "create_order": "Tạo đơn hàng"
+    "create_order": "Tạo đơn hàng",
+    "restore": "Khôi phục",
+    "mark_unqualified": "Không tiềm năng",
+    "mark_inactive": "Ngưng hoạt động"
   },
   "errors": {
     "forbidden": "Truy cập bị từ chối",
@@ -748,6 +751,7 @@
   },
   "customers": {
     "basic_info": "Thông tin cơ bản",
+    "logs": "Nhật ký",
     "contact_info": "Thông tin liên hệ",
     "view_title": "Xem thông tin khách hàng",
     "edit_title": "Chỉnh sửa khách hàng",

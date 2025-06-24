@@ -57,6 +57,9 @@ import CancelIcon from "./CancelIcon.vue";
 import ApproveIcon from "./ApproveIcon.vue";
 import TimeIcon from "./TimeIcon.vue";
 import DoneIcon from "./DoneIcon.vue";
+import InactiveIcon from "./InactiveIcon.vue";
+import UnqualifiedIcon from "./UnqualifiedIcon.vue";
+import RestoreIcon from "./RestoreIcon.vue";
 
 
 export {
@@ -118,5 +121,8 @@ export {
   CancelIcon,
   ApproveIcon,
   TimeIcon,
-  DoneIcon
+  DoneIcon,
+  InactiveIcon,
+  UnqualifiedIcon,
+  RestoreIcon
 };

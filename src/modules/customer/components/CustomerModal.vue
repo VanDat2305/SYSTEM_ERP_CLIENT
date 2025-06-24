@@ -722,6 +722,10 @@
                     </div>
                 </form>
             </div>
+            <div v-show="currentTab === 'logs'" class="p-6">
+                <CustomerLogTab :orderId="formData.id" :isActive="currentTab === 'logs'" />
+            </div>
+           
         </template>
 
         <!-- Footer -->
@@ -738,6 +742,8 @@ import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BaseModal from '@/components/modals/BaseModal.vue'
 import SelectSearch from '@/components/forms/SelectSearch.vue'
+import CustomerLogTab from '@/modules/customer/components/CustomerLogTab.vue'
+
 import { api } from '@/utils/api'
 
 const { t } = useI18n()
@@ -782,6 +788,7 @@ const emit = defineEmits(['close', 'submit'])
 const tabs = computed(() => {
     const arr = [
         { name: 'basic', label: t('customers.basic_info') },
+        { name: 'logs', label: t('customers.logs') },
         // { name: 'contacts', label: t('customers.contacts') }
     ]
     // if (formData.value.customer_type === 'ORGANIZATION') {

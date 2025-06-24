@@ -228,7 +228,10 @@
         "invalid_email": "Email không hợp lệ",
         "invalid_phone": "Số điện thoại không hợp lệ",
         "validation_failed": "Validation failed",
-        "create_order": "Create Order"
+        "create_order": "Create Order",
+        "restore" : "Restore",
+        "mark_unqualified": "Mark as Unqualified",
+        "mark_inactive": "Mark as Inactive"
     },
     "errors": {
         "forbidden": "403 Forbidden",
@@ -749,6 +752,7 @@
     },
     "customers": {
         "basic_info": "Basic Information",
+        "logs": "Activity Logs",
         "contact_info": "Contact Information",
         "view_title": "View Customer Information",
         "edit_title": "Edit Customer",
