@@ -458,7 +458,7 @@ const tableActions = [
     {
         icon: UnqualifiedIcon,
         tooltip: 'common.mark_unqualified',
-        // permission: 'customers.mark_unqualified' as PermissionValues,
+        permission: 'customers.mark_unqualified' as PermissionValues,
         handler: (row: Customer) => confirmMarkUnqualified(row),
         class: 'text-gray-400 hover:text-blue-500',
         conditionShow: (row: Customer) => ['new'].includes(row.status),
@@ -466,7 +466,7 @@ const tableActions = [
     {
         icon: InactiveIcon,
         tooltip: 'common.mark_inactive',
-        // permission: 'customers.mark_inactive' as PermissionValues,
+        permission: 'customers.mark_inactive' as PermissionValues,
         handler: (row: Customer) => confirmMarkInactive(row),
         class: 'text-gray-400 hover:text-blue-500',
         conditionShow: (row: Customer) => ['in_progress', 'converted'].includes(row.status),
@@ -474,7 +474,7 @@ const tableActions = [
     {
         icon: RestoreIcon,
         tooltip: 'common.restore',
-        // permission: 'customers.restore' as PermissionValues,
+        permission: 'customers.restore' as PermissionValues,
         handler: (row: Customer) => confirmRestore(row),
         class: 'text-gray-400 hover:text-blue-500',
         conditionShow: (row: Customer) => ['inactive', 'unqualified'].includes(row.status),
@@ -589,7 +589,7 @@ const bulkActions = [
         inputLabel: '',
         inputPlaceholder: 'Nhập lý do đánh dấu không tiềm năng',
         confirmMessage: (selectedCount: number) => "Bạn có chắc chắn muốn cập nhật không tiềm năng các khách hàng đã chọn?",
-        // permission: 'customers.mark_unqualified' as PermissionValues,
+        permission: 'customers.mark_unqualified' as PermissionValues,
         class: 'text-red-600 hover:text-red-700',
         condition: () => selectedRows.value.some(customer => ['new'].includes(customer.status))
     },
@@ -602,7 +602,7 @@ const bulkActions = [
         inputLabel: '',
         inputPlaceholder: 'Nhập lý do đánh dấu ngưng hoạt động',
         confirmMessage: (selectedCount: number) => "Bạn có chắc chắn muốn cập nhật ngưng hoạt động', các khách hàng đã chọn?",
-        // permission: 'customers.mark_inactive', as PermissionValues,
+        permission: 'customers.mark_inactive' as PermissionValues,
         class: 'text-red-600 hover:text-red-700',
         condition: () => selectedRows.value.some(customer => ['converted', 'in_progress'].includes(customer.status))
     },
@@ -612,7 +612,7 @@ const bulkActions = [
         handler: restoreSelected,
         requireConfirm: true,
         confirmMessage: (selectedCount: number) => t('orders.complete_selected_confirmation', { count: selectedCount }),
-        // permission: 'customer.restore' as PermissionValues,
+        permission: 'customer.restore' as PermissionValues,
         class: 'text-green-600 hover:text-green-700',
         condition: () => selectedRows.value.some(customer => customer.status === 'processing')
     },
