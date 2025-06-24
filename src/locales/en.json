@@ -1019,7 +1019,11 @@
             "min": "Value must be at least {min}",
             "max": "Value must be at most {max}",
             "customer_type_mismatch": "Customer type mismatch. Please select a customer of the same type as the order."
-        }
+        },
+        "tab_order": "Order",
+        "tab_contract": "Contract",
+        "tab_invoice": "Invoice",
+        "tab_log": "Activity Log"
     },
     "feature": {
         "max_users": {
@@ -1027,6 +1031,39 @@
         },
         "storage_size": {
             "description": "Maximum storage size in GB."
+        }
+    },
+    "contracts": {
+        "status": {
+            "all": "All",
+            "draft": "Draft",
+            "pending": "Pending",
+            "signed": "Signed"
+        }
+    },
+    "invoices": {
+        "status": {
+            "all": "All",
+            "draft": "Draft",
+            "pending": "Pending",
+            "exported": "Exported",
+            "cancelled": "Cancelled"
+        },
+        "payment_status": {
+            "all": "All",
+            "unpaid": "Unpaid",
+            "paid": "Paid",
+            "partially_paid": "Partially Paid",
+            "failed": "Failed",
+            "successful": "Successfully Paid"
+        },
+        "payment_methods": {
+            "cash": "Cash",
+            "bank_transfer": "Bank Transfer",
+            "credit_card": "Credit Card",
+            "vnpay": "VNPay",
+            "paypal": "PayPal",
+            "other": "Other"
         }
     }
 }

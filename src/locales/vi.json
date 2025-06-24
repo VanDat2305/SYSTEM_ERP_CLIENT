@@ -1018,7 +1018,11 @@
       "quarterly": "Hàng quý",
       "yearly": "Hàng năm",
       "one_time": "Một lần"
-    }
+    },
+    "tab_order": "Đơn hàng",
+    "tab_contract": "Hợp đồng",
+    "tab_invoice": "Hóa đơn",
+    "tab_log": "Nhật ký"
   },
   "feature": {
     "max_users": {
@@ -1026,6 +1030,39 @@
     },
     "storage_size": {
       "description": "Dung lượng lưu trữ tối đa tính bằng GB."
+    }
+  },
+  "contracts": {
+    "status": {
+      "all": "Tất cả",
+      "draft": "Nháp",
+      "pending": "Chờ ký",
+      "signed": "Đã ký"
+    }
+  },
+  "invoices": {
+    "status": {
+      "all": "Tất cả",
+      "draft": "Nháp",
+      "pending": "Chờ xuất",
+      "exported": "Đã xuất",
+      "cancelled": "Đã hủy"
+    },
+    "payment_status": {
+      "all": "Tất cả",
+      "unpaid": "Chưa thanh toán",
+      "partially_paid": "Thanh toán một phần",
+      "paid": "Đã thanh toán",
+      "failed": "Thanh toán thất bại",
+      "successful": "Thanh toán thành công"
+    },
+    "payment_methods": {
+      "cash": "Tiền mặt",
+      "bank_transfer": "Chuyển khoản ngân hàng",
+      "credit_card": "Thẻ tín dụng",
+      "paypal": "PayPal",
+      "vnpay": "VNPay",
+      "other": "Khác"
     }
   }
 }

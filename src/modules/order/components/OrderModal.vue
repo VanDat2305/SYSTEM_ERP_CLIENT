@@ -3,60 +3,62 @@
     <!-- Header -->
     <template #header>
       <div>
-        <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-          {{
-            isViewMode ? t('orders.view_title') :
-              isEditMode ? t('orders.edit_title') :
-                t('orders.add_title')
-          }}
-        </h3>
-        <!-- <div v-if="isViewMode && formData.order_code" class="mt-2 flex items-center gap-2">
-          <span class="font-semibold text-xs text-gray-500 uppercase tracking-widest">
-            {{ t('orders.fields.order_code') }}:
-          </span>
-          <span
-            class="text-xs bg-gray-100 dark:bg-gray-700 text-blue-700 dark:text-blue-300 px-3 py-1 rounded select-none border border-gray-200 dark:border-gray-600">
-            {{ formData.order_code || '-' }}
-          </span>
-        </div> -->
+        <div class="flex gap-1 border-b border-gray-100 dark:border-gray-700">
+          <button v-for="tab in tabs" :key="tab.key" :class="[
+            'px-4 py-2 text-xs font-semibold rounded-t-lg focus:outline-none transition',
+            activeTab === tab.key
+              ? 'bg-blue-600 text-white shadow'
+              : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-gray-700'
+          ]" @click="activeTab = tab.key">
+            {{ t(tab.label) }}
+          </button>
+        </div>
       </div>
     </template>
-
     <!-- Body -->
     <template #body>
-      <form @submit.prevent="handleSubmit" class="px-4 py-4 md:py-6 space-y-6 mx-auto">
-        <!-- Order information -->
-        <fieldset class="p-5 rounded-2xl shadow border border-blue-100 dark:border-gray-700 mb-2">
-          <legend
-            class="flex items-center gap-1 text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-widest px-1">
-            {{ t('orders.group_order') }}
-          </legend>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div>
-              <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.order_code')
-              }}</label>
-              <input type="text" v-model="formData.order_code" :disabled="true"
-                :placeholder="t('orders.auto_generated')" class="input-form mt-2" />
-              <p v-if="errors.order_code" class="text-xs text-red-500 mt-1">{{ errors.order_code[0] }}</p>
-            </div>
-            <div>
+      <!-- <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white mt-4 ml-5 mb-1">
+        {{
+          activeTab === 'order' ? (
+            isViewMode ? t('orders.view_title') :
+              isEditMode ? t('orders.edit_title') : t('orders.add_title')
+          ) : t(tabs.find(tab => tab.key === activeTab)?.label)
+        }}
+      </h3> -->
+      <div v-if="activeTab === 'order'">
+        <form @submit.prevent="handleSubmit" class="px-4 py-4 md:py-6 space-y-6 mx-auto">
+          <!-- Order information -->
+          <fieldset class="p-5 rounded-2xl shadow border border-blue-100 dark:border-gray-700 mb-2">
+            <legend
+              class="flex items-center gap-1 text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-widest px-1">
+              {{ t('orders.group_order') }}
+            </legend>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.created_at')
+                <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.order_code')
                 }}</label>
-                <input type="text" :value="formatDatetime(formData.created_at)" :disabled="true"
+                <input type="text" v-model="formData.order_code" :disabled="true"
                   :placeholder="t('orders.auto_generated')" class="input-form mt-2" />
+                <p v-if="errors.order_code" class="text-xs text-red-500 mt-1">{{ errors.order_code[0] }}</p>
+              </div>
+              <div>
+                <div>
+                  <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.created_at')
+                  }}</label>
+                  <input type="text" :value="formatDatetime(formData.created_at)" :disabled="true"
+                    :placeholder="t('orders.auto_generated')" class="input-form mt-2" />
+                </div>
+              </div>
+              <div>
+                <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.order_status') }}
+                  <span class="text-red-500">*</span></label>
+                <SelectSearch v-model="formData.order_status" :options="statusOptions" :disabled="true" class="mt-2" />
+                <p v-if="errors.order_status" class="text-xs text-red-500 mt-1">{{ errors.order_status[0] }}</p>
               </div>
             </div>
-            <div>
-              <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.order_status') }}
-                <span class="text-red-500">*</span></label>
-              <SelectSearch v-model="formData.order_status" :options="statusOptions" :disabled="true" class="mt-2" />
-              <p v-if="errors.order_status" class="text-xs text-red-500 mt-1">{{ errors.order_status[0] }}</p>
-            </div>
-          </div>
 
-          <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"> -->
-          <!-- <div>
+            <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4"> -->
+            <!-- <div>
               <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.opportunity') }}</label>
               <SelectSearch v-model="formData.opportunity_id" :options="opportunityOptions" :searchable="true"
                 :disabled="isViewMode" :placeholder="t('orders.select_opportunity')" @search="searchOpportunity"
@@ -74,313 +76,315 @@
                 class="mt-2" />
               <p v-if="errors.billing_cycle" class="text-xs text-red-500 mt-1">{{ errors.billing_cycle[0] }}</p>
             </div> -->
-          <!-- </div> -->
+            <!-- </div> -->
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-0">
-            <!-- check isset creator  -->
-            <div v-if="formData.order_code && formData.creator && formData.creator.name">
-              <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.created_by') }}
-                <span class="text-red-500">*</span></label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-0">
+              <!-- check isset creator  -->
+              <div v-if="formData.order_code && formData.creator && formData.creator.name">
+                <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.created_by') }}
+                  <span class="text-red-500">*</span></label>
                 <input type="text" v-model="formData.creator.name" :disabled="true"
                   class="input-form mt-2 bg-gray-100 dark:bg-gray-700" />
-            </div>
-            <div>
-              <!-- <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.contract') }}</label>
+              </div>
+              <div>
+                <!-- <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.contract') }}</label>
               <SelectSearch v-model="formData.contract_id" :options="contractOptions" :searchable="true"
                 :disabled="isViewMode" :placeholder="t('orders.select_contract')" @search="searchContract"
                 class="mt-2" />
               <p v-if="errors.contract_id" class="text-xs text-red-500 mt-1">{{ errors.contract_id[0] }}</p> -->
-              <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.currency') }}
-                <span class="text-red-500">*</span></label>
-              <SelectSearch v-model="formData.currency" :options="currencyOptions" :disabled="isViewMode"
-                class="mt-2" />
-              <p v-if="errors.currency" class="text-xs text-red-500 mt-1">{{ errors.currency[0] }}</p>
-            </div>
-            <div>
-              <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.total_amount')
-              }}</label>
-              <div class="relative mt-2">
-                <input type="number" step="0.01" v-model="formData.total_amount" :disabled="true"
-                  class="input-form pr-12 bg-gray-50 dark:bg-gray-700" :placeholder="t('orders.auto_calculated')" />
-                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-                  {{ formData.currency || 'VND' }}
-                </span>
+                <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.currency') }}
+                  <span class="text-red-500">*</span></label>
+                <SelectSearch v-model="formData.currency" :options="currencyOptions" :disabled="isViewMode"
+                  class="mt-2" />
+                <p v-if="errors.currency" class="text-xs text-red-500 mt-1">{{ errors.currency[0] }}</p>
               </div>
-              <p class="text-xs text-gray-500 mt-1">{{ t('orders.auto_calculated_note') }}</p>
+              <div>
+                <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.total_amount')
+                }}</label>
+                <div class="relative mt-2">
+                  <input type="number" step="0.01" v-model="formData.total_amount" :disabled="true"
+                    class="input-form pr-12 bg-gray-50 dark:bg-gray-700" :placeholder="t('orders.auto_calculated')" />
+                  <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+                    {{ formData.currency || 'VND' }}
+                  </span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">{{ t('orders.auto_calculated_note') }}</p>
+              </div>
             </div>
-          </div>
 
 
-        </fieldset>
-        <!-- Customer selection -->
-        <fieldset
-          class="bg-white/70 dark:bg-gray-800/50 p-6 rounded-2xl shadow-lg border border-emerald-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl mb-4">
-          <legend
-            class="flex items-center gap-1 text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-widest px-3 py-1 bg-emerald-50 dark:bg-emerald-900/20 rounded-full border border-emerald-200 dark:border-emerald-700">
-            {{ t('orders.group_customer') }}
-          </legend>
-          <div class="mb-4">
-            <label class="flex items-center text-xs font-semibold text-gray-700 dark:text-gray-200 mb-2">
-              {{ t('customers.fields.customer_code') }}
-              <span v-if="!isViewMode" class="text-red-500 ml-1">*</span>
-            </label>
-            <div class="relative">
-              <div class="flex gap-2">
-                <input type="text" v-model="customerSearchCode" @change="searchCustomerByCode"
-                  :readonly="isViewMode || formData.order_code != ''"
-                  :placeholder="t('customers.placeholders.customer_code')" :class="[
-                    'w-full text-xs px-3 py-2 rounded-lg border transition-colors',
-                    formData.order_code != '' ?
-                      'bg-gray-100 dark:bg-gray-700 cursor-not-allowed text-gray-600 dark:text-gray-300'
-                      : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:border-blue-300',
+          </fieldset>
+          <!-- Customer selection -->
+          <fieldset
+            class="bg-white/70 dark:bg-gray-800/50 p-6 rounded-2xl shadow-lg border border-emerald-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl mb-4">
+            <legend
+              class="flex items-center gap-1 text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-widest px-3 py-1 bg-emerald-50 dark:bg-emerald-900/20 rounded-full border border-emerald-200 dark:border-emerald-700">
+              {{ t('orders.group_customer') }}
+            </legend>
+            <div class="mb-4">
+              <label class="flex items-center text-xs font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                {{ t('customers.fields.customer_code') }}
+                <span v-if="!isViewMode" class="text-red-500 ml-1">*</span>
+              </label>
+              <div class="relative">
+                <div class="flex gap-2">
+                  <input type="text" v-model="customerSearchCode" @change="searchCustomerByCode"
+                    :readonly="isViewMode || formData.order_code != ''"
+                    :placeholder="t('customers.placeholders.customer_code')" :class="[
+                      'w-full text-xs px-3 py-2 rounded-lg border transition-colors',
+                      formData.order_code != '' ?
+                        'bg-gray-100 dark:bg-gray-700 cursor-not-allowed text-gray-600 dark:text-gray-300'
+                        : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:border-blue-300',
 
-                    isViewMode
-                      ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed text-gray-600 dark:text-gray-300'
-                      : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:border-blue-300',
-                    errors.customer_code
-                      ? 'ring-2 ring-red-300'
-                      : 'border-gray-300 dark:border-gray-600'
-                  ]" />
-                <!-- <button v-if="!isViewMode" type="button" @click="openAddCustomer"
+                      isViewMode
+                        ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed text-gray-600 dark:text-gray-300'
+                        : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:border-blue-300',
+                      errors.customer_code
+                        ? 'ring-2 ring-red-300'
+                        : 'border-gray-300 dark:border-gray-600'
+                    ]" />
+                  <!-- <button v-if="!isViewMode" type="button" @click="openAddCustomer"
                   class="whitespace-nowrap flex items-center gap-1 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded-lg shadow transition">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                   </svg>
                   {{ t('orders.add_customer') }}
                 </button> -->
+                </div>
+                <p v-if="errors.customer_code" class="text-xs text-red-500 dark:text-red-400 mt-1">
+                  {{ errors.customer_code[0] }}
+                </p>
               </div>
-              <p v-if="errors.customer_code" class="text-xs text-red-500 dark:text-red-400 mt-1">
-                {{ errors.customer_code[0] }}
-              </p>
+
+              <!-- Hidden customer_id field -->
+              <input type="hidden" v-model="formData.customer_id" />
             </div>
 
-            <!-- Hidden customer_id field -->
-            <input type="hidden" v-model="formData.customer_id" />
-          </div>
+            <!-- Customer Info Display -->
+            <div v-if="selectedCustomer" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <!-- Basic Info -->
+              <div class="space-y-2 col-span-1 md:col-span-2">
+                <label
+                  class="flex items-center text-xs font-semibold text-gray-700 dark:text-gray-200 mb-2 border-b pb-2">
+                  {{ t('customers.basic_info') }}
+                </label>
+                <div class="grid grid-cols-2  md:grid-cols-7 gap-2 text-xs pt-2">
+                  <div class="text-gray-500 dark:text-gray-400">{{ t('customers.fields.full_name') }}:</div>
+                  <div class="font-medium col-span-1 md:col-span-6 text-gray-700 dark:text-gray-300">{{
+                    selectedCustomer.full_name }}</div>
 
-          <!-- Customer Info Display -->
-          <div v-if="selectedCustomer" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <!-- Basic Info -->
-            <div class="space-y-2 col-span-1 md:col-span-2">
-              <label
-                class="flex items-center text-xs font-semibold text-gray-700 dark:text-gray-200 mb-2 border-b pb-2">
-                {{ t('customers.basic_info') }}
-              </label>
-              <div class="grid grid-cols-2  md:grid-cols-7 gap-2 text-xs pt-2">
-                <div class="text-gray-500 dark:text-gray-400">{{ t('customers.fields.full_name') }}:</div>
-                <div class="font-medium col-span-1 md:col-span-6 text-gray-700 dark:text-gray-300">{{
-                  selectedCustomer.full_name }}</div>
-
-                <!-- <div class="text-gray-500 dark:text-gray-400">{{ t('customers.fields.customer_type') }}:</div>
+                  <!-- <div class="text-gray-500 dark:text-gray-400">{{ t('customers.fields.customer_type') }}:</div>
                 <div class="font-medium">{{ selectedCustomer.customer_type }}</div> -->
 
-                <div class="text-gray-500 dark:text-gray-400">{{ t('customers.fields.tax_code') }}:</div>
-                <div class="font-medium col-span-1 md:col-span-6 text-gray-700 dark:text-gray-300">{{
-                  selectedCustomer.tax_code || '-' }}</div>
+                  <div class="text-gray-500 dark:text-gray-400">{{ t('customers.fields.tax_code') }}:</div>
+                  <div class="font-medium col-span-1 md:col-span-6 text-gray-700 dark:text-gray-300">{{
+                    selectedCustomer.tax_code || '-' }}</div>
 
-                <div class="text-gray-500 dark:text-gray-400">{{ t('customers.fields.address') }}:</div>
-                <div class="font-medium col-span-1 md:col-span-6 text-gray-700 dark:text-gray-300">{{
-                  selectedCustomer.address }}</div>
-              </div>
-            </div>
-
-            <!-- Contact Info -->
-            <div class="space-y-2">
-
-              <label
-                class="flex items-center text-xs font-semibold text-gray-700 dark:text-gray-200 mb-2 border-b pb-2">
-                {{ t('customers.contact_info') }}
-              </label>
-              <div class="pt-2 space-y-1 text-xs" v-for="contact in selectedCustomer.contacts" :key="contact.id">
-                <div class="flex items-center gap-2">
-                  <span class="text-gray-500 dark:text-gray-400">{{ contact.contact_type }}:</span>
-                  <span class="font-medium">{{ contact.value }}</span>
-                  <span v-if="contact.is_primary"
-                    class="text-xs px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full">
-                    {{ t('customers.fields.is_primary') }}
-                  </span>
+                  <div class="text-gray-500 dark:text-gray-400">{{ t('customers.fields.address') }}:</div>
+                  <div class="font-medium col-span-1 md:col-span-6 text-gray-700 dark:text-gray-300">{{
+                    selectedCustomer.address }}</div>
                 </div>
-                <!-- <div v-if="contact.label" class="text-gray-400 dark:text-gray-500 pl-6">
+              </div>
+
+              <!-- Contact Info -->
+              <div class="space-y-2">
+
+                <label
+                  class="flex items-center text-xs font-semibold text-gray-700 dark:text-gray-200 mb-2 border-b pb-2">
+                  {{ t('customers.contact_info') }}
+                </label>
+                <div class="pt-2 space-y-1 text-xs" v-for="contact in selectedCustomer.contacts" :key="contact.id">
+                  <div class="flex items-center gap-2">
+                    <span class="text-gray-500 dark:text-gray-400">{{ contact.contact_type }}:</span>
+                    <span class="font-medium">{{ contact.value }}</span>
+                    <span v-if="contact.is_primary"
+                      class="text-xs px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full">
+                      {{ t('customers.fields.is_primary') }}
+                    </span>
+                  </div>
+                  <!-- <div v-if="contact.label" class="text-gray-400 dark:text-gray-500 pl-6">
                   {{ contact.label }}
                 </div> -->
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Error message if no customer selected -->
-          <div v-if="errors.customer_id" class="text-xs text-red-500 dark:text-red-400">
-            {{ t('orders.errors.customer_required') }}
-          </div>
+            <!-- Error message if no customer selected -->
+            <div v-if="errors.customer_id" class="text-xs text-red-500 dark:text-red-400">
+              {{ t('orders.errors.customer_required') }}
+            </div>
 
-        </fieldset>
+          </fieldset>
 
-        <!-- Order Details Table -->
-        <fieldset class="p-5 rounded-2xl shadow border border-indigo-100 dark:border-gray-700 mb-2">
-          <legend
-            class="flex items-center gap-1 text-xs font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-widest px-1">
-            {{ t('orders.group_details') }}
-          </legend>
+          <!-- Order Details Table -->
+          <fieldset class="p-5 rounded-2xl shadow border border-indigo-100 dark:border-gray-700 mb-2">
+            <legend
+              class="flex items-center gap-1 text-xs font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-widest px-1">
+              {{ t('orders.group_details') }}
+            </legend>
 
-          <!-- show error details -->
-          <div v-if="hasErrors && errors.order_details" class="text-xs text-red-500 dark:text-red-400 mb-4">
-            {{ errors.order_details[0] }}
-          </div>
+            <!-- show error details -->
+            <div v-if="hasErrors && errors.order_details" class="text-xs text-red-500 dark:text-red-400 mb-4">
+              {{ errors.order_details[0] }}
+            </div>
 
-          <!-- Add Service Package Button -->
-          <div v-if="!isViewMode" class="mb-4">
-            <button type="button" @click="addOrderDetail"
-              class="inline-flex items-center px-3 py-1 text-xs font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 transition">
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-              {{ t('orders.add_service_package') }}
-            </button>
-          </div>
+            <!-- Add Service Package Button -->
+            <div v-if="!isViewMode" class="mb-4">
+              <button type="button" @click="addOrderDetail"
+                class="inline-flex items-center px-3 py-1 text-xs font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 transition">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                {{ t('orders.add_service_package') }}
+              </button>
+            </div>
 
-          <!-- Order Details List -->
-          <div class="space-y-4">
-            <div v-for="(detail, index) in formData.order_details" :key="detail.temp_id || detail.id || index"
-              class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
-              <div class="flex justify-between items-start mb-3">
-                <h4 class="text-xs font-medium text-gray-900 dark:text-white">
-                  {{ t('orders.fields.service_package') }} #{{ index + 1 }}
-                </h4>
-                <button v-if="!isViewMode" type="button" @click="removeOrderDetail(index)"
-                  class="text-red-600 hover:text-red-800 text-xs">
-                  {{ t('common.remove') }}
-                </button>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!--  -->
-                <!-- Service Package Selection -->
-                <div>
-                  <label class="text-xs font-bold text-gray-700 dark:text-gray-200">
-                    {{ t('orders.fields.service_type') }} <span class="text-red-500">*</span>
-                  </label>
-                  <SelectSearch v-model="detail.service_type" :options="serviceTypeOptions" :searchable="true"
-                    :disabled="isViewMode" :placeholder="t('orders.select_service_type')"
-                    @update:modelValue="onServiceTypeChange(index, $event)" class="mt-2" />
-                  <p v-if="errors[`order_details.${index}.service_type`]" class="text-xs text-red-500 mt-1">
-                    {{ errors[`order_details.${index}.service_type`][0] }}
-                  </p>
-                </div>
-                <div class="lg:col-span-2">
-                  <label class="text-xs font-bold text-gray-700 dark:text-gray-200">
-                    {{ t('orders.fields.service_package') }} <span class="text-red-500">*</span>
-                  </label>
-                  <SelectSearch v-model="detail.service_package_id" :options="detail.servicePackageOptions || []"
-                    :searchable="true" :disabled="isViewMode" :placeholder="t('orders.select_service_package')"
-                    @search="searchServicePackage" @update:modelValue="onServicePackageChange(index, $event)"
-                    class="mt-2" />
-                  <p v-if="errors[`order_details.${index}.service_package_id`]" class="text-xs text-red-500 mt-1">
-                    {{ errors[`order_details.${index}.service_package_id`][0] }}
-                  </p>
-                </div>
-                <input type="hidden" v-model="detail.customer_type" />
-                <!-- Package Code (readonly, populated from selection) -->
-                <div>
-                  <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.package_code')
-                  }}</label>
-                  <input type="text" v-model="detail.package_code" :disabled="true"
-                    class="input-form mt-2 bg-gray-100 dark:bg-gray-700" />
+            <!-- Order Details List -->
+            <div class="space-y-4">
+              <div v-for="(detail, index) in formData.order_details" :key="detail.temp_id || detail.id || index"
+                class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="text-xs font-medium text-gray-900 dark:text-white">
+                    {{ t('orders.fields.service_package') }} #{{ index + 1 }}
+                  </h4>
+                  <button v-if="!isViewMode" type="button" @click="removeOrderDetail(index)"
+                    class="text-red-600 hover:text-red-800 text-xs">
+                    {{ t('common.remove') }}
+                  </button>
                 </div>
 
-                <!-- Package Name (readonly, populated from selection) -->
-                <div>
-                  <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.package_name')
-                  }}</label>
-                  <input type="text" v-model="detail.package_name" :disabled="true"
-                    class="input-form mt-2 bg-gray-100 dark:bg-gray-700" />
-                </div>
-                <!-- Tax Included -->
-                <div class="flex items-center mt-6">
-                  <input type="checkbox" v-model="detail.tax_included" :disabled="true"
-                    @change="calculateDetailTotals(index)" class="mr-2" />
-                  <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_included')
-                  }}</label>
-                </div>
-                <div class="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4">
-                  <!-- Base Price (readonly, populated from selection) -->
-                  <div class="lg:col-span-2">
-                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.base_price')
-                    }}</label>
-                    <div class="relative mt-2">
-                      <input type="number" step="0.01" v-model="detail.base_price" :disabled="true"
-                        @input="calculateDetailTotals(index)" class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
-                      <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-                        {{ detail.currency || formData.currency || 'VND' }}
-                      </span>
-                    </div>
-                  </div>
-                  <!-- Quantity -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <!--  -->
+                  <!-- Service Package Selection -->
                   <div>
                     <label class="text-xs font-bold text-gray-700 dark:text-gray-200">
-                      {{ t('orders.fields.quantity') }} <span class="text-red-500">*</span>
+                      {{ t('orders.fields.service_type') }} <span class="text-red-500">*</span>
                     </label>
-                    <input type="number" v-model.number="detail.quantity" :disabled="isViewMode"
-                      @input="calculateDetailTotals(index)" class="input-form mt-2" />
-                    <p v-if="errors[`order_details.${index}.quantity`]" class="text-xs text-red-500 mt-1">
-                      {{ errors[`order_details.${index}.quantity`][0] }}
+                    <SelectSearch v-model="detail.service_type" :options="serviceTypeOptions" :searchable="true"
+                      :disabled="isViewMode" :placeholder="t('orders.select_service_type')"
+                      @update:modelValue="onServiceTypeChange(index, $event)" class="mt-2" />
+                    <p v-if="errors[`order_details.${index}.service_type`]" class="text-xs text-red-500 mt-1">
+                      {{ errors[`order_details.${index}.service_type`][0] }}
                     </p>
                   </div>
-                  <!-- Total Price (calculated) -->
                   <div class="lg:col-span-2">
-                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.total_price')
-                    }}</label>
-                    <div class="relative mt-2">
-                      <input type="number" step="0.01" v-model="detail.total_price" :disabled="true"
-                        class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
-                      <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-                        {{ detail.currency || formData.currency || 'VND' }}
-                      </span>
-                    </div>
+                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">
+                      {{ t('orders.fields.service_package') }} <span class="text-red-500">*</span>
+                    </label>
+                    <SelectSearch v-model="detail.service_package_id" :options="detail.servicePackageOptions || []"
+                      :searchable="true" :disabled="isViewMode" :placeholder="t('orders.select_service_package')"
+                      @search="searchServicePackage" @update:modelValue="onServicePackageChange(index, $event)"
+                      class="mt-2" />
+                    <p v-if="errors[`order_details.${index}.service_package_id`]" class="text-xs text-red-500 mt-1">
+                      {{ errors[`order_details.${index}.service_package_id`][0] }}
+                    </p>
                   </div>
-                  <!-- Tax Rate -->
+                  <input type="hidden" v-model="detail.customer_type" />
+                  <!-- Package Code (readonly, populated from selection) -->
                   <div>
-                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_rate')
+                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.package_code')
                     }}</label>
-                    <div class="relative mt-2">
-                      <input type="number" step="0.01" min="0" max="100" v-model.number="detail.tax_rate"
-                        :disabled="true" @input="calculateDetailTotals(index)" class="input-form pr-8" />
-                      <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">%</span>
-                    </div>
-                  </div>
-                  <!-- Tax Amount (calculated) -->
-                  <div class="lg:col-span-3">
-                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_amount')
-                    }}</label>
-                    <div class="relative mt-2">
-                      <input type="number" step="0.01" v-model="detail.tax_amount" :disabled="true"
-                        class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
-                      <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-                        {{ detail.currency || formData.currency || 'VND' }}
-                      </span>
-                    </div>
+                    <input type="text" v-model="detail.package_code" :disabled="true"
+                      class="input-form mt-2 bg-gray-100 dark:bg-gray-700" />
                   </div>
 
-                  <!-- Total with Tax (calculated) -->
-                  <div class="lg:col-span-3">
-                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{
-                      t('orders.fields.total_with_tax')
+                  <!-- Package Name (readonly, populated from selection) -->
+                  <div>
+                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.package_name')
                     }}</label>
-                    <div class="relative mt-2">
-                      <input type="number" step="0.01" v-model="detail.total_with_tax" :disabled="true"
-                        class="input-form pr-12 bg-gray-100 dark:bg-gray-700 font-medium" />
-                      <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
-                        {{ detail.currency || formData.currency || 'VND' }}
-                      </span>
+                    <input type="text" v-model="detail.package_name" :disabled="true"
+                      class="input-form mt-2 bg-gray-100 dark:bg-gray-700" />
+                  </div>
+                  <!-- Tax Included -->
+                  <div class="flex items-center mt-6">
+                    <input type="checkbox" v-model="detail.tax_included" :disabled="true"
+                      @change="calculateDetailTotals(index)" class="mr-2" />
+                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_included')
+                    }}</label>
+                  </div>
+                  <div class="col-span-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4">
+                    <!-- Base Price (readonly, populated from selection) -->
+                    <div class="lg:col-span-2">
+                      <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.base_price')
+                      }}</label>
+                      <div class="relative mt-2">
+                        <input type="number" step="0.01" v-model="detail.base_price" :disabled="true"
+                          @input="calculateDetailTotals(index)" class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
+                        <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+                          {{ detail.currency || formData.currency || 'VND' }}
+                        </span>
+                      </div>
+                    </div>
+                    <!-- Quantity -->
+                    <div>
+                      <label class="text-xs font-bold text-gray-700 dark:text-gray-200">
+                        {{ t('orders.fields.quantity') }} <span class="text-red-500">*</span>
+                      </label>
+                      <input type="number" v-model.number="detail.quantity" :disabled="isViewMode"
+                        @input="calculateDetailTotals(index)" class="input-form mt-2" />
+                      <p v-if="errors[`order_details.${index}.quantity`]" class="text-xs text-red-500 mt-1">
+                        {{ errors[`order_details.${index}.quantity`][0] }}
+                      </p>
+                    </div>
+                    <!-- Total Price (calculated) -->
+                    <div class="lg:col-span-2">
+                      <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{
+                        t('orders.fields.total_price')
+                      }}</label>
+                      <div class="relative mt-2">
+                        <input type="number" step="0.01" v-model="detail.total_price" :disabled="true"
+                          class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
+                        <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+                          {{ detail.currency || formData.currency || 'VND' }}
+                        </span>
+                      </div>
+                    </div>
+                    <!-- Tax Rate -->
+                    <div>
+                      <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_rate')
+                      }}</label>
+                      <div class="relative mt-2">
+                        <input type="number" step="0.01" min="0" max="100" v-model.number="detail.tax_rate"
+                          :disabled="true" @input="calculateDetailTotals(index)" class="input-form pr-8" />
+                        <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">%</span>
+                      </div>
+                    </div>
+                    <!-- Tax Amount (calculated) -->
+                    <div class="lg:col-span-3">
+                      <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.tax_amount')
+                      }}</label>
+                      <div class="relative mt-2">
+                        <input type="number" step="0.01" v-model="detail.tax_amount" :disabled="true"
+                          class="input-form pr-12 bg-gray-100 dark:bg-gray-700" />
+                        <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+                          {{ detail.currency || formData.currency || 'VND' }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Total with Tax (calculated) -->
+                    <div class="lg:col-span-3">
+                      <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{
+                        t('orders.fields.total_with_tax')
+                      }}</label>
+                      <div class="relative mt-2">
+                        <input type="number" step="0.01" v-model="detail.total_with_tax" :disabled="true"
+                          class="input-form pr-12 bg-gray-100 dark:bg-gray-700 font-medium" />
+                        <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-500">
+                          {{ detail.currency || formData.currency || 'VND' }}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
 
 
 
 
 
-                <!-- Start Date -->
-                <!-- <div>
+                  <!-- Start Date -->
+                  <!-- <div>
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-200">
                     {{ t('orders.fields.start_date') }} <span class="text-red-500">*</span>
                   </label>
@@ -390,8 +394,8 @@
                   </p>
                 </div> -->
 
-                <!-- End Date -->
-                <!-- <div>
+                  <!-- End Date -->
+                  <!-- <div>
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-200">
                     {{ t('orders.fields.end_date') }} <span class="text-red-500">*</span>
                   </label>
@@ -405,24 +409,24 @@
 
 
 
-                <!-- Is Active -->
-                <!-- <div class="flex items-center mt-6">
+                  <!-- Is Active -->
+                  <!-- <div class="flex items-center mt-6">
                   <input type="checkbox" v-model="detail.is_active" :disabled="isViewMode" class="mr-2" />
                   <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.is_active') }}</label>
                 </div> -->
 
 
-                <!-- Enhanced Package Features Section - Full Width -->
-                <div class="lg:col-span-3">
-                  <div class="flex items-center justify-between mb-2">
-                    <label class="text-xs font-bold text-gray-900 dark:text-white">
-                      {{ t('orders.fields.features') }}
-                      <button type="button" class="text-xs text-blue-600 hover:underline dark:text-blue-400 pl-4"
-                        @click="detail.showDetails = !detail.showDetails">
-                        {{ detail.showDetails ? t('common.hide_details') : t('common.show_details') }}
-                      </button>
-                    </label>
-                    <!-- <div v-if="!isViewMode" class="flex gap-2">
+                  <!-- Enhanced Package Features Section - Full Width -->
+                  <div class="lg:col-span-3">
+                    <div class="flex items-center justify-between mb-2">
+                      <label class="text-xs font-bold text-gray-900 dark:text-white">
+                        {{ t('orders.fields.features') }}
+                        <button type="button" class="text-xs text-blue-600 hover:underline dark:text-blue-400 pl-4"
+                          @click="detail.showDetails = !detail.showDetails">
+                          {{ detail.showDetails ? t('common.hide_details') : t('common.show_details') }}
+                        </button>
+                      </label>
+                      <!-- <div v-if="!isViewMode" class="flex gap-2">
                       <button type="button" @click="resetFeaturesToDefault(index)"
                         class="inline-flex items-center px-2 py-1 text-xs font-medium text-orange-700 bg-orange-100 border border-orange-200 rounded hover:bg-orange-200 transition">
                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -432,220 +436,234 @@
                         {{ t('orders.reset_features') }}
                       </button>
                     </div> -->
-                  </div>
+                    </div>
 
-                  <!-- Compact Features List -->
-                  <div v-if="detail.features && detail.features.length"
-                    class="max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900">
-                    <div v-if="detail.showDetails">
-                      <!-- Table Header -->
-                      <div
-                        class="grid grid-cols-12 gap-2 p-2 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-600 sticky top-0">
-                        <div class="col-span-1 text-center">{{ t('orders.display_order') }}</div>
-                        <div class="col-span-3">{{ t('orders.feature_name') }}</div>
-                        <div class="col-span-2">{{ t('orders.feature_type') }}</div>
-                        <div class="col-span-2">{{ t('orders.limit_value') }}</div>
-                        <div class="col-span-2">{{ t('orders.unit') }}</div>
-                        <div class="col-span-1 text-center">{{ t('orders.actions') }}</div>
-                      </div>
-
-                      <!-- Feature Rows -->
-                      <div v-for="(feature, featureIndex) in detail.features"
-                        :key="feature.id || feature.temp_id || featureIndex"
-                        class="grid grid-cols-12 gap-2 p-2 text-xs border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                        :class="{ 'opacity-60': feature.is_active === false }">
-
-                        <!-- Display Order -->
-                        <div class="col-span-1 text-center">{{ feature.display_order }}</div>
-
-                        <!-- Feature Name & Key -->
-                        <div class="col-span-3">
-                          <div class="font-medium text-gray-900 dark:text-white truncate" :title="feature.feature_name">
-                            {{ feature.feature_name }}
-                          </div>
-                          <div class="text-gray-500 dark:text-gray-400 truncate text-xs" :title="feature.feature_key">
-                            {{ feature.feature_key }}
-                          </div>
+                    <!-- Compact Features List -->
+                    <div v-if="detail.features && detail.features.length"
+                      class="max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900">
+                      <div v-if="detail.showDetails">
+                        <!-- Table Header -->
+                        <div
+                          class="grid grid-cols-12 gap-2 p-2 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-600 sticky top-0">
+                          <div class="col-span-1 text-center">{{ t('orders.display_order') }}</div>
+                          <div class="col-span-3">{{ t('orders.feature_name') }}</div>
+                          <div class="col-span-2">{{ t('orders.feature_type') }}</div>
+                          <div class="col-span-2">{{ t('orders.limit_value') }}</div>
+                          <div class="col-span-2">{{ t('orders.unit') }}</div>
+                          <div class="col-span-1 text-center">{{ t('orders.actions') }}</div>
                         </div>
 
-                        <!-- Feature Type & Unit -->
-                        <div class="col-span-2">
-                          <div class="text-gray-800 dark:text-gray-200">
-                            {{ formatOptionLabel(featureTypeOption, feature.feature_type) }}
-                          </div>
-                        </div>
+                        <!-- Feature Rows -->
+                        <div v-for="(feature, featureIndex) in detail.features"
+                          :key="feature.id || feature.temp_id || featureIndex"
+                          class="grid grid-cols-12 gap-2 p-2 text-xs border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                          :class="{ 'opacity-60': feature.is_active === false }">
 
-                        <!-- Limit Value -->
-                        <div class="col-span-2">
-                          <div v-if="feature.is_active !== false">
-                            <!-- Boolean Type -->
-                            <div v-if="feature.feature_type === 'boolean'" class="flex items-center">
-                              <input type="checkbox" v-model="feature.limit_value_boolean"
-                                :disabled="isViewMode || !feature.is_customizable"
-                                @change="onFeatureLimitChange(index, featureIndex)"
+                          <!-- Display Order -->
+                          <div class="col-span-1 text-center">{{ feature.display_order }}</div>
+
+                          <!-- Feature Name & Key -->
+                          <div class="col-span-3">
+                            <div class="font-medium text-gray-900 dark:text-white truncate"
+                              :title="feature.feature_name">
+                              {{ feature.feature_name }}
+                            </div>
+                            <div class="text-gray-500 dark:text-gray-400 truncate text-xs" :title="feature.feature_key">
+                              {{ feature.feature_key }}
+                            </div>
+                          </div>
+
+                          <!-- Feature Type & Unit -->
+                          <div class="col-span-2">
+                            <div class="text-gray-800 dark:text-gray-200">
+                              {{ formatOptionLabel(featureTypeOption, feature.feature_type) }}
+                            </div>
+                          </div>
+
+                          <!-- Limit Value -->
+                          <div class="col-span-2">
+                            <div v-if="feature.is_active !== false">
+                              <!-- Boolean Type -->
+                              <div v-if="feature.feature_type === 'boolean'" class="flex items-center">
+                                <input type="checkbox" v-model="feature.limit_value_boolean"
+                                  :disabled="isViewMode || !feature.is_customizable"
+                                  @change="onFeatureLimitChange(index, featureIndex)"
+                                  class="form-checkbox h-3 w-3 text-indigo-600 rounded"
+                                  :class="{ 'cursor-not-allowed': !feature.is_customizable }" />
+                                <span class="ml-1 text-xs">
+                                  <!-- {{ Number(feature.limit_value_boolean) ? t('orders.enabled') : t('orders.disabled') }} -->
+                                </span>
+                                <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
+                                  <svg class="w-3 h-3 inline" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                      clip-rule="evenodd" />
+                                  </svg>
+                                </span>
+                              </div>
+
+                              <!-- Quantity Type -->
+                              <div v-else-if="feature.feature_type === 'quantity'" class="flex items-center">
+                                <input type="number" step="0.01" min="0" v-model.number="feature.limit_value"
+                                  :disabled="isViewMode || !feature.is_customizable"
+                                  @input="onFeatureLimitChange(index, featureIndex)"
+                                  class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
+                                  :class="{
+                                    'bg-gray-100 dark:bg-gray-600 cursor-not-allowed': !feature.is_customizable,
+                                    'border-blue-300 dark:border-blue-500': feature.is_customizable
+                                  }" />
+                                <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
+                                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                      clip-rule="evenodd" />
+                                  </svg>
+                                </span>
+                              </div>
+
+                              <!-- Other Types -->
+                              <div v-else class="flex items-center">
+                                <span class="text-gray-800 dark:text-gray-200">
+                                  {{ feature.limit_value }} {{ feature.unit || '' }}
+                                </span>
+                                <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
+                                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                      clip-rule="evenodd" />
+                                  </svg>
+                                </span>
+                              </div>
+                            </div>
+                            <div v-else class="text-gray-500 dark:text-gray-400 italic">
+
+                              {{ Number(feature.limit_value) }}
+                            </div>
+                          </div>
+                          <div class="col-span-2 text-left">
+                            <div v-if="feature.unit" class="text-gray-500 dark:text-gray-400">
+                              {{ formatOptionLabel(unitTypeOptions, feature.unit) }}
+                            </div>
+                          </div>
+
+                          <!-- Status Badges -->
+
+                          <!-- Actions -->
+                          <div class="col-span-1 text-center">
+                            <div v-if="!isViewMode" class="flex items-center justify-center gap-1">
+                              <!-- Delete Feature (for optional features) -->
+                              <div v-if="feature.is_optional && feature.is_active">
+                                <button type="button" @click="removeOptionalFeature(index, featureIndex)"
+                                  class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 ml-1"
+                                  title="Xóa feature">
+                                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"
+                                      clip-rule="evenodd" />
+                                    <path fill-rule="evenodd"
+                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                      clip-rule="evenodd" />
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Expandable Original Value (if modified) -->
+                          <div v-if="feature.is_modified && feature.original_limit_value !== undefined"
+                            class="col-span-12 mt-1 text-xs text-gray-500 dark:text-gray-400 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded border-l-2 border-yellow-400">
+                            <strong>{{ t('orders.original_value') }} : </strong>
+                            <span v-if="feature.feature_type === 'boolean'">
+                              <input type="checkbox" v-model="feature.original_limit_value" :disabled="true"
                                 class="form-checkbox h-3 w-3 text-indigo-600 rounded"
-                                :class="{ 'cursor-not-allowed': !feature.is_customizable }" />
-                              <span class="ml-1 text-xs">
-                                <!-- {{ Number(feature.limit_value_boolean) ? t('orders.enabled') : t('orders.disabled') }} -->
-                              </span>
-                              <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
-                                <svg class="w-3 h-3 inline" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fill-rule="evenodd"
-                                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                    clip-rule="evenodd" />
-                                </svg>
-                              </span>
-                            </div>
-
-                            <!-- Quantity Type -->
-                            <div v-else-if="feature.feature_type === 'quantity'" class="flex items-center">
-                              <input type="number" step="0.01" min="0" v-model.number="feature.limit_value"
-                                :disabled="isViewMode || !feature.is_customizable"
-                                @input="onFeatureLimitChange(index, featureIndex)"
-                                class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
-                                :class="{
-                                  'bg-gray-100 dark:bg-gray-600 cursor-not-allowed': !feature.is_customizable,
-                                  'border-blue-300 dark:border-blue-500': feature.is_customizable
-                                }" />
-                              <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fill-rule="evenodd"
-                                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                    clip-rule="evenodd" />
-                                </svg>
-                              </span>
-                            </div>
-
-                            <!-- Other Types -->
-                            <div v-else class="flex items-center">
-                              <span class="text-gray-800 dark:text-gray-200">
-                                {{ feature.limit_value }} {{ feature.unit || '' }}
-                              </span>
-                              <span v-if="!feature.is_customizable" class="ml-1 text-gray-400" title="Không thể sửa">
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fill-rule="evenodd"
-                                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                    clip-rule="evenodd" />
-                                </svg>
-                              </span>
-                            </div>
+                                :class="{ 'cursor-not-allowed': true }" />
+                            </span>
+                            <span v-else>
+                              {{ feature.original_limit_value }}
+                            </span>
                           </div>
-                          <div v-else class="text-gray-500 dark:text-gray-400 italic">
-
-                            {{ Number(feature.limit_value) }}
-                          </div>
-                        </div>
-                        <div class="col-span-2 text-left">
-                          <div v-if="feature.unit" class="text-gray-500 dark:text-gray-400">
-                            {{ formatOptionLabel(unitTypeOptions, feature.unit) }}
-                          </div>
-                        </div>
-
-                        <!-- Status Badges -->
-
-                        <!-- Actions -->
-                        <div class="col-span-1 text-center">
-                          <div v-if="!isViewMode" class="flex items-center justify-center gap-1">
-                            <!-- Delete Feature (for optional features) -->
-                            <div v-if="feature.is_optional && feature.is_active">
-                              <button type="button" @click="removeOptionalFeature(index, featureIndex)"
-                                class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 ml-1"
-                                title="Xóa feature">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd" />
-                                  <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                    clip-rule="evenodd" />
-                                </svg>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- Expandable Original Value (if modified) -->
-                        <div v-if="feature.is_modified && feature.original_limit_value !== undefined"
-                          class="col-span-12 mt-1 text-xs text-gray-500 dark:text-gray-400 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded border-l-2 border-yellow-400">
-                          <strong>{{ t('orders.original_value') }} : </strong>
-                          <span v-if="feature.feature_type === 'boolean'">
-                            <input type="checkbox" v-model="feature.original_limit_value" :disabled="true"
-                              class="form-checkbox h-3 w-3 text-indigo-600 rounded"
-                              :class="{ 'cursor-not-allowed': true }" />
-                          </span>
-                          <span v-else>
-                            {{ feature.original_limit_value }}
-                          </span>
                         </div>
                       </div>
                     </div>
+
+                    <!-- Empty Features State -->
+                    <div v-else
+                      class="text-xs text-gray-500 dark:text-gray-400 p-4 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-center">
+                      {{ t('orders.no_features') }}
+                      <br>
+                      <span class="text-indigo-600 dark:text-indigo-400">
+                        {{ t('orders.select_package_to_see_features') }}
+                      </span>
+                    </div>
+
+                    <!-- Features Error Display -->
+                    <p v-if="errors[`order_details.${index}.features`]" class="text-xs text-red-500 mt-2">
+                      {{ errors[`order_details.${index}.features`][0] }}
+                    </p>
+
                   </div>
-
-                  <!-- Empty Features State -->
-                  <div v-else
-                    class="text-xs text-gray-500 dark:text-gray-400 p-4 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-center">
-                    {{ t('orders.no_features') }}
-                    <br>
-                    <span class="text-indigo-600 dark:text-indigo-400">
-                      {{ t('orders.select_package_to_see_features') }}
-                    </span>
-                  </div>
-
-                  <!-- Features Error Display -->
-                  <p v-if="errors[`order_details.${index}.features`]" class="text-xs text-red-500 mt-2">
-                    {{ errors[`order_details.${index}.features`][0] }}
-                  </p>
-
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Order Details Summary -->
-          <div v-if="formData.order_details.length > 0"
-            class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <h4 class="text-xs font-medium text-blue-900 dark:text-blue-100 mb-2">{{ t('orders.summary') }}</h4>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-              <div>
-                <span class="text-gray-600 dark:text-gray-400">{{ t('orders.subtotal') }}:</span>
-                <div class="font-medium text-gray-700 dark:text-gray-300">{{ formatCurrency(orderSubtotal) }}</div>
-              </div>
-              <div>
-                <span class="text-gray-600 dark:text-gray-400">{{ t('orders.total_tax') }}:</span>
-                <div class="font-medium text-gray-700 dark:text-gray-300">{{ formatCurrency(orderTaxTotal) }}</div>
-              </div>
-              <div>
-                <span class="text-gray-600 dark:text-gray-400">{{ t('orders.total_amount') }}:</span>
-                <div class="font-bold text-blue-700 dark:text-blue-300">{{ formatCurrency(orderTotal) }}</div>
-              </div>
-              <div>
-                <span class="text-gray-600 dark:text-gray-400">{{ t('orders.items_count') }}:</span>
-                <div class="font-medium text-gray-700 dark:text-gray-300">{{ formData.order_details.length }}</div>
+            <!-- Order Details Summary -->
+            <div v-if="formData.order_details.length > 0"
+              class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+              <h4 class="text-xs font-medium text-blue-900 dark:text-blue-100 mb-2">{{ t('orders.summary') }}</h4>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                <div>
+                  <span class="text-gray-600 dark:text-gray-400">{{ t('orders.subtotal') }}:</span>
+                  <div class="font-medium text-gray-700 dark:text-gray-300">{{ formatCurrency(orderSubtotal) }}</div>
+                </div>
+                <div>
+                  <span class="text-gray-600 dark:text-gray-400">{{ t('orders.total_tax') }}:</span>
+                  <div class="font-medium text-gray-700 dark:text-gray-300">{{ formatCurrency(orderTaxTotal) }}</div>
+                </div>
+                <div>
+                  <span class="text-gray-600 dark:text-gray-400">{{ t('orders.total_amount') }}:</span>
+                  <div class="font-bold text-blue-700 dark:text-blue-300">{{ formatCurrency(orderTotal) }}</div>
+                </div>
+                <div>
+                  <span class="text-gray-600 dark:text-gray-400">{{ t('orders.items_count') }}:</span>
+                  <div class="font-medium text-gray-700 dark:text-gray-300">{{ formData.order_details.length }}</div>
+                </div>
               </div>
             </div>
+          </fieldset>
+          <!-- Action Buttons -->
+          <div class="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <button type="button" @click="handleClose"
+              class="px-4 py-2 text-xs font-medium text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+              {{ isViewMode ? t('common.close') : t('common.cancel') }}
+            </button>
+            <button v-if="!isViewMode" type="submit" :disabled="isSubmitting || hasErrors"
+              class="px-4 py-2 text-xs font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition">
+              <span v-if="isSubmitting" class="inline-flex items-center">
+                <svg class="animate-spin -ml-1 mr-2 h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                  </path>
+                </svg>
+                {{ t('common.saving') }}
+              </span>
+              <span v-else>
+                {{ isEditMode ? t('common.update') : t('common.save') }}
+              </span>
+            </button>
           </div>
-        </fieldset>
-        <!-- Action Buttons -->
-        <div class="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <button type="button" @click="handleClose"
-            class="px-4 py-2 text-xs font-medium text-gray-700 dark:text-gray-100 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-            {{ isViewMode ? t('common.close') : t('common.cancel') }}
-          </button>
-          <button v-if="!isViewMode" type="submit" :disabled="isSubmitting || hasErrors"
-            class="px-4 py-2 text-xs font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition">
-            <span v-if="isSubmitting" class="inline-flex items-center">
-              <svg class="animate-spin -ml-1 mr-2 h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                </path>
-              </svg>
-              {{ t('common.saving') }}
-            </span>
-            <span v-else>
-              {{ isEditMode ? t('common.update') : t('common.save') }}
-            </span>
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
+      <div v-else-if="activeTab === 'contract'">
+        <ContractTab :order="formData" :isActive="activeTab === 'contract'" />
+      </div>
+      <!-- Tab Hóa đơn -->
+      <div v-else-if="activeTab === 'invoice'" :isActive="activeTab === 'invoice'">
+        <InvoiceTab :order="formData" :isActive="activeTab === 'invoice'" />
+      </div>
+      <!-- Tab Nhật ký -->
+      <div v-else-if="activeTab === 'log'">
+        <OrderLogTab :orderId="formData.id" :isActive="activeTab === 'log'" />
+      </div>
     </template>
   </BaseModal>
 </template>
@@ -657,7 +675,16 @@ import { api } from '@/utils/api'
 import BaseModal from '@/components/modals/BaseModal.vue'
 import SelectSearch from '@/components/forms/SelectSearch.vue'
 import { notificationService } from '@/services/notification'
+import ContractTab from '@/modules/order/components/ContractTab.vue'
+import InvoiceTab from '@/modules/order/components/InvoiceTab.vue'
+import OrderLogTab from '@/modules/order/components/OrderLogTab.vue'
 
+const defaultTabs = [
+  { key: 'order', label: 'orders.tab_order' }
+]
+const tabs = ref([...defaultTabs])
+
+const activeTab = ref('order')
 const { t } = useI18n()
 const setLoading = inject('setLoading', () => { })
 
@@ -760,6 +787,23 @@ const searchServicePackage = async (query) => {
 
 // ==================== FORM MANAGEMENT ====================
 const resetForm = () => {
+  activeTab.value = 'order'
+  tabs.value = [...defaultTabs]
+  const moreTabs = [
+    { key: 'contract', label: 'orders.tab_contract' },
+    { key: 'invoice', label: 'orders.tab_invoice' },
+    { key: 'log', label: 'orders.tab_log' }
+  ]
+
+  if (props.mode === 'edit' || props.mode === 'view') {
+    moreTabs.forEach(tab => {
+      // Kiểm tra nếu chưa có tab với key này thì mới push
+      if (!tabs.value.some(t => t.key === tab.key)) {
+        tabs.value.push(tab)
+      }
+    })
+  }
+
   if (props.customerCode) {
     customerSearchCode.value = props.customerCode || ''
     searchCustomerByCode()
@@ -811,6 +855,21 @@ const initializeForm = async () => {
       } else {
         customerSearchCode.value = props.currentOrder.customer_code || ''
       }
+      if (formData.value.id) {
+        const moreTabs = [
+          { key: 'contract', label: 'orders.tab_contract' }, 
+          { key: 'invoice', label: 'orders.tab_invoice' }, 
+          { key: 'log', label: 'orders.tab_log' }
+        ]
+        moreTabs.forEach(tab => {
+          if (!tabs.value.some(t => t.key === tab.key)) {
+            tabs.value.push(tab)
+          }
+        })
+
+      } else {
+        tabs.value = [...defaultTabs]
+      }
 
 
       if (props.currentOrder.customer) {
@@ -828,7 +887,6 @@ const initializeForm = async () => {
           }
         }
       })
-      // Gọi hàm này trong initializeForm
       await loadServiceTypesForDetails();
       // // Load only new service types
       // for (const serviceType of serviceTypesToLoad) {
@@ -845,7 +903,7 @@ const initializeForm = async () => {
       //     loadPromises.push(onServiceTypeChange(index, detail.service_type))
       //   }
       // })
-      
+
       // await Promise.all(loadPromises)
     } else {
       resetForm()
@@ -862,12 +920,12 @@ const loadServiceTypesForDetails = async () => {
 
   // Tạo map để tránh trùng lặp service types
   const serviceTypeMap = new Map();
-  
+
   formData.value.order_details.forEach((detail, index) => {
     if (detail.service_type) {
       // Nhóm các details có cùng service type
       const cacheKey = `${detail.service_type}_${selectedCustomer.value?.customer_type || props.categorySystem?.customer_type || 'INDIVIDUAL'}`;
-      
+
       if (!serviceTypeMap.has(cacheKey)) {
         serviceTypeMap.set(cacheKey, []);
       }
@@ -877,7 +935,7 @@ const loadServiceTypesForDetails = async () => {
 
   // Tạo promises để load song song
   const loadPromises = [];
-  
+
   for (const [cacheKey, detailIndexes] of serviceTypeMap) {
     // Chỉ cần load 1 lần cho mỗi service type
     loadPromises.push(
@@ -1248,7 +1306,7 @@ const calculateDetailTotals = (detailIndex) => {
 
   // Calculate tax
   const taxRate = parseFloat(detail.tax_rate) || 0
-  
+
   if (detail.tax_included) {
     detail.tax_amount = parseFloat(detail.total_price * (taxRate / (100 + taxRate))).toFixed(2) || 0
     detail.total_with_tax = detail.total_price
@@ -1554,8 +1612,6 @@ watch(() => props.currentOrder, async (newOrder, oldOrder) => {
           }
         }
       }
-    } else {
-      resetForm()
     }
   } finally {
     isInitializing.value = false

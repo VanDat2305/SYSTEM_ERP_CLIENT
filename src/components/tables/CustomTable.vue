@@ -574,6 +574,7 @@ import { useCategorySystem } from '@/stores/categorySystem'
 import ConfirmModal from '@/components/modals/ConfirmModal.vue'
 import InputModal from '@/components/modals/InputModal.vue'
 const categorySystem = useCategorySystem()
+import { Vietnamese } from 'flatpickr/dist/l10n/vn.js'
 
 const { t } = useI18n();
 
@@ -767,9 +768,7 @@ const getDatePickerConfig = (filter, rangeType = 'from') => {
     dateFormat: 'Y-m-d',
     altInput: true,
     altFormat: 'd/m/Y',
-    locale: {
-      firstDayOfWeek: 1 // Thứ 2 đầu tuần
-    }
+    locale: Vietnamese,
   };
 
   // Xử lý min/max date
