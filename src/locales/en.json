@@ -752,6 +752,7 @@
     },
     "customers": {
         "basic_info": "Basic Information",
+        "service_tracking": "Service Tracking",
         "logs": "Activity Logs",
         "contact_info": "Contact Information",
         "view_title": "View Customer Information",
@@ -770,7 +771,9 @@
             "converted": "Converted",
             "unqualified": "Unqualified",
             "inactive": "Inactive",
-            "active": "Active"
+            "active": "Active",
+            "expiring_soon": "Expiring Soon",
+            "expired": "Expired"
         },
         "fields": {
             "customer_code": "Customer Code",

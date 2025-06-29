@@ -80,7 +80,7 @@ import config from '@/config/config'
 import { notificationService } from '@/services/notification'
 
 const props = defineProps({
-  orderId: { type: String, required: true },
+  customerId: { type: String, required: true },
   isActive: { type: Boolean, default: true },
 })
 const errors = ref({ note: [], file: [] }) // Lưu lỗi từ server nếu có
@@ -97,10 +97,10 @@ const fileData = ref(null)
 const isSubmitting = ref(false)
 
 const fetchLogs = async (page = 1) => {
-  if (!props.orderId) return
+  if (!props.customerId) return
   isLoading.value = true
   try {
-    const res = await api.get(`/customers/${props.orderId}/logs?page=${page}&page_size=10`)
+    const res = await api.get(`/customers/${props.customerId}/logs?page=${page}&page_size=10`)
     logs.value = {
       data: res.data.data.items || [],
       current_page: res.data.data.pagination.current_page || 1,
@@ -146,7 +146,7 @@ const submitLog = async () => {
 
   try {
 
-    await api.post(`/customers/${props.orderId}/logs/note`, formData)
+    await api.post(`/customers/${props.customerId}/logs/note`, formData)
     notificationService.success('Thêm nhật ký thành công!')
     logNote.value = ''
     fileData.value = null

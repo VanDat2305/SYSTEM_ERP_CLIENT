@@ -248,7 +248,7 @@
                   <h4 class="text-xs font-medium text-gray-900 dark:text-white">
                     {{ t('orders.fields.service_package') }} #{{ index + 1 }}
                   </h4>
-                  <button v-if="!isViewMode" type="button" @click="removeOrderDetail(index)"
+                  <button v-if="!isViewMode && !detail.renewed_from_detail_id" type="button" @click="removeOrderDetail(index)"
                     class="text-red-600 hover:text-red-800 text-xs">
                     {{ t('common.remove') }}
                   </button>
@@ -262,7 +262,7 @@
                       {{ t('orders.fields.service_type') }} <span class="text-red-500">*</span>
                     </label>
                     <SelectSearch v-model="detail.service_type" :options="serviceTypeOptions" :searchable="true"
-                      :disabled="isViewMode" :placeholder="t('orders.select_service_type')"
+                      :disabled="isViewMode || detail.renewed_from_detail_id" :placeholder="t('orders.select_service_type')"
                       @update:modelValue="onServiceTypeChange(index, $event)" class="mt-2" />
                     <p v-if="errors[`order_details.${index}.service_type`]" class="text-xs text-red-500 mt-1">
                       {{ errors[`order_details.${index}.service_type`][0] }}
@@ -281,6 +281,7 @@
                     </p>
                   </div>
                   <input type="hidden" v-model="detail.customer_type" />
+                  <input type="hidden" v-model="detail.renewed_from_detail_id" />
                   <!-- Package Code (readonly, populated from selection) -->
                   <div>
                     <label class="text-xs font-bold text-gray-700 dark:text-gray-200">{{ t('orders.fields.package_code')
@@ -1081,7 +1082,8 @@ const addOrderDetail = () => {
     tax_amount: 0,
     total_with_tax: 0,
     features: [],
-    servicePackageOptions: ref([])
+    servicePackageOptions: ref([]),
+    renewed_from_detail_id: null,
   }
   formData.value.order_details.push(newDetail)
 }
@@ -1194,10 +1196,9 @@ const onServicePackageChange = async (detailIndex, packageId) => {
       detail.tax_included = selectedPackage.package.tax_included || false
       detail.service_type = selectedPackage.package.type_service
       detail.customer_type = selectedPackage.package.customer_type
-
+      detail.renewed_from_detail_id = detail.renewed_from_detail_id
       calculateDetailTotals(detailIndex)
-    }
-
+    }    
     // Load package features
     if (packageId) {
       const packageFeatures = await fetchPackageFeatures(packageId)

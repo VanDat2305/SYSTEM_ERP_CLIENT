@@ -72,14 +72,14 @@
         <!-- Customer Modal -->
         <CustomerModal :errors="formErrors" :isModalOpen="isModalOpen" :mode="currentMode"
             :currentCustomer="currentCustomer" :categorySystem="categorySystem" @close="closeModal"
-            @submit="handleSubmit" />
+            @submit="handleSubmit" @renew-order="openRenewOrderModal" />
 
         <!-- Confirm Modal -->
         <ConfirmModal :show="showDeleteModal" :close="closeDeleteModal" :onConfirm="confirmDelete" type="danger"
             :closeOnClickOutside="false" :title="t('common.confirm')" :message="t('common.confirm_delete')"
             :confirmText="t('common.yes')" :cancelText="t('common.no')" />
         <!-- Order Modal -->
-        <OrderModal :errors="formOrderError" :isModalOpen="isOrderModalOpen" mode="add" :currentOrder="{}"
+        <OrderModal :errors="formOrderError" :isModalOpen="isOrderModalOpen" mode="add" :currentOrder="renewOrderData"
             @close="closeOrderModal" @submit="handleSubmitOrder" :categorySystem="categorySystem"
             :customerCode="customerCode" />
         <ConfirmModal :show="showConfirmChangeStatusModal" :close="() => showConfirmChangeStatusModal = false"
@@ -242,6 +242,14 @@ const statusTabs = computed(() => [
         label: t('customers.status.inactive'),
         // icon: PauseCircleIcon,
         // count: customers.value.filter(c => c.status === 'inactive').length
+    },
+    {
+        value: 'expiring_soon',
+        label: t('customers.status.expiring_soon'),
+    },
+    {
+        value: 'expired',
+        label: t('customers.status.expired'),
     }
 ])
 
@@ -897,12 +905,14 @@ function editCustomer(customer: Customer) {
     currentCustomer.value = { ...customer }
     formErrors.value = {}
     isModalOpen.value = true
+    customerCode.value = customer.customer_code || null
 }
 
 function viewCustomer(customer: Customer) {
     currentMode.value = 'view'
     currentCustomer.value = { ...customer }
     isModalOpen.value = true
+    customerCode.value = customer.customer_code || null
 }
 
 function closeModal() {
@@ -1028,7 +1038,68 @@ onMounted(async () => {
     }
     await fetchCustomers()
 })
+const renewOrderData = ref({})
+const openRenewOrderModal = async (
+    pkg: { id: any; service_type: any; package_id: any } |
+        { id: any; service_type: any; package_id: any }[]
+) => {
+    // Chuẩn hóa đầu vào thành mảng
+    const packages = Array.isArray(pkg) ? pkg : [pkg];
 
+    console.log('Preparing renewal for packages:', packages);
+    setLoading?.(true);
+
+    try {
+        // Xử lý song song các yêu cầu API
+        const renewalRequests = packages.map(async (pkgItem) => {
+            try {
+                const res = await api.get(`/order-details/${pkgItem.id}/prepare-renew`);
+                return res.data.data;
+            } catch (error) {
+                console.error(`Error preparing renewal for package ${pkgItem.id}:`, error);
+                notificationService.error(`Không thể chuẩn bị gia hạn cho gói ${pkgItem.package_id}`);
+                return null;
+            }
+        });
+
+        // Chờ tất cả kết quả
+        const renewalData = await Promise.all(renewalRequests);
+
+        // Lọc bỏ các gói không thành công
+        const validRenewals = renewalData.filter(data => data !== null);
+
+        if (validRenewals.length === 0) {
+            notificationService.error("Không có gói nào có thể gia hạn");
+            return;
+        }
+
+        // Cập nhật dữ liệu gia hạn
+        renewOrderData.value = {
+            details: validRenewals,
+            customer: currentCustomer.value
+        };
+
+        // Mở modal
+        isOrderModalOpen.value = true;
+
+        // Thông báo thành công
+        if (validRenewals.length !== packages.length) {
+            notificationService.warning(
+                `Đã chuẩn bị ${validRenewals.length}/${packages.length} gói để gia hạn`
+            );
+        } else {
+            notificationService.success(
+                `Đã sẵn sàng gia hạn ${validRenewals.length} gói`
+            );
+        }
+
+    } catch (error) {
+        console.error('Unexpected error:', error);
+        notificationService.error("Có lỗi xảy ra khi xử lý gia hạn");
+    } finally {
+        setLoading?.(false);
+    }
+};
 // Watch for active tab changes
 watch(activeTab, (newTab) => {
     filters.value.status = newTab === 'all' ? '' : newTab

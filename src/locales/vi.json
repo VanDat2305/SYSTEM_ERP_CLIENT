@@ -751,6 +751,7 @@
   },
   "customers": {
     "basic_info": "Thông tin cơ bản",
+    "service_tracking": "Theo dõi",
     "logs": "Nhật ký",
     "contact_info": "Thông tin liên hệ",
     "view_title": "Xem thông tin khách hàng",
@@ -769,7 +770,9 @@
       "converted": "Đã chuyển đổi",
       "unqualified": "Không tiềm năng",
       "inactive": "Ngưng giao dịch",
-      "active": "Đang hoạt động"
+      "active": "Đang hoạt động",
+      "expiring_soon": "Sắp hết hạn",
+      "expired": "Đã hết hạn"
     },
     "fields": {
       "customer_code": "Mã khách hàng",

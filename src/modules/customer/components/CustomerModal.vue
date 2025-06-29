@@ -723,8 +723,14 @@
                 </form>
             </div>
             <div v-show="currentTab === 'logs'" class="p-6">
-                <CustomerLogTab :orderId="formData.id" :isActive="currentTab === 'logs'" />
+                <CustomerLogTab :customerId="formData.id" :isActive="currentTab === 'logs'" />
             </div>
+            <div v-show="currentTab === 'tracking'" class="p-6">
+                <TrackingTab :customerId="formData.id ?? undefined" :isActive="currentTab === 'tracking'" 
+                @renew="onRenewPackage" @bulk-renew="onRenewPackage"
+                :categorySystem="categorySystem" />
+            </div>
+           
            
         </template>
 
@@ -743,6 +749,7 @@ import { useI18n } from 'vue-i18n'
 import BaseModal from '@/components/modals/BaseModal.vue'
 import SelectSearch from '@/components/forms/SelectSearch.vue'
 import CustomerLogTab from '@/modules/customer/components/CustomerLogTab.vue'
+import TrackingTab from '@/modules/customer/components/TrackingTab.vue'
 
 import { api } from '@/utils/api'
 
@@ -782,12 +789,16 @@ const teamOptions = ref<{ label: string; value: string; userOptions: any }[]>([]
 const userOptions = ref<{ label: string; value: string }[]>([])
 
 
-const emit = defineEmits(['close', 'submit'])
+const emit = defineEmits(['close', 'submit', 'renew-order'])
+const onRenewPackage = (pkg: any) => {
+  emit('renew-order', pkg)
+}
 
 // Tabs
 const tabs = computed(() => {
     const arr = [
         { name: 'basic', label: t('customers.basic_info') },
+        { name: 'tracking', label: t('customers.service_tracking') },
         { name: 'logs', label: t('customers.logs') },
         // { name: 'contacts', label: t('customers.contacts') }
     ]
