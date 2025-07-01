@@ -3,8 +3,8 @@ import type { RouteRecordRaw } from 'vue-router';
 const ecommerceRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Ecommerce',
-    component: () => import('../views/Ecommerce.vue'),
+    name: 'Dashboard',
+    component: () => import('../views/Dashboard.vue'),
     meta: {
       title: 'pages.Dashboard',
       requiresAuth: true
