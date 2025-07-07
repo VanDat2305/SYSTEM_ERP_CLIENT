@@ -7,7 +7,7 @@ const customerRoutes: Array<RouteRecordRaw> = [
     component: () => import('@/modules/customer/views/CustomerView.vue'),
     meta: { 
         title: 'menu.customers',
-        requiresAuth: true, permissions: ['customers.view'] 
+        requiresAuth: true, permissions: ['customers.view', "customers.view.own" , "customers.view.team"] 
     },
   },
 ];
