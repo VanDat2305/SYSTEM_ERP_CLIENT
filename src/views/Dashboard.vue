@@ -148,7 +148,7 @@
                   <th class="px-4 py-3 text-left text-xs text-gray-700 uppercase tracking-wider">Mã đơn hàng</th>
                   <th class="px-4 py-3 text-left text-xs text-gray-700 uppercase tracking-wider">Khách hàng</th>
                   <th class="px-4 py-3 text-left text-xs text-gray-700 uppercase tracking-wider">Giá trị</th>
-                  <th class="px-4 py-3 text-left text-xs text-gray-700 uppercase tracking-wider">Trạng thái</th>
+                  <!-- <th class="px-4 py-3 text-left text-xs text-gray-700 uppercase tracking-wider">Trạng thái</th> -->
                   <th class="px-4 py-3 text-left text-xs text-gray-700 uppercase tracking-wider">Ngày tạo</th>
                 </tr>
               </thead>
@@ -157,12 +157,14 @@
                   <td class="px-4 py-4 text-xs font-medium text-gray-900">{{ order.order_code }}</td>
                   <td class="px-4 py-4 text-xs text-gray-700">{{ order.customer }}</td>
                   <td class="px-4 py-4 text-xs text-gray-900">{{ formatCurrency(order.amount) }}</td>
+                  <!-- Trạng thái đơn hàng 
                   <td class="px-4 py-4 text-xs">
                     <span :class="statusClasses[order.status]"
                       class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
                       {{ order.status }}
                     </span>
                   </td>
+                  -->
                   <td class="px-4 py-4 text-xs text-gray-600">{{ order.date }}</td>
                 </tr>
               </tbody>
@@ -260,11 +262,11 @@ function handlePeriodChange() {
     fetchDashboardData()
   }
 }
-watch([startDate, endDate], ([newStart, newEnd]) => {
-  if (newStart && newEnd && selectedPeriod.value === 'custom') {
-    fetchDashboardData()
-  }
-})
+// watch([startDate, endDate], ([newStart, newEnd]) => {
+ //  if (newStart && newEnd && selectedPeriod.value === 'custom') {
+ //    fetchDashboardData()
+ //  }
+// })
 
 // KPI Data
 const kpis = ref([
@@ -730,11 +732,12 @@ function updateCharts(revenueData, analyticsData) {
     }
 
     topProductsChartSeries.value = analyticsData.topProductsSeries || topProductsChartSeries.value
-
-    if (topProductsChart.value) {
+    
+    if (topProductsChart.value && analyticsData.topProductsCategories) {
+      
       topProductsChart.value.updateOptions({
         xaxis: {
-          categories: topProductsChartOptions.xaxis.categories
+          categories: analyticsData.topProductsCategories
         }
       })
     }
@@ -838,7 +841,7 @@ onBeforeUnmount(() => {
 })
 
 // Watchers
-watch(selectedPeriod, (newPeriod) => {
-  fetchDashboardData()
-})
+//watch(selectedPeriod, (newPeriod) => {
+//  fetchDashboardData()
+//})
 </script>

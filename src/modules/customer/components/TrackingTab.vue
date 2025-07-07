@@ -174,7 +174,7 @@
                                 v-model="selectedPackages"
                                 class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2">
                         </td>
-                        <td class="p-3 text-left font-medium">{{ pkg.package_name }}</td>
+                        <td class="p-3 text-left font-medium"   @click="copyToClipboard(pkg.id)">{{ pkg.package_name +" ("+ pkg.package_code+") "}}</td>
                         <td class="p-3 text-left">
                             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
                                 {{ getServiceTypeLabel(pkg.service_type) }}
@@ -578,6 +578,25 @@ const bulkRenew = async () => {
         bulkRenewing.value = false
     }
 }
+const copyToClipboard = (text) => {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+       
+      })
+      .catch(() => {
+      });
+  } else {
+    // Fallback cho trình duyệt cũ
+    const input = document.createElement('input');
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+  }
+}
+
 
 // Watchers and lifecycle
 watch(() => props.isActive, (isActive) => {

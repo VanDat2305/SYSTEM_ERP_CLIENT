@@ -10,14 +10,14 @@
                     <!-- {{ t('contracts.group_contract') }} -->
                     Thông tin hợp đồng
                 </legend>
-               
+
                 <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                     <div>
-                    <label class="text-xs font-bold text-gray-700 dark:text-gray-200">Trạng thái đơn hàng
+                    <div>
+                        <label class="text-xs font-bold text-gray-700 dark:text-gray-200">Trạng thái đơn hàng
                         </label>
-                    <SelectSearch v-model="orderDetail.order_status" :options="statusOredrOptions" :disabled="true"
-                        class="mt-2" />
-                </div>
+                        <SelectSearch v-model="orderDetail.order_status" :options="statusOredrOptions" :disabled="true"
+                            class="mt-2" />
+                    </div>
                     <div>
                         <label class="text-xs font-bold text-gray-700 dark:text-gray-200">
                             <!-- {{ t('contracts.fields.contract_number') }} -->
@@ -76,10 +76,15 @@
                                 @click="() => exportContractFile('word')">
                                 <i class="fas fa-file-word mr-2"></i> Xuất Word
                             </button>
-                        </div>
+                            <button
+                                class="flex-1 px-4 py-2 bg-lime-500 hover:bg-lime-600 text-white text-xs font-medium rounded-lg transition-colors duration-200"
+                                @click="openSendMailModal">
+                                <i class="fas fa-paper-plane mr-2"></i> Gửi hợp đồng
+                            </button>
 
+                        </div>
                         <!-- Nhóm upload file đã ký (chỉ khi chưa ký, có quyền upload, không locked) -->
-                        <div v-if="canUploadSigned && !isSigned && !isOrderLocked" class="mb-2 flex gap-2">
+                        <div v-if="canUploadSigned && !isSigned" class="mb-2 flex gap-2">
                             <input type="file" class="flex-1 text-xs border rounded-lg p-2" accept=".pdf"
                                 @change="onUploadSignedFile" :disabled="isSigned" id="signedFileInput" />
                             <button
@@ -136,6 +141,16 @@
     <ConfirmModal :show="showConfirmUploadModal" :close="() => showConfirmUploadModal = false"
         :onConfirm="handleConfirmUpload" type="danger" :closeOnClickOutside="false" :title="t('common.confirm')"
         :message="confirmMessage" :confirmText="t('common.yes')" :cancelText="t('common.no')" />
+
+    <ConfirmModal :show="showSendMailModal" :close="() => showSendMailModal = false" :onConfirm="sendContractMail"
+        type="info" title="Gửi hợp đồng" message="Bạn có chắc gửi hợp đồng không?" confirmText="Gửi" cancelText="Hủy">
+        <template #message>
+            <label class="block mb-2 text-xs text-gray-700">Email nhận hợp đồng</label>
+            <input v-model="sendMailEmail" type="email" class="input-form mb-2" required
+                placeholder="Nhập email người nhận" />
+            <div v-if="!sendMailEmail" class="text-red-500 text-xs">Email không được để trống!</div>
+        </template>
+    </ConfirmModal>
 </template>
 
 <script setup>
@@ -147,6 +162,36 @@ import SelectSearch from '@/components/forms/SelectSearch.vue'
 import { notificationService } from '@/services/notification'
 import ConfirmModal from '@/components/modals/ConfirmModal.vue'
 import { usePermissions } from '@/auth/usePermissions'
+
+const showSendMailModal = ref(false)
+const sendMailEmail = ref('')
+const defaultContactEmail = computed(() => {
+    // Nếu API trả về email chính trong orderDetail, bạn lấy ở đây
+    return orderDetail.value?.contact_email || '' // hoặc tùy API của bạn trả email chính ở đâu
+})
+const openSendMailModal = () => {
+    sendMailEmail.value = defaultContactEmail.value || ''
+    showSendMailModal.value = true
+}
+const sendContractMail = async () => {
+    // if (!sendMailEmail.value) {
+    //     notificationService.error("Vui lòng nhập email người nhận!")
+    //     return
+    // }
+    setLoading(true)
+    try {
+        await api.post("/orders/" + props.order.id + "/send-contract-mail", {
+            email: sendMailEmail.value
+        })
+        notificationService.success("Đã gửi hợp đồng qua email thành công.")
+        showSendMailModal.value = false
+    } catch (e) {
+        notificationService.error(  (e.response?.data?.message || "Gửi email thất bại, vui lòng thử lại."))
+    } finally {
+        showSendMailModal.value = false
+        setLoading(false)
+    }
+}
 
 const setLoading = inject('setLoading', () => { })
 const { hasPermission } = usePermissions()
@@ -203,7 +248,7 @@ const confirmDeleteSignedFile = () => {
     confirmMessage.value = "Bạn có chắc chắn muốn xóa file hợp đồng này không?"
 }
 const onUploadSignedFile = (event) => {
-    
+
     const fileInput = event.target
     if (!fileInput.files.length) {
         notificationService.error("Vui lòng chọn file để tải lên.")
@@ -250,7 +295,7 @@ const uploadSignedFile = async () => {
         return
     }
     const file = fileInput.files[0]
-    
+
     if (!file) return
 
     // Kiểm tra định dạng file
@@ -350,7 +395,8 @@ const downloadFile = async (fileId) => {
 .modal-content::-webkit-scrollbar-thumb:hover {
     @apply bg-gray-500 dark:bg-gray-500;
 }
+
 button:disabled {
-  @apply opacity-50 cursor-not-allowed;
+    @apply opacity-50 cursor-not-allowed;
 }
 </style>
