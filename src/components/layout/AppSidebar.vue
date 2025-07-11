@@ -24,7 +24,7 @@
     <div class="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
       <nav class="mb-6">
         <div class="flex flex-col gap-4">
-          <div v-for="(menuGroup, groupIndex) in menuGroups" :key="groupIndex">
+          <div v-for="(menuGroup, groupIndex) in filteredMenuGroups" :key="groupIndex">
             <h2 :class="[
               'mb-4 text-xs uppercase flex leading-[20px] text-gray-400',
               !isExpanded && !isHovered
@@ -171,11 +171,47 @@ import {
 } from "../../icons";
 import BoxCubeIcon from "@/icons/BoxCubeIcon.vue";
 import { useSidebar } from "@/composables/useSidebar";
-
+import { usePermissions } from '@/auth/usePermissions'
+const { hasPermission } = usePermissions()
 const route = useRoute();
 
 const { isExpanded, isMobileOpen, isHovered, openSubmenu } = useSidebar();
 const { t } = useI18n();
+
+function hasMenuPermission(permission) {
+  if (!permission) return true // Không có field này thì luôn hiện
+  if (Array.isArray(permission)) {
+    // CHỈ cần có ÍT NHẤT 1 quyền trong danh sách là đủ
+    return permission.some(p => hasPermission(p))
+    // Nếu muốn phải có đủ tất cả quyền thì đổi some -> every
+    // return permission.every(p => hasPermission(p))
+  }
+  return hasPermission(permission)
+}
+
+function filterMenuItems(items) {
+  return items
+    .filter(item => hasMenuPermission(item.permission))
+    .map(item => {
+      if (item.subItems) {
+        const filteredSubItems = filterMenuItems(item.subItems)
+        if (filteredSubItems.length > 0) {
+          return { ...item, subItems: filteredSubItems }
+        }
+        // Nếu không còn subItem nào hợp lệ thì ẩn luôn menu cha
+        return null
+      }
+      return item
+    })
+    .filter(Boolean)
+}
+
+const filteredMenuGroups = computed(() =>
+  menuGroups.map(group => ({
+    ...group,
+    items: filterMenuItems(group.items)
+  }))
+)
 
 const menuGroups = [
   {
@@ -189,10 +225,11 @@ const menuGroups = [
       {
         icon: StoreIcon,
         name: t("menu.sales"),
+        permission: ["orders.view"],
         subItems: [
           // { name: t("menu.customers"), path: "/sales/customers" },
           // { name: t("menu.quotes"), path: "/sales/quotes" },
-          { name: t("menu.orders"), path: "/orders" },
+          { name: t("menu.orders"), path: "/orders", permission: ["orders.view"] },
           // { name: t("menu.contracts"), path: "/sales/contracts" },
         ],
       },
@@ -200,29 +237,32 @@ const menuGroups = [
         icon: CustomerIcon,
         name: t("menu.customers"),
         path: "/customers",
+        permission: ["customers.view", "customers.view.own", "customers.view.team"],
       },
       {
         icon: ServiceIcon,
         name: t("menu.service_packages"),
         path: "/service-packages",
+        permission: ["service_packages.view"],
       },
       
       {
         icon: FolderIcon,
         name: t("menu.file_manager"),
         path: "/filemanager",
+        permission: ["files.view"],
       },
       {
         icon: SystemIcon,
         name: t("menu.system"),
         subItems: [
-          { name: t("menu.users"), path: "/system/users" },
-          { name: t("menu.teams"), path: "/system/teams" },
-          { name: t("menu.roles"), path: "/system/roles" },
-          { name: t("menu.permissions"), path: "/system/permissions" },
+          { name: t("menu.users"), path: "/system/users", permission: ["users.view"] },
+          { name: t("menu.teams"), path: "/system/teams", permission: ["teams.view"] },
+          { name: t("menu.roles"), path: "/system/roles" , permission: ["roles.view"]},
+          { name: t("menu.permissions"), path: "/system/permissions" , permission: ["permissions.view"]},
           // { name: t("menu.security_settings"), path: "/system/security" },
           // { name: t("menu.access_settings"), path: "/system/access" },
-          { name: t("menu.activity_logs"), path: "/system/logs" },
+          { name: t("menu.activity_logs"), path: "/system/logs", permission: ["logs.view"] },
         ],
       },
       {
@@ -230,7 +270,7 @@ const menuGroups = [
         name: t("menu.settings"),
         subItems: [
           { name: t("menu.account"), path: "/settings/account" },
-          { name: t("menu.dynamiclists"), path: "/settings/dynamic-lists" },
+          { name: t("menu.dynamiclists"), path: "/settings/dynamic-lists", permission: ["objects.view"] },
           // { name: t("menu.system_info"), path: "/settings/system-info" },
           // { name: t("menu.company_info"), path: "/settings/company-info" },
 

@@ -159,7 +159,7 @@ const tableActions = [
     {
         icon: UserGroupIcon,
         tooltip: 'teams.manage_members',
-        permission: 'teams.view' as PermissionValues,
+        permission: 'teams.update' as PermissionValues,
         handler: (row: Team) => viewMembers(row),
         class: 'text-gray-400 hover:text-purple-500'
     },

@@ -272,30 +272,30 @@ function handlePeriodChange() {
 const kpis = ref([
   {
     icon: '📦',
-    value: '1,247',
+    value: '0',
     label: 'Tổng đơn hàng',
-    change: 12.5,
+    change: 0,
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
   },
   {
     icon: '💰',
-    value: formatCurrency(125680000),
+    value: formatCurrency(0),
     label: 'Tổng doanh thu',
-    change: 8.2,
+    change: 0,
     gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
   },
   {
     icon: '👥',
-    value: '89',
+    value: '0',
     label: 'Khách hàng mới',
-    change: 15.3,
+    change: 0,
     gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
   },
   {
     icon: '⏰',
-    value: '23',
+    value: '0',
     label: 'Đơn chưa thanh toán',
-    change: -5.1,
+    change: 0,
     gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
   },
   // {
