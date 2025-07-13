@@ -6,6 +6,7 @@ import systemRoutes from "./systemRoutes";
 import settingRouters from "./settingRouters";
 import customerRoutes from "./customerRoutes";
 import orderRouters from "./orderRouters";
+import serviceRoutes from "./serviceRoutes";
 
 
 import { authGuard, permissionGuard } from '@/router/gaurds';
@@ -22,6 +23,7 @@ const router = createRouter({
     ...settingRouters,
     ...customerRoutes,
     ...orderRouters,
+    ...serviceRoutes,
     {
       path: '/filemanager',
       name: 'filemanager.name',

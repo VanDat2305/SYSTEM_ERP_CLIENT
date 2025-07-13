@@ -17,8 +17,7 @@
         <TeamModal :errors="formErrors" :isModalOpen="isModalOpen" :mode="currentMode" :currentTeam="currentTeam"
             @close="closeModal" @submit="handleSubmit" />
 
-        <TeamMembersModal :show="showMembersModal" :team="selectedTeam" @close="closeMembersModal"
-            :categorySystem="categorySystem" />
+        <TeamMembersModal :show="showMembersModal" :team="selectedTeam" @close="closeMembersModal"/>
 
         <ConfirmModal :show="showDeleteModal" :close="closeDeleteModal" :onConfirm="confirmDelete" type="danger"
             :closeOnClickOutside="false" :title="t('common.confirm')" :message="t('common.confirm_delete')"
@@ -364,9 +363,9 @@ function handleServerFilter(filterData: any) {
 // Initialize
 onMounted(async () => {
     fetchTeams()
-    if (!categorySystem.loaded) {
+    // if (!categorySystem.loaded) {
         await categorySystem.initCategories();
-    }
+    // }
 })
 
 function count(users: any) {

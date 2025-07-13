@@ -1101,9 +1101,9 @@ const openRenewOrderModal = async (
     }
 };
 // Watch for active tab changes
-watch(activeTab, (newTab) => {
-    filters.value.status = newTab === 'all' ? '' : newTab
-    pagination.value.current_page = 1
-    fetchCustomers()
-})
+// watch(activeTab, (newTab) => {
+//     filters.value.status = newTab === 'all' ? '' : newTab
+//     pagination.value.current_page = 1
+//     fetchCustomers()
+// })
 </script>

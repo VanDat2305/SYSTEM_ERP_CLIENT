@@ -148,14 +148,19 @@ import { useTeamStore } from '@/stores/team'
 import { useUserStore } from '@/stores/user'
 import ConfirmModal from '@/components/modals/ConfirmModal.vue'
 import { notificationService } from '@/services/notification'
-
+import { useCategorySystem } from '@/stores/categorySystem'
+// Dùng store trực tiếp
+const categorySystem = useCategorySystem()
+const roleOptions = computed(() =>
+  categorySystem.getItemsByTypeCode('role_team_option').map((item) => ({
+    label: item.name,
+    value: item.code
+  }))
+)
 
 const props = defineProps({
   show: Boolean,
-  team: Object,
-  categorySystem: {
-    type: Object
-  }
+  team: Object
 })
 
 const emit = defineEmits(['close'])
@@ -176,8 +181,6 @@ const isUpdatingRole = ref(null)
 const error = ref(null)
 const successMessage = ref(null)
 const currentUserId = computed(() => userStore.currentUser?.id)
-
-const roleOptions = ref([]);
 
 const showDeleteMemberModal = ref(false)
 const closeDeleteModal = () => {
@@ -202,12 +205,6 @@ watch(() => props.show, (show) => {
     resetMessages()
   }
 })
-watch(() => props.categorySystem, (newSystem) => {
-  roleOptions.value = newSystem.getItemsByTypeCode('role_team_option').map((item) => ({
-    label: item.name,
-    value: item.code
-  }));
-}, { immediate: true })
 
 const fetchMembers = async () => {
   try {

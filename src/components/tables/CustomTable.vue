@@ -412,11 +412,11 @@
                                 d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                             </svg>
                         </button>
-
+                        <Teleport to="body">
                         <!-- Dropdown menu -->
-                        <div v-if="activeActionMenu === row.id" @mouseleave="activeActionMenu = null"
-                             :class="['absolute right-0 z-20 w-max rounded-md shadow-lg', dropdownDirection === 'up' ? 'bottom-full mb-2' : 'top-full mt-2',
-                            'bg-white dark:bg-gray-700']">
+                        <div v-if="activeActionMenu === row.id"   @mouseleave="activeActionMenu = null"
+                            :style="dropdownPositionStyle"
+                             class="fixed w-max rounded-md right-200 shadow-lg bg-white dark:bg-gray-700">
                             <div class="py-1">
                             <button v-for="(action, index) in filteredActions(row)" :key="index"
                                 @click="() => { action.handler(row); closeActionMenu(); }"
@@ -427,6 +427,7 @@
                             </button>
                             </div>
                         </div>
+                        </Teleport>
                         </td>
 
                     </tr>
@@ -843,23 +844,31 @@ const columnFilters = ref({});
 const hasSelection = computed(() => props.hasSelection || props.selectable);
 const activeActionMenu = ref(null);
 const dropdownDirection = ref('up');
-const toggleActionMenu = (id, event) => {
-
-    const buttonRect = event.currentTarget.getBoundingClientRect();
-    const wrapper = document.querySelector('.table-scroll-container'); // hoặc dùng ref
-    const wrapperRect = wrapper.getBoundingClientRect();
-
-    const spaceBelow = wrapperRect.bottom - buttonRect.bottom;
-    const spaceAbove = buttonRect.top - wrapperRect.top;
-
-    dropdownDirection.value = spaceBelow < 150 && spaceAbove > 150 ? 'up' : 'down';
-    activeActionMenu.value = activeActionMenu.value === id ? null : id;
+const dropdownMenuPos = ref({ top: 0, left: 0 })
+function toggleActionMenu(rowId, event) {
+  if (activeActionMenu.value === rowId) {
+    activeActionMenu.value = null
+  } else {
+    activeActionMenu.value = rowId
+    nextTick(() => {
+      const rect = event.currentTarget.getBoundingClientRect()
+      dropdownMenuPos.value = {
+        top: rect.bottom + window.scrollY,
+        left: rect.left - 100 + window.scrollX,
+      }
+    })
+  }
 }
 
  const closeActionMenu = () => {
     activeActionMenu.value = null
   }
-
+const dropdownPositionStyle = computed(() => ({
+  top: dropdownMenuPos.value.top + 'px',
+  left: dropdownMenuPos.value.left + 'px',
+  position: 'fixed',
+  zIndex: 99999, // đảm bảo nổi lên
+}))
 const dateRangeErrors = ref({});
 const numberRangeErrors = ref({});
 
