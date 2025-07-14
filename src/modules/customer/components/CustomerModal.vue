@@ -948,6 +948,15 @@ const confirmDelete = async () => {
 };
 
 
+const getCurrentUserId = () => {
+    try {
+        return JSON.parse(sessionStorage.getItem('auth_session') || '{}')?.user?.id || '';
+    } catch {
+        return '';
+    }
+}
+
+
 
 const provinceOptions = ref<{ label: string; value: string }[]>([])
 
@@ -1214,7 +1223,22 @@ const resetForm = () => {
     submitError.value = null
     currentTab.value = 'basic'
     fileList.value = []
+    if (props.mode === 'add') {
+        formData.value.assigned_to = getCurrentUserId();
+    }
 }
+watch(teamOptions, () => {
+    if (props.mode === 'add' && !formData.value.team_id) {
+        const userId = getCurrentUserId();
+        const foundTeam = teamOptions.value.find(team =>
+            (team.userOptions || []).some((user: { value: any }) => user.value === userId)
+        );
+        if (foundTeam) {
+            formData.value.team_id = foundTeam.value;
+            formData.value.assigned_to = userId;
+        }
+    }
+});
 
 const closeModal = () => {
     resetForm()
