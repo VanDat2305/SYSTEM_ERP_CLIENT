@@ -1372,15 +1372,15 @@ const validateForm = (): boolean => {
         }
     });
     if (formData.value.customer_type === 'ORGANIZATION') {
-        const repContacts = new Set(
-            formData.value.representatives.flatMap(rep => [rep.phone, rep.email].filter(Boolean).map(x => x.trim().toLowerCase()))
-        );
-        formData.value.contacts.forEach((c, idx) => {
-            if (repContacts.has(c.value.trim().toLowerCase())) {
-                errors.value[`contacts.${idx}.value`] = [t('customers.validation.duplicate_with_representative')];
-                hasError = true;
-            }
-        });
+        // const repContacts = new Set(
+        //     formData.value.representatives.flatMap(rep => [rep.phone, rep.email].filter(Boolean).map(x => x.trim().toLowerCase()))
+        // );
+        // formData.value.contacts.forEach((c, idx) => {
+        //     if (repContacts.has(c.value.trim().toLowerCase())) {
+        //         errors.value[`contacts.${idx}.value`] = [t('customers.validation.duplicate_with_representative')];
+        //         hasError = true;
+        //     }
+        // });
     }
     // Cá nhân phải có số giấy tờ tùy thân (identity_number)
     if (formData.value.customer_type === 'INDIVIDUAL') {
