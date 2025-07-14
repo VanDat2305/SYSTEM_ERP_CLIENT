@@ -57,7 +57,7 @@
                                     <span v-if="!isViewMode" class="text-red-500 ml-1">*</span>
                                 </label>
                                 <SelectSearch v-model="formData.status" :options="statusOptions"
-                                    :placeholder="$t('common.select')" :disabled="isViewMode" size="sm" :class="[
+                                    :placeholder="$t('common.select')" :disabled="true" size="sm" :class="[
                                         'rounded-lg',
                                         'transition-all duration-200',
                                         'focus:outline-none',
