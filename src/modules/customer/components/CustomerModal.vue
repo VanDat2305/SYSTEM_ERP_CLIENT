@@ -1497,16 +1497,20 @@ const handleSubmit = () => {
     if (!validateForm()) return
     if (hasErrors.value) return
     try {
+        const filteredRepresentatives = formData.value.representatives.filter(rep =>
+            Object.values(rep).some(v => v && v.toString().trim() !== '')
+        );
         emit('submit', {
             ...formData.value,
             customer_code: formData.value.customer_code.trim(),
             full_name: formData.value.full_name.trim(),
             short_name: formData.value.short_name.trim(),
             contacts: formData.value.contacts.map(c => ({ ...c, value: c.value.trim() })),
-            representatives: formData.value.representatives.map(r => ({
-                ...r, full_name: r.full_name.trim(),
-                files: fileList.value.map(f => ({ id: f.id, document_type: f.document_type }))
-            })),
+            representatives: formData.value.customer_type === 'ORGANIZATION'
+                ? filteredRepresentatives.map(r => ({
+                    ...r,
+                    full_name: r.full_name.trim()
+            })) : [],
             files: fileList.value.map(f => ({
                 id: f.id,
                 document_type: f.document_type
