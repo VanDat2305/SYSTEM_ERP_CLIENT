@@ -1136,7 +1136,17 @@ const formData = ref<CustomerForm>({
         is_primary: false,
         note: ''
     }],
-    representatives: []
+    representatives: [
+        {
+            full_name: '',
+            position: '',
+            phone: '',
+            email: '',
+            identity_type: '',
+            identity_number: '',
+            note: ''
+        }
+    ]
 });
 
 
@@ -1217,7 +1227,15 @@ const resetForm = () => {
             is_primary: false,
             note: ''
         }],
-        representatives: []
+        representatives: [{
+            full_name: '',
+            position: '',
+            phone: '',
+            email: '',
+            identity_type: '',
+            identity_number: '',
+            note: ''
+        }]
     }
     errors.value = {}
     submitError.value = null
