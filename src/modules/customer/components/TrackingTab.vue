@@ -262,7 +262,7 @@ import { ref, watch, onMounted, computed } from 'vue'
 import { api } from '@/utils/api'
 
 const props = defineProps({
-    customerId: { type: String, required: true },
+    customerId: { type: String, required: false },
     isActive: { type: Boolean, default: true },
     categorySystem: { type: Object }
 })

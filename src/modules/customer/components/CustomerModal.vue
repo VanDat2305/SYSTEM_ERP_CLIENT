@@ -698,6 +698,83 @@
                             </div>
                         </div>
                     </fieldset>
+                    <fieldset class="bg-white/70 dark:bg-gray-800/60 p-4 rounded-xl shadow border mb-4">
+                        <legend
+                            class="font-bold text-indigo-600 dark:text-indigo-300 uppercase text-xs px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700">
+                            Đính kèm
+                        </legend>
+                        <!-- Upload + chọn loại giấy tờ -->
+                        <div class="grid grid-cols-12 gap-3 items-end mt-1" v-if="!isViewMode">
+                            <!-- File input -->
+                            <div class="col-span-4 flex items-center gap-2">
+                                <input type="file" @change="onFileChange"
+                                    class="text-xs border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 min-w-0 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                    :disabled="isViewMode" />
+                            </div>
+                            <!-- Select loại giấy tờ -->
+                            <div class="col-span-5">
+                                <SelectSearch v-model="newFileType" :options="fileTypeOptions"
+                                    :placeholder="$t('common.select')" :disabled="isViewMode" size="xs" :class="[
+                                        'rounded-lg w-full',
+                                        'transition-all duration-200',
+                                        'focus:outline-none',
+                                        errors.status
+                                            ? 'ring-2 ring-red-300'
+                                            : 'hover:ring-2 hover:ring-blue-500/30 focus:ring-2 focus:ring-blue-300'
+                                    ]" />
+                            </div>
+                            <!-- Nút tải lên -->
+                            <div class="col-span-3 flex">
+                                <button type="button" @click="uploadFile"
+                                    :disabled="!fileToUpload || !newFileType || isViewMode"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-5 py-2 rounded-lg font-semibold shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                                    Tải lên
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Danh sách file dạng bảng -->
+                        <table
+                            class="w-full mt-4 text-xs border rounded-full bg-white dark:bg-gray-800/70 border-gray-200 dark:border-gray-700">
+                            <thead>
+                                <tr class="bg-gray-50 dark:bg-gray-900/10">
+                                    <th class="py-2 px-3 font-semibold text-left w-8">#</th>
+                                    <th class="py-2 px-3 font-semibold text-left  w-2">Tên file</th>
+                                    <th class="py-2 px-3 font-semibold text-left w-[150px]">Loại giấy tờ</th>
+                                    <th class="py-2 px-3 font-semibold text-left w-24"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(file, idx) in fileList" :key="file.id" class="border-t">
+                                    <td class="py-1 px-3 text-center">{{ idx + 1 }}</td>
+                                    <td class="py-1 px-3">
+                                        <a v-if="file.url" @click="previewFile(file)"
+                                            class="text-blue-500 hover:underline font-medium">{{ file.original_name }}</a>
+                                        <span v-else>{{ file.original_name }}</span>
+                                    </td>
+                                    <td class="py-1 px-3">
+                                        <SelectSearch v-model="file.document_type" :options="fileTypeOptions" size="sm"
+                                            :disabled="isViewMode" :placeholder="$t('common.select')"
+                                            @change="updateFileType(file, $event)" :class="[
+                                                'rounded-lg w-full',
+                                                'transition-all duration-200',
+                                                'focus:outline-none',
+                                                errors.status
+                                                    ? 'ring-2 ring-red-300'
+                                                    : 'hover:ring-2 hover:ring-blue-500/30 focus:ring-2 focus:ring-blue-300'
+                                            ]" />
+                                    </td>
+                                    <td class="py-1 px-3 text-right">
+                                        <button type="button" v-if="!isViewMode" :disabled="isViewMode"
+                                            class="text-red-500 hover:text-red-700 px-2 py-1 rounded font-semibold transition"
+                                            @click="removeFile(file)">
+                                            Xóa
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+
 
 
                     <!-- Error Message -->
@@ -722,37 +799,45 @@
                     </div>
                 </form>
             </div>
-            <div v-show="currentTab === 'logs'" class="p-6">
+            <div v-show="currentTab === 'logs' && formData.id != null" class="p-6">
                 <CustomerLogTab :customerId="formData.id" :isActive="currentTab === 'logs'" />
             </div>
-            <div v-show="currentTab === 'tracking'" class="p-6">
-                <TrackingTab :customerId="formData.id ?? undefined" :isActive="currentTab === 'tracking'" 
-                @renew="onRenewPackage" @bulk-renew="onRenewPackage"
-                :categorySystem="categorySystem" />
+            <div v-show="currentTab === 'tracking' && formData.id != null" class="p-6">
+                <TrackingTab :customerId="formData.id ?? undefined" :isActive="currentTab === 'tracking'"
+                    @renew="onRenewPackage" @bulk-renew="onRenewPackage" :categorySystem="categorySystem" />
             </div>
-           
-           
+
+
         </template>
+      
 
         <!-- Footer -->
         <!-- <template #footer>
 
         </template> -->
     </BaseModal>
+      <ConfirmModal :show="showModalDelete" :close="closeModalConfirm" :onConfirm="confirmDelete" type="danger"
+        :closeOnClickOutside="false" :title="t('common.confirm')" :message="t('common.confirm_delete')"
+        :confirmText="t('common.yes')" :cancelText="t('common.no')" />
+            <!-- <FilePreview v-if="previewItem !== null" :open="previewItem !== null" :file="previewItem"
+      @close="previewItem = null" /> -->
 </template>
 
 
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BaseModal from '@/components/modals/BaseModal.vue'
 import SelectSearch from '@/components/forms/SelectSearch.vue'
 import CustomerLogTab from '@/modules/customer/components/CustomerLogTab.vue'
 import TrackingTab from '@/modules/customer/components/TrackingTab.vue'
-
+import ConfirmModal from '@/components/modals/ConfirmModal.vue';
+import FilePreview from '@/modules/filemanager/components/FilePreview.vue'
+import config from "@/config/config";
 import { api } from '@/utils/api'
-
+import { notificationService } from '@/services/notification'
+const setLoading = inject<(isLoading: boolean) => void>('setLoading')
 const { t } = useI18n()
 
 const props = defineProps({
@@ -774,6 +859,15 @@ const props = defineProps({
         type: Object
     },
 })
+const showModalDelete = ref(false);
+const closeModalConfirm = () => {
+    showModalDelete.value = false
+}
+const previewItem = ref<File | null>(null);
+const previewFile = (file:any) => {
+    if (!file.id) return;
+  window.open(config.api_be + `/file/${file.id}?download=0`, '_blank');
+};
 const statusOptions = ref<{ label: string; value: string }[]>([
     { value: 'new', label: t('customers.status.new') },
     { value: 'in_progress', label: t('customers.status.in_progress') },
@@ -781,6 +875,79 @@ const statusOptions = ref<{ label: string; value: string }[]>([
     { value: 'unqualified', label: t('customers.status.unqualified') },
     { value: 'inactive', label: t('customers.status.inactive') }
 ])
+
+const fileTypeOptions = [
+    { value: 'CCCD_FRONT', label: 'CCCD mắt trước' },
+    { value: 'CCCD_BACK', label: 'CCCD mắt sau' },
+    { value: 'CCCD_TWO', label: 'CCCD 2 Mặt' },
+    { value: 'PP', label: 'Hộ chiếu' },
+    { value: 'GPKD', label: 'Giấy phép kinh doanh' },
+    { value: 'KHAC', label: 'Khác' },
+]
+const fileList = ref<UploadedFile[]>([]) // mảng lưu các file đã upload, gồm {id, name, url, document_type}
+const fileToUpload = ref<File | null>(null) // file đang được chọn để upload
+const newFileType = ref('')
+
+const uploadFile = async () => {
+    if (!fileToUpload.value || !newFileType.value) return
+    const form = new FormData()
+    try {
+        setLoading?.(true)
+        form.append('file', fileToUpload.value)
+        form.append('document_type', newFileType.value)
+        form.append('object_id', formData.value.id || '')
+        const res = await api.post('/customers/files', form)
+        if (formData.value.id) {
+            await fetchFileList(); // Luôn đồng bộ lại list sau upload
+        } else {
+            // Nếu chưa có ID, chỉ cần thêm file mới vào danh sách
+            fileList.value.push({
+                id: res.data.data.id,
+                name: res.data.data.name,
+                original_name: res.data.data.original_name,
+                url: res.data.data.url,
+                document_type: newFileType.value
+            })
+        }
+        fileToUpload.value = null
+        newFileType.value = ''
+    } catch (error: any) {
+        console.error('Error uploading file:', error)
+        notificationService.error(error.message || "Lỗi")
+        return
+    } finally {
+        setLoading?.(false)
+    }
+}
+const itemToDelete = ref<UploadedFile | null>(null) // item file đang được chọn để xóa
+const removeFile = async (file: any) => {
+    console.log(file);
+    
+    itemToDelete.value = file
+    showModalDelete.value = true
+}
+const confirmDelete = async () => {
+  if (!itemToDelete.value) return;
+  try {
+    setLoading?.(true);
+    const endpoint = `/files/${itemToDelete.value.id}`;
+
+    await api.delete(endpoint, {
+      params: { id: itemToDelete.value.id }
+    });
+    fileList.value = fileList.value.filter(f => f.id !== itemToDelete.value?.id);
+    itemToDelete.value = null; // Reset itemToDelete after deletion
+
+    notificationService.success(t('file_manager.messages.delete_success'));
+  } catch (error) {
+    notificationService.error(t('file_manager.messages.delete_failed'));
+  } finally {
+    closeModalConfirm();
+    setLoading?.(false);
+  }
+};
+
+
 
 const provinceOptions = ref<{ label: string; value: string }[]>([])
 
@@ -791,22 +958,31 @@ const userOptions = ref<{ label: string; value: string }[]>([])
 
 const emit = defineEmits(['close', 'submit', 'renew-order'])
 const onRenewPackage = (pkg: any) => {
-  emit('renew-order', pkg)
+    emit('renew-order', pkg)
 }
 
 // Tabs
 const tabs = computed(() => {
     const arr = [
         { name: 'basic', label: t('customers.basic_info') },
-        { name: 'tracking', label: t('customers.service_tracking') },
-        { name: 'logs', label: t('customers.logs') },
-        // { name: 'contacts', label: t('customers.contacts') }
-    ]
+    ];
+
+    // Chỉ thêm tracking & logs nếu có formData.value.id
+    if (formData.value.id) {
+        arr.push(
+            { name: 'tracking', label: t('customers.service_tracking') },
+            { name: 'logs', label: t('customers.logs') }
+        );
+    }
+
+    // Nếu cần representatives cho ORGANIZATION, giữ như cũ:
     // if (formData.value.customer_type === 'ORGANIZATION') {
     //     arr.push({ name: 'representatives', label: t('customers.representatives') })
     // }
-    return arr
-})
+
+    return arr;
+});
+
 const currentTab = ref('basic')
 
 // Options
@@ -837,7 +1013,7 @@ const loadTeamOptions = async () => {
             }
         })
         const data = await response.data.data.items
-        
+
         teamOptions.value = data.map((item: any) => ({
             label: item.name,
             value: item.id,
@@ -864,7 +1040,7 @@ const loadProvinceOptions = async () => {
     try {
         const response = await api.get('vn-provinces')
         const data = await response.data.data
-        
+
         provinceOptions.value = data.map((item: any) => ({
             label: String(item.name),
             value: String(item.code)
@@ -915,6 +1091,15 @@ interface CustomerForm {
     contacts: CustomerContact[];
     representatives: CustomerRepresentative[];
 }
+interface UploadedFile {
+    id: string
+    name: string
+    original_name: string
+    url?: string
+    document_type: string
+    [key: string]: any // nếu có thêm thuộc tính khác
+}
+
 
 const formData = ref<CustomerForm>({
     id: null,
@@ -1028,6 +1213,7 @@ const resetForm = () => {
     errors.value = {}
     submitError.value = null
     currentTab.value = 'basic'
+    fileList.value = []
 }
 
 const closeModal = () => {
@@ -1275,7 +1461,14 @@ const handleSubmit = () => {
             full_name: formData.value.full_name.trim(),
             short_name: formData.value.short_name.trim(),
             contacts: formData.value.contacts.map(c => ({ ...c, value: c.value.trim() })),
-            representatives: formData.value.representatives.map(r => ({ ...r, full_name: r.full_name.trim() }))
+            representatives: formData.value.representatives.map(r => ({
+                ...r, full_name: r.full_name.trim(),
+                files: fileList.value.map(f => ({ id: f.id, document_type: f.document_type }))
+            })),
+            files: fileList.value.map(f => ({
+                id: f.id,
+                document_type: f.document_type
+            }))
         })
     } catch (error: any) {
         submitError.value = error.message || t('common.submission_error')
@@ -1288,7 +1481,7 @@ watch(() => formData.value.team_id, () => {
 })
 watch(() => formData.value.customer_type, () => {
     if (formData.value.customer_type === 'ORGANIZATION') {
-    
+
         if (errors.value.identity_type) {
             errors.value.identity_type = ''
         }
@@ -1343,8 +1536,50 @@ watch(() => props.currentCustomer, (customer) => {
             ],
             representatives: customer.representatives.length > 0 ? [...customer.representatives] : []
         }
-        
-        
+
+        fetchFileList();
     }
 }, { immediate: true })
+const fetchFileList = async () => {
+    if (formData.value.id) {
+        const res = await api.get(`/getListByObjectId/${formData.value.id}`)
+        fileList.value = res.data.data
+    }
+}
+const updateFileType = async (
+  file: { id: any; document_type: any },
+  $event?: any
+) => {
+  try {
+    setLoading?.(true);
+
+    // Nếu $event truyền vào (giá trị mới), cập nhật vào file.document_type trước khi gửi API
+    if ($event !== undefined) {
+      file.document_type = $event;
+    }
+
+    console.log('Updating file type:', file);
+
+    await api.put(`/files/${file.id}`, {
+      document_type: file.document_type,
+    });
+
+    notificationService.success('Cập nhật loại giấy tờ thành công');
+  } catch (error) {
+    console.error('Error updating file type:', error);
+    notificationService.error('Lỗi cập nhật loại giấy tờ');
+  } finally {
+    setLoading?.(false);
+  }
+};
+
+const onFileChange = (event: Event) => {
+    const input = event.target as HTMLInputElement
+    if (input.files && input.files.length > 0) {
+        fileToUpload.value = input.files[0]
+    } else {
+        fileToUpload.value = null
+    }
+}
+
 </script>

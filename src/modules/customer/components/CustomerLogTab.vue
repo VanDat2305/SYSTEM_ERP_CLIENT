@@ -80,7 +80,7 @@ import config from '@/config/config'
 import { notificationService } from '@/services/notification'
 
 const props = defineProps({
-  customerId: { type: String, required: true },
+  customerId: { type: String, required: false },
   isActive: { type: Boolean, default: true },
 })
 const errors = ref({ note: [], file: [] }) // Lưu lỗi từ server nếu có

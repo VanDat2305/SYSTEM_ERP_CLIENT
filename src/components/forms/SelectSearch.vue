@@ -71,7 +71,7 @@ const props = defineProps<{
   searchPlaceholder?: string
 }>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'change']);
 
 const open = ref(false);
 const searchQuery = ref('');
@@ -93,12 +93,14 @@ const filteredOptions = computed(() => {
 // Chọn option
 const select = (option: { value: string, label: string }) => {
   emit('update:modelValue', option.value);
+  emit('change', option.value); 
   open.value = false;
 };
 
 // Xóa chọn
 const clearValue = () => {
   emit('update:modelValue', '');
+  emit('change', null);
   searchQuery.value = '';
 };
 
