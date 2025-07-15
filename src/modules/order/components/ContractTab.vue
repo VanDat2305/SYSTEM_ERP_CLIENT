@@ -89,7 +89,7 @@
                                 @change="onUploadSignedFile" :disabled="isSigned" id="signedFileInput" />
                             <button
                                 class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-lg transition-colors duration-200"
-                                @click="uploadSignedFile" :disabled="isSigned || !isOrderLocked">
+                                @click="uploadSignedFile" :disabled="isSigned && !isOrderLocked">
                                 <i class="fas fa-upload mr-2"></i> Upload file đã ký
                             </button>
                         </div>
