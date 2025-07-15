@@ -406,6 +406,15 @@ const tableActions = computed(() => {
         conditionShow: (row: Order) => row.order_status === 'approved',
 
     })
+    statusActions.push({
+        icon: TimeIcon,
+        tooltip: 'Chuyển chờ xử lý',
+        permission: 'orders.pending_to_approved' as PermissionValues,
+        handler: (row: Order) => confirmChangeStatus(row, 'pending'),
+        class: 'text-gray-400 hover:text-purple-500 transition-colors duration-200',
+        conditionShow: (row: Order) => row.order_status === 'approved',
+
+    })
 
     // Complete action (for processing)
     statusActions.push({
